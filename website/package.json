@@ -1,0 +1,30 @@
+{
+  "name": "life-quest-website-tests",
+  "version": "1.0.0",
+  "description": "Frontend website for LifeQuest gamified habit reinforcement app",
+  "main": "index.js",
+  "scripts": {
+    "live": "live-server",
+    "test": "jest --watchAll --verbose --detectOpenHandles --runInBand",
+    "coverage": "jest --coverage"
+  },
+  "author": "ByteQuest dev team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "jest": "^30.0.4",
+    "jsdom": "^26.1.0",
+    "live-server": "^1.2.2",
+    "nodemon": "^3.0.1",
+    "supertest": "^7.1.3"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/__tests__/helpers.js"
+    ]
+  }
+}
