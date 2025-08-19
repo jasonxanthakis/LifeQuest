@@ -295,7 +295,6 @@ body {
 .battle-container {
     text-align: center;
     padding: 3rem 1rem;
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -309,6 +308,7 @@ body {
 }
 
 /* Rubik Distressed style (for Levels) */
+/*
 .battle-level {
     font-family: "Rubik Distressed", system-ui;
     font-size: 3rem;
@@ -318,9 +318,10 @@ body {
     text-shadow: 0 0 15px rgba(106, 95, 31, 0.9);
     margin-bottom: 2rem;
 }
+*/
 
 /* Rubik Moonrocks style for Level 5 */
-.level-5 {
+.battle-level {
     font-family: 'Rubik Moonrocks', sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -346,7 +347,7 @@ body {
     transform: scale(1.1);
 }
 
-
+/*
 .battle-level:hover {
     transform: scale(1.1);
     text-shadow: 
@@ -357,6 +358,7 @@ body {
          0 0 25px #fff200, 
          0 0 40px #ffae00; 
 }
+*/
 
 .rubik-distressed-regular {
   font-family: "Rubik Distressed", system-ui;
@@ -504,21 +506,19 @@ body {
     }
 }
 
-/* NEW radiant border pulse animation */
+/* Radiant border pulse animation */
 @keyframes borderPulse {
   0% {
     box-shadow: 
-      0 0 10px #00faff,
-      0 0 40px #00faff,
-      0 0 40px #00e0ff,
-      0 0 80px #00ccff;
+      0 0 6px #00faff,
+      0 0 18px #00e0ff,
+      0 0 30px #00ccff;
   }
   100% {
     box-shadow: 
-      0 0 40px #00faff,
-      0 0 40px #00faff,
-      0 0 120px #00e0ff,
-      0 0 90px #00ccff;
+      0 0 10px #00faff,
+      0 0 28px #00e0ff,
+      0 0 50px #00ccff;
   }
 }
 
@@ -546,7 +546,7 @@ body {
 
     .vs-text {
         font-size: 1.5rem;
-        margin-top: 40px;
+        margin-top: 0px;
     }
 
     .battle-stage {
