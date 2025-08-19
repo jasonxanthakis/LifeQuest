@@ -14,6 +14,8 @@ body {
   padding: 0;
 }
 
+/*----------Welcome-----------*/
+
 /* Navbar styling */
 .navbar {
   padding: 1rem 2rem;
@@ -508,9 +510,7 @@ body {
   }
 }
 
-
-
-/*-----------Media Queries for Mobile-----------*/
+/* ---- Media Queries for Mobile ---- */
 
 /* General mobile adjustments */
 @media (max-width: 768px) {
