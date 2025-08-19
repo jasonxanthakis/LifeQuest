@@ -12,7 +12,7 @@ const images = [
   "mana-crystal.jpg",
   "minotaur.jpeg",
   "placeholder-user.jpg",
-  "premium-quest-s.jpg",
+  "premium-quest-scroll.jpg",
   "shield-of-protection.jpg",
   "werewolf.jpeg",
   "witch.jpg",
@@ -26,7 +26,7 @@ const monsters = [
   { name: "Dragon", image: "dragon.jpeg" },
   { name: "Giant", image: "giant.jpeg" },
   { name: "Goblin", image: "goblin.jpeg" },
-  { name: "Golem", image: "golem.jpeg" },
+  { name: "Golum", image: "golum.jpeg" },
   { name: "Minotaur", image: "minotaur.jpeg" },
   { name: "Werewolf", image: "werewolf.jpeg" },
   { name: "Witch", image: "witch.jpg" },
@@ -46,13 +46,13 @@ function setRandomBattleImages() {
 
   // Player can pick any image
   if (playerImg) {
-    playerImg.src = `assets/${getRandomItem(images)}`;
+    playerImg.src = `../assets/${getRandomItem(images)}`;
   }
 
   // Enemy must pick from monsters
   if (enemyImg) {
     const enemy = getRandomItem(monsters);
-    enemyImg.src = `assets/${enemy.image}`;
+    enemyImg.src = `../assets/${enemy.image}`;
     const enemyName = document.querySelector(".battle-characters .character:nth-child(3) .name");
     if (enemyName) enemyName.textContent = enemy.name;
   }
