@@ -21,7 +21,7 @@ CREATE TABLE quests (
     id INT GENERATED ALWAYS AS IDENTITY,
     quest_title VARCHAR(50) NOT NULL,
     description VARCHAR(60) NOT NULL,
-    email VARCHAR(50) NOT NULL,
+    category VARCHAR(30) NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -54,8 +54,7 @@ CREATE TABLE hero (
     current_level INT NOT NULL,
     hero_name VARCHAR(30) NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (quest_id) REFERENCES quests(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE items (
