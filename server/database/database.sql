@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS user_quests;
 DROP TABLE IF EXISTS user_quest_streaks;
 DROP TABLE IF EXISTS hero;
 DROP TABLE IF EXISTS enemy; 
+DROP TABLE IF EXISTS battle;
 DROP TABLE IF EXISTS items;
 DROP TABLE IF EXISTS hero_items;
 
@@ -66,7 +67,17 @@ CREATE TABLE enemy (
     enemy_level INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (hero_id) REFERENCES hero(id)
-)
+);
+
+CREATE TABLE battle (
+    id INT GENERATED ALWAYS AS IDENTITY,
+    enemy_id INT NOT NULL,
+    hero_id INT NOT NULL,
+    winner VARCHAR(30) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (enemy_id) REFERENCES enemy(id),
+    FOREIGN KEY (hero_id) REFERENCES hero(id)
+);
 
 CREATE TABLE items (
     id INT GENERATED ALWAYS AS IDENTITY,
