@@ -49,6 +49,25 @@ body {
   text-decoration: underline;
 }
 
+/*-----------Buttons-----------*/
+
+.btn-white {
+    background-color: white !important;
+    border-color: #ccc !important;
+    color: black !important;
+}
+
+.btn-white:hover {
+    background-color: #f8f9fa !important;
+    border-color: #aaa !important;
+    color: black !important;
+}
+
+.btn-white:focus,
+.btn-white.focus {
+    box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
+}
+
 /*-----------Navbar------------*/
 
 .sidebar {
@@ -74,3 +93,4 @@ body {
         display: flex;
     }
 }
+
