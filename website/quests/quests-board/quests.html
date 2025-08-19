@@ -10,10 +10,9 @@
         <title>Quests</title>
         <meta name="description" content="width=device-width, initial-scale=1.0">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../../css/style.css">
-        <script src="quests.js" defer></script>
-
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="../../styles.css">
+        <script src="quests.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" defer></script>
     </head>
     <body>
@@ -74,13 +73,51 @@
 
                     <!-- Page content -->
                     <main class="content p-3 flex-grow-1">
+                        <!-- Add Quest Button -->
+                        <div class="d-flex justify-content-end mb-3">
+                            <button class="btn btn-white" data-bs-toggle="modal" data-bs-target="#addQuestModal">
+                                Add quest
+                            </button>
+                        </div>
 
-                        <p>This is where your main app content goes.</p>
-                        
+                        <!-- Add Quest Modal -->
+                        <div class="modal fade" id="addQuestModal" tabindex="-1" aria-labelledby="addQuestModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addQuestModalLabel">New Quest</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="questForm">
+                                <div class="mb-3">
+                                    <label for="questTitle" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="questTitle" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="questDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="questDescription" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="questCategory" class="form-label">Category</label>
+                                    <select class="form-select" id="questCategory" required>
+                                    <option value="">Choose...</option>
+                                    <option value="Smoking">Smoking</option>
+                                    <option value="Exercise">Exercise</option>
+                                    </select>
+                                </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" form="questForm" class="btn btn-primary">Add Quest</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
                     </main>
                 </div>
             </div>
         </div>
-
     </body>
 </html>
