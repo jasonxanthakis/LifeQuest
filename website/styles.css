@@ -70,14 +70,18 @@ body {
 
 /*-----------Navbar------------*/
 
+.mainbar {
+    background-color: #6b5e81;
+}
+
 /* Sidebar */
 .sidebar {
-  background-color: #d3d3d3; /* light gray */
+  background-color: #6b5e81;
   min-height: 100vh;
 }
 .sidebar-title {
   font-weight: bold;
-  color: white;
+  color: black;
 }
 .sidebar-link {
   color: black !important;
@@ -87,7 +91,7 @@ body {
 
 /* Top navbar */
 .top-navbar {
-  background-color: #cfcfd3; /* lighter gray */
+  background-color: #9c95a8;
 }
 .top-link {
   color: black !important;

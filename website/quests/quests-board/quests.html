@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+
 <html>
     <head>
         <meta charset="utf-8">
@@ -18,15 +15,15 @@
     <body>
 
         <!-- Mobile layout: two navbars + collapsable burger menu -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-lg-none">
+        <nav class="navbar navbar-expand-lg mainbar d-lg-none">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">LifeQuest</a>
+                <h4 class="sidebar-title">LifeQuest</h4>
                 <div class="d-flex ms-auto align-items-center">
                     <button class="navbar-toggler mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar" aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <button id="logoutbtn" type="button" class="btn nav-btn btn-outline-dark me-2">
-                        <span class="material-symbols-outlined text-white" style="display: flex;">Logout</span>
+                        <span class="material-symbols-outlined text-black" style="display: flex;">Logout</span>
                     </button>
                 </div>
 
@@ -45,15 +42,15 @@
         <div class="container-fluid">
             <div class="row">
             <!-- Sidebar (desktop only) -->
-                <nav class="col-lg-2 d-none d-lg-flex flex-column bg-dark sidebar p-3 align-items-center text-center min-vh-100">
-                    <h4 class="text-white mb-5">LifeQuest</h4>
+                <nav class="col-lg-2 d-none d-lg-flex flex-column sidebar p-3 align-items-center text-center min-vh-100">
+                    <h4 class="sidebar-title mb-5">LifeQuest</h4>
                     <ul class="nav flex-column">
                         <li class="nav-item my-1"><a class="nav-link text-white" href="#">Quests</a></li>
                         <li class="nav-item my-1"><a class="nav-link text-white" href="#">Hero</a></li>
                         <li class="nav-item my-1"><a class="nav-link text-white" href="#">Dungeon</a></li>
                     </ul>
                     <div class="mt-auto">
-                        <button id="logoutbtn" type="button" class="btn nav-btn btn-outline-dark me-2">
+                        <button id="logoutbtn" type="button" class="btn nav-btn btn-outline-none me-2">
                             <span class="material-symbols-outlined text-white" style="display: flex;">Logout</span>
                         </button>
                     </div>
@@ -61,12 +58,12 @@
 
                 <div class="col-12 col-lg-10 p-0 d-flex flex-column min-vh-100">
                     <!-- Second top navbar: visible on mobile AND desktop -->
-                    <nav class="navbar top-navbar bg-secondary sticky-top">
+                    <nav class="navbar top-navbar sticky-top">
                         <div class="container-fluid justify-content-center">
                             <ul class="navbar-nav flex-row">
-                                <li class="nav-item"><a class="nav-link text-white px-3" href="#">Quests</a></li>
-                                <li class="nav-item"><a class="nav-link text-white px-3" href="#">Achievements</a></li>
-                                <li class="nav-item"><a class="nav-link text-white px-3" href="#">Metrics</a></li>
+                                <li class="nav-item"><a class="nav-link text-black px-3" href="#">Quests</a></li>
+                                <li class="nav-item"><a class="nav-link text-black px-3" href="#">Achievements</a></li>
+                                <li class="nav-item"><a class="nav-link text-black px-3" href="#">Metrics</a></li>
                             </ul>
                         </div>
                     </nav>
