@@ -51,8 +51,29 @@ body {
 
 /*-----------Navbar------------*/
 
+/* Sidebar */
 .sidebar {
-    height: 100vh;
+  background-color: #d3d3d3; /* light gray */
+  min-height: 100vh;
+}
+.sidebar-title {
+  font-weight: bold;
+  color: white;
+}
+.sidebar-link {
+  color: black !important;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+/* Top navbar */
+.top-navbar {
+  background-color: #cfcfd3; /* lighter gray */
+}
+.top-link {
+  color: black !important;
+  font-weight: bold;
+  padding: 0 1.5rem;
 }
 
 /* Mobile */
