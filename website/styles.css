@@ -1,3 +1,7 @@
+/*---------Variables-----------*/
+
+/*------------Body-------------*/
+
 body {
   background-color: #222;
   background-image: url('assets/dungeon-background.jpg');
@@ -5,6 +9,8 @@ body {
   background-position: center;
   min-height: 100vh;
 }
+
+/*-----------Login------------*/
 
 .card-container,
 .signup-card,
@@ -41,4 +47,30 @@ body {
 .signup-link:hover,
 .login-link:hover {
   text-decoration: underline;
+}
+
+/*-----------Navbar------------*/
+
+.sidebar {
+    height: 100vh;
+}
+
+/* Mobile */
+@media (max-width: 450px) {
+    .sidebar {
+        display: none;
+    }
+    .top-navbar {
+        display: flex;
+    }
+}
+
+/* Desktop */
+@media (min-width: 451px) {
+    .sidebar {
+        display: flex;
+    }
+    .top-navbar {
+        display: flex;
+    }
 }
