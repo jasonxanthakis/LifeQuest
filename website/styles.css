@@ -284,7 +284,7 @@ body {
 /* Battle stage */
 .battle-stage {
     background: rgba(119, 118, 118, 0.58);
-    padding: 4rem;
+    padding: 3rem;
     border-radius: 20px;
     max-width: 850px;
     width: 100%;
@@ -298,12 +298,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    flex: 1;
 }
 
 .battle-title {
     font-size: 3rem;
     font-weight: bold;
-    margin-bottom: 2.5rem;
     text-shadow: 2px 2px 8px rgba(0, 255, 255, 0.8);
 }
 
