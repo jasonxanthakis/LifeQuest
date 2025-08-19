@@ -46,13 +46,13 @@ function setRandomBattleImages() {
 
   // Player can pick any image
   if (playerImg) {
-    playerImg.src = `assets/${getRandomItem(images)}`;
+    playerImg.src = `../assets/${getRandomItem(images)}`;
   }
 
   // Enemy must pick from monsters
   if (enemyImg) {
     const enemy = getRandomItem(monsters);
-    enemyImg.src = `assets/${enemy.image}`;
+    enemyImg.src = `../assets/${enemy.image}`;
     const enemyName = document.querySelector(".battle-characters .character:nth-child(3) .name");
     if (enemyName) enemyName.textContent = enemy.name;
   }
