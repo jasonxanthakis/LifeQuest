@@ -1,0 +1,44 @@
+body {
+  background-color: #222;
+  background-image: url('assets/dungeon-background.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
+
+.card-container,
+.signup-card,
+.login-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.form-btn,
+.login-btn,
+.signup-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.form-btn:hover,
+.login-btn:hover,
+.signup-btn:hover {
+  background-color: #45a049;
+}
+
+.alt-link,
+.signup-link,
+.login-link {
+  color: red;
+  text-decoration: none;
+}
+
+.alt-link:hover,
+.signup-link:hover,
+.login-link:hover {
+  text-decoration: underline;
+}
