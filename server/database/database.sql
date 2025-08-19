@@ -25,24 +25,14 @@ CREATE TABLE quests (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE user_quests (
-    id INT GENERATED ALWAYS AS IDENTITY,
-    user_id INT NOT NULL,
-    quest_id INT NOT NULL,
-    current_streak INT NOT NULL,
-    best_streak INT NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (quest_id) REFERENCES quests(id)
-);
-
 CREATE TABLE user_quest_streaks (
     id INT GENERATED ALWAYS AS IDENTITY,
     user_id INT NOT NULL,
     quest_id INT NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    streak BOOLEAN NOT NULL,
+    current_streak INT NOT NULL,
+    best_streak INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (quest_id) REFERENCES quests(id)
