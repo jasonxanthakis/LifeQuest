@@ -44,6 +44,7 @@ CREATE TABLE hero (
     user_id INT NOT NULL,
     current_level INT NOT NULL,
     hero_name VARCHAR(30) NOT NULL,
+    total_points INT NOT NULL,
     total_XP INT NOT NULL,
     next_enemy VARCHAR(30) NOT NULL,
     PRIMARY KEY (id),
