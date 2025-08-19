@@ -148,6 +148,23 @@ body {
     box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
 }
 
+.btn-purple {
+    background-color: #6f42c1 !important;
+    border-color: #6f42c1 !important;
+    color: white !important;
+}
+
+.btn-purple:hover {
+    background-color: #5a32a3 !important;
+    border-color: #5a32a3 !important;
+    color: white !important;
+}
+
+.btn-purple:focus,
+.btn-purple.focus {
+    box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.5);
+}
+
 /*-----------Navbar------------*/
 
 .mainbar {
@@ -167,6 +184,11 @@ body {
   color: black !important;
   font-weight: bold;
   margin: 0.5rem 0;
+}
+
+.nav-link.active {
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 /* Top navbar */
