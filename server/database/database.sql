@@ -21,7 +21,7 @@ CREATE TABLE quests (
     id INT GENERATED ALWAYS AS IDENTITY,
     quest_title VARCHAR(50) NOT NULL,
     description VARCHAR(60) NOT NULL,
-    email VARCHAR(50) NOT NULL,
+    category VARCHAR(30) NOT NULL,
     PRIMARY KEY (id)
 );
 
