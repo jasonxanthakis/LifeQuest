@@ -201,25 +201,6 @@ body {
   padding: 0 1.5rem;
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-    .sidebar {
-        display: none;
-    }
-    .top-navbar {
-        display: flex;
-    }
-}
-
-/* Desktop */
-@media (min-width: 769px) {
-    .sidebar {
-        display: flex;
-    }
-    .top-navbar {
-        display: flex;
-    }
-}
 /*---------Dungeon-----------*/
 /*---------Dungeon-----------*/
 /* Import a gamish fantasy font */
@@ -398,5 +379,100 @@ body {
     }
     to {
         text-shadow: 0 0 20px #00e5ff, 0 0 30px #00e5ff;
+    }
+}
+
+/* NEW radiant border pulse animation */
+@keyframes radiantPulse {
+  0% {
+    box-shadow: 
+      0 0 20px #00faff,
+      0 0 40px #00faff,
+      0 0 60px #00e0ff,
+      0 0 80px #00ccff;
+  }
+  100% {
+    box-shadow: 
+      0 0 40px #00faff,
+      0 0 80px #00faff,
+      0 0 120px #00e0ff,
+      0 0 160px #00ccff;
+  }
+}
+
+
+
+/*-----------Media Queries for Mobile-----------*/
+
+/* General mobile adjustments */
+@media (max-width: 768px) {
+    /* Welcome section */
+    .welcome {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .welcome-text h1 {
+        font-size: 2.25rem;
+    }
+    .welcome-image {
+        display: none;
+    }
+
+    /* Navbar and sidebar */
+    .sidebar {
+        display: none;
+    }
+    .top-navbar {
+        display: flex;
+    }
+
+    /* Battle stage adjustments */
+    .battle-stage {
+        padding: 1.5rem;
+        max-width: 95%;
+    }
+    .battle-title {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    .battle-level {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+    .battle-characters {
+        flex-direction: column;
+        gap: 1.5rem;
+        margin: 1rem 0;
+    }
+    .avatar {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 0.5rem;
+    }
+    .name {
+        font-size: 1.2rem;
+    }
+    .vs-text {
+        font-size: 1.5rem;
+    }
+    .win-text {
+        font-size: 1.5rem;
+    }
+    .points {
+        font-size: 1.2rem;
+    }
+    .fight-btn {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+    }
+}
+
+/* Desktop layout adjustments */
+@media (min-width: 769px) {
+    .sidebar {
+        display: flex;
+    }
+    .top-navbar {
+        display: flex;
     }
 }
