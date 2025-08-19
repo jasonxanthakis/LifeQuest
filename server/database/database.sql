@@ -58,30 +58,12 @@ CREATE TABLE hero (
     FOREIGN KEY (quest_id) REFERENCES quests(id)
 );
 
-CREATE TABLE skills (
-    id INT GENERATED ALWAYS AS IDENTITY,
-    skill_name VARCHAR(30) NOT NULL,
-    description VARCHAR(50) NOT NULL,
-    level_up_cost INT NOT NULL,
-    PRIMARY KEY (id)
-);
-
 CREATE TABLE items (
     id INT GENERATED ALWAYS AS IDENTITY,
     item_name VARCHAR(30) NOT NULL,
     description VARCHAR(50) NOT NULL,
     item_cost INT NOT NULL,
     PRIMARY KEY (id)
-);
-
-CREATE TABLE hero_skills (
-    id INT GENERATED ALWAYS AS IDENTITY,
-    hero_id INT NOT NULL,
-    skill_id INT NOT NULL,
-    skill_level INT NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (hero_id) REFERENCES hero(id),
-    FOREIGN KEY (skill_id) REFERENCES skills(id)
 );
 
 CREATE TABLE hero_items (
