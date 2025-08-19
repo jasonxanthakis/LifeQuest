@@ -3,9 +3,8 @@ DROP TABLE IF EXISTS quests;
 DROP TABLE IF EXISTS user_quests;
 DROP TABLE IF EXISTS user_quest_streaks;
 DROP TABLE IF EXISTS hero;
-DROP TABLE IF EXISTS skills; 
+DROP TABLE IF EXISTS enemy; 
 DROP TABLE IF EXISTS items;
-DROP TABLE IF EXISTS hero_skills;
 DROP TABLE IF EXISTS hero_items;
 
 CREATE TABLE users (
@@ -42,7 +41,7 @@ CREATE TABLE user_quest_streaks (
     quest_id INT NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    streak_is_success BOOLEAN NOT NULL,
+    streak BOOLEAN NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (quest_id) REFERENCES quests(id)
@@ -53,9 +52,20 @@ CREATE TABLE hero (
     user_id INT NOT NULL,
     current_level INT NOT NULL,
     hero_name VARCHAR(30) NOT NULL,
+    total_XP INT NOT NULL,
+    next_enemy VARCHAR(30) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE enemy (
+    id INT GENERATED ALWAYS AS IDENTITY,
+    hero_id INT NOT NULL,
+    enemy_name VARCHAR(30) NOT NULL,
+    enemy_damage INT NOT NULL, 
+    PRIMARY KEY (id),
+    FOREIGN KEY (hero_id) REFERENCES hero(id)
+)
 
 CREATE TABLE items (
     id INT GENERATED ALWAYS AS IDENTITY,
