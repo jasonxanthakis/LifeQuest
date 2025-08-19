@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS hero_items;
 
 CREATE TABLE users (
     id INT GENERATED ALWAYS AS IDENTITY,
+    full_name VARCHAR(50) NOT NULL,
     username VARCHAR(30) NOT NULL,
     password_hash CHAR(60) NOT NULL,
     email VARCHAR(50) NOT NULL,
