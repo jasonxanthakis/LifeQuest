@@ -26,7 +26,7 @@ const monsters = [
   { name: "Dragon", image: "dragon.jpeg" },
   { name: "Giant", image: "giant.jpeg" },
   { name: "Goblin", image: "goblin.jpeg" },
-  { name: "Golum", image: "golum.jpeg" },
+  { name: "Golem", image: "golem.jpeg" },
   { name: "Minotaur", image: "minotaur.jpeg" },
   { name: "Werewolf", image: "werewolf.jpeg" },
   { name: "Witch", image: "witch.jpg" },
@@ -44,9 +44,9 @@ function setRandomBattleImages() {
   const playerImg = document.querySelector(".battle-characters .character:nth-child(1) img");
   const enemyImg = document.querySelector(".battle-characters .character:nth-child(3) img");
 
-  // Player can pick any image
+  // Player always uses knight.png
   if (playerImg) {
-    playerImg.src = `../assets/${getRandomItem(images)}`;
+    playerImg.src = `../assets/knight.png`;
   }
 
   // Enemy must pick from monsters
@@ -58,12 +58,13 @@ function setRandomBattleImages() {
   }
 }
 
-// Optional: refresh on fight
+// Navigate to battle page on fight
 function setupFightButton() {
   const fightBtn = document.querySelector(".fight-btn");
   if (fightBtn) {
     fightBtn.addEventListener("click", () => {
-      setRandomBattleImages();
+      // Redirect to battle page
+      window.location.href = "../battle_page/battlepage.html";
     });
   }
 }
