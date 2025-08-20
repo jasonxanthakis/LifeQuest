@@ -33,21 +33,17 @@ class User {
     static async create(data) {
         const { fullname, username, hashedPassword, email, date_of_birth } = data;
         
-        try {
-            const response = await db.query(
-                'INSERT INTO users (full_name, username, password, email, date_of_birth) VALUES ($1, $2, $3, $4, $5) RETURNING id;', 
-                [fullname, username, hashedPassword, email, date_of_birth]
-            );
+        const length = (await db.query('SELECT * FROM users WHERE username = $1;', [username])).rows.length;
+        
+        if (length != 0) throw new Error('Username already exists. Please choose another one.');
 
-            const newId = response.rows[0].id;
-            return await User.getOneById(newId);
+        const response = await db.query(
+            'INSERT INTO users (full_name, username, password, email, date_of_birth) VALUES ($1, $2, $3, $4, $5) RETURNING id;', 
+            [fullname, username, hashedPassword, email, date_of_birth]
+        );
 
-        } catch (err) {
-            if (err.code === '23505') {
-                throw new Error('Username already exists. Please choose another one.');
-            }
-            throw err;
-        }
+        const newId = response.rows[0].id;
+        return await User.getOneById(newId);
     }
 
     async destroy() {
