@@ -32,7 +32,7 @@ class User {
 
     static async create(data) {
         const { fullname, username, password, email, date_of_birth } = data;
-        let response = await db.query('INSERT INTO users (full_name, username, password, email, date_of_birth) VALUES ($1, $2, $3, $4, $5) RETURNING id;' [fullname, username, password, email, date_of_birth]);
+        let response = await db.query('INSERT INTO users (full_name, username, password, email, date_of_birth) VALUES ($1, $2, $3, $4, $5) RETURNING id;', [fullname, username, password, email, date_of_birth]);
         const newId = response.rows[0].id;
         const newUser = await User.getOneById(newId);
         return newUser;
@@ -42,11 +42,11 @@ class User {
         return bcrypt.compare(password, this.#password);
     }
 
-    async generateJwt(){
+    /* async generateJwt(){
         return jwt.sign({
             id: this.id
         }, process.env.SECRET_TOKEN, {expiresIn: 60 * 60 * 24 * 30});
-    }
+    } */
 }
 
 module.exports = User;
