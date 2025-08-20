@@ -31,16 +31,16 @@ class User {
     }
 
     static async create(data) {
-        const { full_name, username, password, email, date_of_birth } = data;
+        const { fullname, username, hashedPassword, email, date_of_birth } = data;
         
         try {
             const response = await db.query(
                 'INSERT INTO users (full_name, username, password, email, date_of_birth) VALUES ($1, $2, $3, $4, $5) RETURNING id;', 
-                [full_name, username, password, email, date_of_birth]
+                [fullname, username, hashedPassword, email, date_of_birth]
             );
 
             const newId = response.rows[0].id;
-            return newUser = await User.getOneById(newId);
+            return await User.getOneById(newId);
 
         } catch (err) {
             if (err.code === '23505') {
@@ -58,15 +58,13 @@ class User {
         return bcrypt.compare(password, this.#password);
     }
 
-        /*
-        async generateJwt(){
-            return jwt.sign({
-                id: this.id
-            }, process.env.SECRET_TOKEN, {expiresIn: 60 * 60 * 24 * 30});
-        } */
+    /*
+    async generateJwt(){
+        return jwt.sign({
+            id: this.id
+        }, process.env.SECRET_TOKEN, {expiresIn: 60 * 60 * 24 * 30});
+    } */
     
 }
 
 module.exports = User;
-
-

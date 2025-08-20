@@ -143,8 +143,6 @@ describe('User Controller', () => {
                 hashedPassword: '$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK'
             });
 
-            bcrypt.hash.mockResolvedValue('$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK');
-
             jest.spyOn(User, 'getOneByUsername').mockResolvedValue(mockUser);
 
             bcrypt.compare.mockResolvedValue(true);
@@ -159,7 +157,7 @@ describe('User Controller', () => {
 
             expect(User.getOneByUsername).toHaveBeenCalledWith('testuser');
 
-            expect(mockUser.comparePassword).toHaveBeenCalledWith('$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK');
+            expect(mockUser.comparePassword).toHaveBeenCalledWith('pass');
 
             expect(jwt.sign).toHaveBeenCalledWith(
                 { username: 'testuser' },
@@ -184,8 +182,6 @@ describe('User Controller', () => {
                 hashedPassword: '$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK'
             });
 
-            bcrypt.hash.mockResolvedValue('$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK');
-
             jest.spyOn(User, 'getOneByUsername').mockResolvedValue(mockUser);
 
             bcrypt.compare.mockResolvedValue(true);
@@ -200,7 +196,7 @@ describe('User Controller', () => {
 
             expect(User.getOneByUsername).toHaveBeenCalledWith('testuser');
 
-            expect(mockUser.comparePassword).toHaveBeenCalledWith('$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK');
+            expect(mockUser.comparePassword).toHaveBeenCalledWith('pass');
 
             expect(mockStatus).toHaveBeenCalledWith(400);
             expect(mockJson).toHaveBeenCalledWith({ error: 'Error in token generation' });
@@ -215,8 +211,6 @@ describe('User Controller', () => {
                 hashedPassword: 'bad password'
             });
 
-            bcrypt.hash.mockResolvedValueOnce('bad password');
-
             jest.spyOn(User, 'getOneByUsername').mockResolvedValueOnce(mockUser);
 
             bcrypt.compare.mockResolvedValueOnce(false);
@@ -227,7 +221,7 @@ describe('User Controller', () => {
 
             expect(User.getOneByUsername).toHaveBeenCalledWith('testuser');
 
-            expect(mockUser.comparePassword).toHaveBeenCalledWith('bad password');
+            expect(mockUser.comparePassword).toHaveBeenCalledWith('pass');
 
             expect(mockStatus).toHaveBeenCalledWith(400);
             expect(mockJson).toHaveBeenCalledWith({ error: 'User could not be authenticated' });
