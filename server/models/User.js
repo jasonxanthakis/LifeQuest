@@ -1,13 +1,13 @@
 const db = require('../database/connect');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+//const jwt = require('jsonwebtoken');
 
 class User {
     #password;
 
-    constructor({ id, fullname, username, password, email, date_of_birth }) {
+    constructor({ id, full_name, username, password, email, date_of_birth }) {
         this.id = id;
-        this.fullname = fullname;
+        this.full_name = full_name;
         this.username = username;
         this.#password = password;
         this.email = email;
@@ -31,22 +31,36 @@ class User {
     }
 
     static async create(data) {
-        const { fullname, username, password, email, date_of_birth } = data;
-        let response = await db.query('INSERT INTO users (full_name, username, password, email, date_of_birth) VALUES ($1, $2, $3, $4, $5) RETURNING id;', [fullname, username, password, email, date_of_birth]);
-        const newId = response.rows[0].id;
-        const newUser = await User.getOneById(newId);
-        return newUser;
+        const { full_name, username, password, email, date_of_birth } = data;
+        
+        try {
+            const response = await db.query('INSERT INTO users (full_name, username, password, email, date_of_birth) VALUES ($1, $2, $3, $4, $5) RETURNING id;', [full_name, username, password, email, date_of_birth]);
+
+            const newId = response.rows[0].id;
+            return newUser = await User.getOneById(newId);
+
+        } catch (err) {
+            if (err.code === '23505') {
+                throw new Error('Username already exists. Please choose another one.');
+            }
+            throw err;
+        }
     }
 
-    comparePassword(password){
-        return bcrypt.compare(password, this.#password);
+    async destroy() {
+        return db.query('DELETE FROM users WHERE id = $1;', [this.id])
     }
 
-    /* async generateJwt(){
-        return jwt.sign({
-            id: this.id
-        }, process.env.SECRET_TOKEN, {expiresIn: 60 * 60 * 24 * 30});
-    } */
+        /* comparePassword(password){
+            return bcrypt.compare(password, this.#password);
+        }
+
+        async generateJwt(){
+            return jwt.sign({
+                id: this.id
+            }, process.env.SECRET_TOKEN, {expiresIn: 60 * 60 * 24 * 30});
+        } */
+    
 }
 
 module.exports = User;
