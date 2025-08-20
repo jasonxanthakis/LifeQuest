@@ -67,7 +67,7 @@ describe('User Controller', () => {
                 expect.any(Function)
             );
 
-            expect(mockStatus).toHaveBeenCalledWith(200);
+            expect(mockStatus).toHaveBeenCalledWith(201);
                 expect(mockJson).toHaveBeenCalledWith({
                 success: true,
                 userID: 1,
@@ -122,7 +122,6 @@ describe('User Controller', () => {
             expect(mockStatus).toHaveBeenCalledWith(400);
             expect(mockJson).toHaveBeenCalledWith({ error: 'oh no' });
         });
-
         
     });
 
