@@ -1,11 +1,5 @@
-// Initialise Supabase client
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-
-const supabaseUrl = 'https://eoalkkofcmurezvvrzbi.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvYWxra29mY211cmV6dnZyemJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2OTIwNjEsImV4cCI6MjA3MTI2ODA2MX0.CFUsfRhMPNtGqoleNDjTDcb95y7MDGolOgPwXJ6CKEc' 
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
 document.addEventListener('DOMContentLoaded', () => {
+  const API_URL = 'http://localhost:3000';
   const form = document.querySelector('form');
 
   form.addEventListener('submit', async (e) => {
@@ -16,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const date_of_birth = document.getElementById('dob').value;
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
+
+    console.log(fullname, username, date_of_birth, email, password);
 
     // Basic validation
     if (!fullname || !username || !email || !password) {
@@ -36,31 +32,49 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-          data: {
-            full_name: fullname,
-            username: username,
-            date_of_birth: date_of_birth,
-          }
-        }
-      })
-
-      if (error) {
-        alert(error.message || 'Signup failed.');
-        console.error('Signup error:', error);
-      } else {
-        if (data.user && !data.user.email_confirmed_at) {
-          alert('Signup successful!');
-        } 
-        window.location.href = '../login/login.html';
-      }
-    } catch (err) {
-      alert('Signup error occurred.');
-      console.error('Signup error:', err);
+    const data = {
+      fullname: fullname,
+      username: username,
+      date_of_birth: date_of_birth,
+      email: email,
+      password: password
     }
+
+    let url = API_URL + '/user/signup';
+
+    const response = await sendPostRequest(url, data);
+    const result = await response.json();
+
+    console.log(response.status);
+
+    if (response.status == 201) {
+      localStorage.setItem("token", result.token);
+
+      document.getElementById('name').value = '';
+      document.getElementById('username').value = '';
+      document.getElementById('dob').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('password').value = '';
+
+      window.location.assign("../quests/quests-board/quests.html");
+    } else {
+      alert(result.error);
+      return;
+    }
+
   });
 });
+
+async function sendPostRequest(url, data) {
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }
+
+    const resp = await fetch(url, options);
+
+    return resp;
+};

@@ -45,7 +45,7 @@ describe('User Controller', () => {
                 user_id: 1,
             };
 
-            jest.spyOn(User, 'createUser').mockResolvedValue(mockUser);
+            jest.spyOn(User, 'create').mockResolvedValue(mockUser);
 
             jwt.sign.mockImplementation((payload, secret, options, callback) => {
                 callback(null, 'fake.jwt.token');

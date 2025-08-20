@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -7,7 +9,7 @@ async function createUser(req, res) {
     try {
 
         const { fullname, username, date_of_birth, email, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_SALT_ROUNDS);
+        const hashedPassword = await bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS));
 
         const user = await User.create({ fullname, username, hashedPassword, email, date_of_birth });
 
