@@ -20,9 +20,9 @@ const mockStatus = jest.fn(() => ({
 const mockRes = { status: mockStatus };
 
 describe('User Controller', () => {
-    beforeEach(() => jest.clearAllMocks())
+    beforeEach(() => jest.clearAllMocks());
 
-    afterAll(() => jest.resetAllMocks())
+    afterAll(() => jest.resetAllMocks());
 
     describe('Create New User', () => {
         let mockReq;
@@ -32,18 +32,23 @@ describe('User Controller', () => {
                 body: {
                     fullname: 'eva smith',
                     username: 'testuser',
-                    date_of_birth: '',
+                    date_of_birth: '2021-08-01',
                     email: 'example@example.org',
-                    password: 'testpass'
+                    password: 'pass'
                 }
             };
-        })
+        });
 
-        it('should return a webtoken with status code 200', async () => {
+        it('should return a webtoken with status code 201', async () => {
             const mockUser = {
+                fullname: 'eva smith',
                 username: 'testuser',
-                user_id: 1,
+                date_of_birth: '2021-08-01',
+                email: 'example@example.org',
+                hashedPassword: '$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK'
             };
+
+            bcrypt.hash.mockResolvedValue('$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK');
 
             jest.spyOn(User, 'create').mockResolvedValue(mockUser);
 
@@ -53,11 +58,12 @@ describe('User Controller', () => {
 
             await createUser(mockReq, mockRes);
 
-            expect(User.createUser).toHaveBeenCalledWith({
+            expect(User.create).toHaveBeenCalledWith({
+                fullname: 'eva smith',
                 username: 'testuser',
-                password: 'testpass',
-                is_teacher: false,
-                school_name: 'None',
+                date_of_birth: '2021-08-01',
+                email: 'example@example.org',
+                hashedPassword: '$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK'
             });
 
             expect(jwt.sign).toHaveBeenCalledWith(
@@ -68,34 +74,92 @@ describe('User Controller', () => {
             );
 
             expect(mockStatus).toHaveBeenCalledWith(201);
-                expect(mockJson).toHaveBeenCalledWith({
+            expect(mockJson).toHaveBeenCalledWith({
                 success: true,
-                userID: 1,
-                username: 'testuser',
                 token: 'fake.jwt.token',
             });
         });
 
-        it('should return a webtoken with status code 200', async () => {
+        it('should throw an error if token fails to generate', async () => {
             const mockUser = {
+                fullname: 'eva smith',
                 username: 'testuser',
-                user_id: 1,
+                date_of_birth: '2021-08-01',
+                email: 'example@example.org',
+                hashedPassword: '$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK'
             };
 
-            jest.spyOn(User, 'createUser').mockResolvedValue(mockUser);
+            bcrypt.hash.mockResolvedValue('$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK');
+
+            jest.spyOn(User, 'create').mockResolvedValue(mockUser);
+
+            jwt.sign.mockImplementation((payload, secret, options, callback) => {
+                callback(new Error('failed to generate token'), null);
+            });
+
+            await createUser(mockReq, mockRes);
+
+            expect(User.create).toHaveBeenCalledWith({
+                fullname: 'eva smith',
+                username: 'testuser',
+                date_of_birth: '2021-08-01',
+                email: 'example@example.org',
+                hashedPassword: '$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK'
+            });
+
+            expect(mockStatus).toHaveBeenCalledWith(400);
+            expect(mockJson).toHaveBeenCalledWith({ error: 'Error in token generation' });
+        });
+
+        it('should return an error if something went wrong', async () => {
+            jest.spyOn(User, 'create').mockRejectedValue(new Error('oh no'));
+            
+            await createUser(mockReq, mockRes);
+
+            expect(mockStatus).toHaveBeenCalledWith(400);
+            expect(mockJson).toHaveBeenCalledWith({ error: 'oh no' });
+        });
+        
+    });
+
+    describe('Log Existing User In', () => {
+        let mockReq;
+
+        beforeEach(() => {
+            mockReq = {
+                body: {
+                    username: 'testuser',
+                    password: 'pass'
+                }
+            };
+        });
+
+        it('should return a webtoken with status code 200', async () => {
+            const mockUser = new User({
+                fullname: 'eva smith',
+                username: 'testuser',
+                date_of_birth: '2021-08-01',
+                email: 'example@example.org',
+                hashedPassword: '$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK'
+            });
+
+            bcrypt.hash.mockResolvedValue('$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK');
+
+            jest.spyOn(User, 'getOneByUsername').mockResolvedValue(mockUser);
+
+            bcrypt.compare.mockResolvedValue(true);
+
+            jest.spyOn(mockUser, 'comparePassword');
 
             jwt.sign.mockImplementation((payload, secret, options, callback) => {
                 callback(null, 'fake.jwt.token');
             });
 
-            await createUser(mockReq, mockRes);
+            await logUserIn(mockReq, mockRes);
 
-            expect(User.createUser).toHaveBeenCalledWith({
-                username: 'testuser',
-                password: 'testpass',
-                is_teacher: false,
-                school_name: 'None',
-            });
+            expect(User.getOneByUsername).toHaveBeenCalledWith('testuser');
+
+            expect(mockUser.comparePassword).toHaveBeenCalledWith('$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK');
 
             expect(jwt.sign).toHaveBeenCalledWith(
                 { username: 'testuser' },
@@ -107,24 +171,76 @@ describe('User Controller', () => {
             expect(mockStatus).toHaveBeenCalledWith(200);
             expect(mockJson).toHaveBeenCalledWith({
                 success: true,
-                userID: 1,
-                username: 'testuser',
                 token: 'fake.jwt.token',
             });
         });
 
+        it('should throw an error if token fails to generate', async () => {
+            const mockUser = new User({
+                fullname: 'eva smith',
+                username: 'testuser',
+                date_of_birth: '2021-08-01',
+                email: 'example@example.org',
+                hashedPassword: '$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK'
+            });
+
+            bcrypt.hash.mockResolvedValue('$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK');
+
+            jest.spyOn(User, 'getOneByUsername').mockResolvedValue(mockUser);
+
+            bcrypt.compare.mockResolvedValue(true);
+
+            jest.spyOn(mockUser, 'comparePassword');
+
+            jwt.sign.mockImplementation((payload, secret, options, callback) => {
+                callback(new Error('failed to generate token'), null);
+            });
+
+            await logUserIn(mockReq, mockRes);
+
+            expect(User.getOneByUsername).toHaveBeenCalledWith('testuser');
+
+            expect(mockUser.comparePassword).toHaveBeenCalledWith('$2b$12$AGyM1n66u6XpTauLSvaJeOek.0XiRnWMPMUApQrxNsAYXaL/8lbRK');
+
+            expect(mockStatus).toHaveBeenCalledWith(400);
+            expect(mockJson).toHaveBeenCalledWith({ error: 'Error in token generation' });
+        });
+
+        it('should throw an error if authentication failed', async () => {
+            const mockUser = new User({
+                fullname: 'eva smith',
+                username: 'testuser',
+                date_of_birth: '2021-08-01',
+                email: 'example@example.org',
+                hashedPassword: 'bad password'
+            });
+
+            bcrypt.hash.mockResolvedValueOnce('bad password');
+
+            jest.spyOn(User, 'getOneByUsername').mockResolvedValueOnce(mockUser);
+
+            bcrypt.compare.mockResolvedValueOnce(false);
+
+            jest.spyOn(mockUser, 'comparePassword');
+
+            await logUserIn(mockReq, mockRes);
+
+            expect(User.getOneByUsername).toHaveBeenCalledWith('testuser');
+
+            expect(mockUser.comparePassword).toHaveBeenCalledWith('bad password');
+
+            expect(mockStatus).toHaveBeenCalledWith(400);
+            expect(mockJson).toHaveBeenCalledWith({ error: 'User could not be authenticated' });
+        });
 
         it('should return an error if something went wrong', async () => {
-            jest.spyOn(User, 'createUser').mockRejectedValue(new Error('oh no'));
+            jest.spyOn(User, 'getOneByUsername').mockRejectedValue(new Error('oh no'));
             
-            await createUser(mockReq, mockRes);
+            await logUserIn(mockReq, mockRes);
 
             expect(mockStatus).toHaveBeenCalledWith(400);
             expect(mockJson).toHaveBeenCalledWith({ error: 'oh no' });
         });
-        
     });
-
-    describe('Log Existing User In', () => {});
 });
 
