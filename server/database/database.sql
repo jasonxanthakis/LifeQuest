@@ -12,7 +12,7 @@ CREATE TABLE users (
     id INT GENERATED ALWAYS AS IDENTITY,
     full_name VARCHAR(50) NOT NULL,
     username VARCHAR(30) NOT NULL,
-    password_hash CHAR(60) NOT NULL,
+    password CHAR(60) NOT NULL,
     email VARCHAR(50) NOT NULL,
     date_of_birth DATE NOT NULL,
     PRIMARY KEY (id)
