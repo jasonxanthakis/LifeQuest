@@ -34,7 +34,10 @@ class User {
         const { full_name, username, password, email, date_of_birth } = data;
         
         try {
-            const response = await db.query('INSERT INTO users (full_name, username, password, email, date_of_birth) VALUES ($1, $2, $3, $4, $5) RETURNING id;', [full_name, username, password, email, date_of_birth]);
+            const response = await db.query(
+                'INSERT INTO users (full_name, username, password, email, date_of_birth) VALUES ($1, $2, $3, $4, $5) RETURNING id;', 
+                [full_name, username, password, email, date_of_birth]
+            );
 
             const newId = response.rows[0].id;
             return newUser = await User.getOneById(newId);
@@ -51,10 +54,11 @@ class User {
         return db.query('DELETE FROM users WHERE id = $1;', [this.id])
     }
 
-        /* comparePassword(password){
-            return bcrypt.compare(password, this.#password);
-        }
+    comparePassword(password){
+        return bcrypt.compare(password, this.#password);
+    }
 
+        /*
         async generateJwt(){
             return jwt.sign({
                 id: this.id
