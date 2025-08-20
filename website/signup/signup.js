@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
 
-    console.log(fullname, username, date_of_birth, email, password);
-
     // Basic validation
     if (!fullname || !username || !email || !password) {
       alert('Please fill in all required fields.');
@@ -44,8 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const response = await sendPostRequest(url, data);
     const result = await response.json();
-
-    console.log(response.status);
 
     if (response.status == 201) {
       localStorage.setItem("token", result.token);

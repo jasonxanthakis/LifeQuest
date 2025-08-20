@@ -1,41 +1,54 @@
-// Initialise Supabase client
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-
-const supabaseUrl = 'https://eoalkkofcmurezvvrzbi.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvYWxra29mY211cmV6dnZyemJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2OTIwNjEsImV4cCI6MjA3MTI2ODA2MX0.CFUsfRhMPNtGqoleNDjTDcb95y7MDGolOgPwXJ6CKEc'
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
 document.addEventListener('DOMContentLoaded', () => {
+    const API_URL = 'http://localhost:3000';
   const form = document.querySelector('form');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById('username').value.trim(); 
+    const username = document.getElementById('username').value.trim(); 
     const password = document.getElementById('password').value.trim();
 
     // Basic validation
-    if (!email || !password) {
+    if (!username || !password) {
       alert('Please fill in all fields.');
       return;
     }
 
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      })
-
-      if (error) {
-        alert(error.message || 'Login failed.');
-        console.error('Login error:', error);
-      } else {
-        alert('Login successful!');
-        window.location.href = '../quests/quests-board/quests.html'; 
-      }
-    } catch (err) {
-      alert('Login error occurred.');
-      console.error('Login error:', err);
+    const data = {
+      username: username,
+      password: password
     }
+
+    let url = API_URL + '/user/login';
+
+    const response = await sendPostRequest(url, data);
+    const result = await response.json();
+
+    if (response.status == 200) {
+      localStorage.setItem("token", result.token);
+
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+
+      window.location.assign("../quests/quests-board/quests.html");
+    } else {
+      alert(result.error);
+      return;
+    }
+
   });
 });
+
+async function sendPostRequest(url, data) {
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }
+
+    const resp = await fetch(url, options);
+
+    return resp;
+};

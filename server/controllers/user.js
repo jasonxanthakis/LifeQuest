@@ -39,7 +39,7 @@ async function logUserIn(req, res) {
     try {
 
         const { username, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_SALT_ROUNDS);
+        const hashedPassword = await bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS));
 
         const user = await User.getOneByUsername(username);
         const success = user.comparePassword(hashedPassword);
@@ -55,7 +55,7 @@ async function logUserIn(req, res) {
 
                 const payload = {username: user.username};
 
-                res.status(201).json({
+                res.status(200).json({
                     success: true,
                     token: token
                 });
