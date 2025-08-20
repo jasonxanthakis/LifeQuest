@@ -9,7 +9,7 @@ async function createUser(req, res) {
         const { fullname, username, date_of_birth, email, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_SALT_ROUNDS);
 
-        const user = await User.createUser(fullname, username, date_of_birth, email, hashedPassword);
+        const user = await User.create({ fullname, username, hashedPassword, email, date_of_birth });
 
         const payload = {username: user.username}
 
@@ -39,27 +39,27 @@ async function logUserIn(req, res) {
         const { username, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_SALT_ROUNDS);
 
-        const user = await User.Login(username, hashedPassword);
+        const user = await User.getOneByUsername(username);
+        const success = user.comparePassword(hashedPassword);
 
-        if (user) {
+        if (success) {
 
             const payload = {username: user.username};
 
             const sendToken = (err, token) => {
-            if (err) {
-                throw new Error('Error in token generation');
-            }
+                if (err) {
+                    throw new Error('Error in token generation');
+                }
 
-            const payload = {username: user.username};
+                const payload = {username: user.username};
 
-            res.status(201).json({
-                success: true,
-                token: token
-            });
+                res.status(201).json({
+                    success: true,
+                    token: token
+                });
+            };
 
             jwt.sign(payload, process.env.SECRET_TOKEN, {expiresIn: 3600}, sendToken);
-
-        }
 
         } else {
             throw new Error('User could not be authenticated');
