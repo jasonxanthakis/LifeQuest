@@ -12,7 +12,11 @@
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" defer></script>
+            <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Inventory JS -->
+    <script src="inventory.js"></script>
+</body>
     </head>
     <body>
 
@@ -75,7 +79,25 @@
 
                     <!-- Page content -->
                     <main class="content p-3 flex-grow-1">
+                        <!-- Points Display -->
+                        <div class="d-flex justify-content-end mb-3">
+                            <div id="totalPointsDisplay" class="p-2 bg-light border rounded">
+                                Total Points: <span id="pointsValue">100</span>
+                            </div>
+                        </div>
+
+                        <h2>Your Inventory</h2>
                         
+                        <!-- Inventory Items -->
+                        <div id="inventoryList" class="row">
+                            <!-- Items will be loaded here by JavaScript -->
+                        </div>
+                        
+                        <!-- Empty inventory message -->
+                        <div id="emptyInventory" class="text-center mt-5" style="display: none;">
+                            <h4 class="text-muted">Your inventory is empty</h4>
+                            <p class="text-muted">Visit the <a href="../shop/shop.html">shop</a> to purchase items!</p>
+                        </div>
                     
                     </main>
                 </div>

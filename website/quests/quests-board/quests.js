@@ -6,18 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
   questForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const title = document.getElementById('questTitle').value.trim();
+    const questTitle = document.getElementById('questTitle').value.trim();
     const description = document.getElementById('questDescription').value.trim();
     const category = document.getElementById('questCategory').value;
 
-    // Create the card
+    // Create the card (matches quests table structure)
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-start">
           <div class="flex-grow-1">
-            <h5 class="card-title">${title}</h5>
+            <h5 class="card-title">${questTitle}</h5>
             <h6 class="card-subtitle mb-2 text-muted">${category}</h6>
             <p class="card-text">${description}</p>
           </div>
