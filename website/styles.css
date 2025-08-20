@@ -594,3 +594,36 @@ body {
         display: flex;
     }
 }
+
+/* Inventory page text styling */
+.content h2 {
+    color: #fff !important;
+}
+
+.content .text-muted {
+    color: #ccc !important;
+}
+
+.card .card-title {
+    color: #000 !important;
+}
+
+.card .card-text {
+    color: #666 !important;
+}
+
+.card .text-muted {
+    color: #888 !important;
+}
+
+#emptyInventory h4 {
+    color: #fff !important;
+}
+
+#emptyInventory p {
+    color: #ccc !important;
+}
+
+#emptyInventory a {
+    color: #007bff !important;
+}
