@@ -20,12 +20,14 @@ CREATE TABLE users (
 
 CREATE TABLE quests (
     id INT GENERATED ALWAYS AS IDENTITY,
+    user_id INT NOT NULL,
     quest_title VARCHAR(50) NOT NULL,
     description VARCHAR(60) NOT NULL,
     category VARCHAR(30) NOT NULL,
     points_value INT NOT NULL,
     completed BOOLEAN DEFAULT FALSE,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE user_quest_streaks (
