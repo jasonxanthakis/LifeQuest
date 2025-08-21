@@ -51,6 +51,10 @@ const modifyQuest = async (req, res) => {
     const userId = req.params.user
     const questId = req.params.quest
 
+    // check quest exists for user
+
+    // modification has to be different from original
+
     try {
         const quest = await Quest.getByUserAndQuest(userId, questId);
         
@@ -70,9 +74,12 @@ const completeQuest = async (req, res) => {
     const userId = req.params.user
     const questId = req.params.quest
 
+    // Need to work out how this is connecting to the front end:
+    // Need to check that toggle has been switched to complete
+
     try {
         const quest = await Quest.getByUserAndQuest(userId, questId);
-        quest.quest_complete()
+        quest.quest_completed()
         res.status(204).json(quest)
         } catch (err) {
             res.status(400).json({error: err.message})
@@ -81,11 +88,11 @@ const completeQuest = async (req, res) => {
 
 
 const destroyQuest = async (req, res) => {
-    userId = req.params.user
-    questId = req.params.quest
+    const userId = req.params.user
+    const questId = req.params.quest
 
     try {
-        const quest = await Quest.getByQuestId(questId);
+        const quest = await Quest.getByUserAndQuest(userId, questId);
         quest.destroy()
         res.status(204).json(quest)
     } catch (err) {
