@@ -96,6 +96,7 @@ describe('User model functions', () => {
             rows: [],
             rowCount: 0
         });
+        
         db.query.mockResolvedValueOnce({
             rows: [
                 {
@@ -109,6 +110,9 @@ describe('User model functions', () => {
             ],
             rowCount: 1
         });
+
+        db.query.mockResolvedValueOnce();
+
         db.query.mockResolvedValueOnce({
             rows: [
                 {
