@@ -10,22 +10,11 @@ jest.mock('../../database/connect.js', () => ({
 const db = require("../../database/connect.js");
 
 describe('User model functions', () => {
-    // let testUser;
-    // beforeAll(async () => {
-    //     testUser = await User.create({
-    //         full_name: 'Eva Smith',
-    //         username: 'EvaSmith',
-    //         password: 'testPassword',
-    //         email: 'email',
-    //         date_of_birth: '2002-08-29'
-    //     });
-    // });
-
     beforeEach(() => jest.clearAllMocks());
 
     afterAll(() => jest.resetAllMocks());
 
-    it('creates a user and retrieves by id', async () => {
+    it('retrieves a user by id', async () => {
         db.query.mockResolvedValueOnce({
             rows: [
                 {

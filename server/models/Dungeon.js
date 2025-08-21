@@ -32,6 +32,12 @@ class Dungeon {
 
     static pointsWon(dungeon) {
         const unitValue = dungeon.level % 10;
+        if (unitValue == 0) {
+            const powersOf10 = Math.floor(Math.log10(dungeon.level)) + 1;
+            console.log(`(${unitValue + 1} * 10) * ${powersOf10}`);
+            const points = ((unitValue + 1) * 10 ) * powersOf10;
+            return points;
+        }
         const powersOf10 = Math.floor(Math.log10(dungeon.level)) + 1;
         console.log(`(${unitValue} * 10) * ${powersOf10}`);
         const points = (unitValue * 10 ) * powersOf10;

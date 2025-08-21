@@ -1,4 +1,3 @@
-const { PassThrough } = require('supertest/lib/test.js');
 const Dungeon = require('../models/Dungeon.js');
 
 async function loadDungeon(req, res) {
@@ -8,7 +7,6 @@ async function loadDungeon(req, res) {
         const dungeon = await Dungeon.loadLevel(hero);
         res.status(200).json(dungeon);
     } catch (error) {
-        console.error(error);
         res.status(400).json({ error: error.message });
     }
 }
@@ -21,11 +19,9 @@ async function simulateBattle(req, res) {
 
         const won = await dungeon.simBattle();
 
-        // update points and level here
-
         if (won) {
-            const points = Dungeon.pointsWon(dungeon);
-            Dungeon.recordWin(username, points);
+            const points = await Dungeon.pointsWon(dungeon);
+            await Dungeon.recordWin(username, points);
             
             res.status(200).json({
                 'won': won,
