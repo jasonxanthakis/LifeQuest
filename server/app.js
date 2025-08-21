@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 })
 
 app.use('/user', userRouter);
-// app.use('/hero', heroRouter);
+app.use('/hero', heroRouter);
 // app.use('/main', questRouter);
 // app.use('/dungeon', dungeonRouter);
 
