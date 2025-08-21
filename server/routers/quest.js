@@ -1,5 +1,5 @@
-{Router} = require("express");
-QuestController = require("../controllers/quest")
+const {Router} = require("express");
+const QuestController = require("../controllers/quest")
 
 const router = Router();
 

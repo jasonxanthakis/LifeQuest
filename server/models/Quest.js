@@ -23,9 +23,9 @@ class Quest {
         this.completed = completed;
     }
 
-    static async create({title, description, category, points, completed}){
-        const res = await db.query("INSERT INTO quests (quest_title, description, category, point_value, completed) VALUES ($1, $2, $3, $4, $5) RETURNING *;", 
-            [title, description, category, points, completed]
+    static async create({ user_id, title, description, category, points, completed}){
+        const res = await db.query("INSERT INTO quests (user_id, quest_title, description, category, point_value, completed) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;", 
+            [user_id, title, description, category, points, completed]
         );
         if(res.rows.length === 0) 
             throw new Error("Couldn't create quest.")
