@@ -85,5 +85,19 @@ document.addEventListener('DOMContentLoaded', () => {
         } else alert('Please fill in all fields');
       }
     });
+
+    // Clear the form
+    questForm.reset();
+
+    // Close the modal
+    questModal.hide();
+  });
+
+  const logout = document.getElementsByClassName('logout');
+  for (let btn of logout) {
+    btn.addEventListener('click', () => {
+      localStorage.removeItem('token');
+      window.location.assign('../../login/login.html');
+    });
   }
 });

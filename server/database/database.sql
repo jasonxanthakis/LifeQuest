@@ -1,12 +1,13 @@
 -- ---------------------------
 -- Drop existing tables
 -- ---------------------------
-DROP TABLE IF EXISTS hero_items;
-DROP TABLE IF EXISTS items;
+DROP TABLE IF EXISTS user_quests;
 DROP TABLE IF EXISTS battle;
+DROP TABLE IF EXISTS hero_items;
 DROP TABLE IF EXISTS enemy;
 DROP TABLE IF EXISTS hero;
 DROP TABLE IF EXISTS user_quest_streaks;
+DROP TABLE IF EXISTS items;
 DROP TABLE IF EXISTS quests;
 DROP TABLE IF EXISTS users;
 
@@ -16,7 +17,7 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     full_name VARCHAR(50) NOT NULL,
-    username VARCHAR(30) NOT NULL,
+    username VARCHAR(30) NOT NULL UNIQUE,
     password_hash CHAR(64) NOT NULL,
     email VARCHAR(50) NOT NULL,
     date_of_birth DATE NOT NULL
