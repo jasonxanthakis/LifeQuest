@@ -4,8 +4,11 @@ const Dungeon = require('../models/Dungeon.js');
 async function loadDungeon(req, res) {
     try {
         const username = req.user;
-        console.log(username);
+        const hero = await Dungeon.getHeroByUsername(username);
+        const dungeon = await Dungeon.loadLevel(hero);
+        res.status(200).json(dungeon);
     } catch (error) {
+        console.error(error);
         res.status(400).json({ error: error.message });
     }
 }
