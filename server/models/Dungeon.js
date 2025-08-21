@@ -20,14 +20,30 @@ class Dungeon {
     static async loadLevel(hero) {
         if (hero.level < 1) throw new Error('Invalid level. Something went wrong...');
 
-        const response = await db.query("SELECT * FROM enemy WHERE enemy_level = $1;", [hero.level]);
+        const response = await db.query("SELECT * FROM enemy WHERE enemy_level = $1;", [hero.level % 10]);
 
-        if (response.rowCount != 1) throw new Error('Database returned more than one enemy.');
+        if (response.rowCount != 1) throw new Error('Database failed to return specified enemy...');
         const values = response.rows[0];
         const enemy = new Enemy(values.enemy_name, 20, 10, 10);
         // const enemy = new Enemy(values.enemy_name, 2000, 10, 10);
 
         return new Dungeon(hero.level, hero, enemy);
+    }
+
+    static pointsWon(dungeon) {
+        const unitValue = dungeon.level % 10;
+        const powersOf10 = Math.floor(Math.log10(dungeon.level)) + 1;
+        console.log(`(${unitValue} * 10) * ${powersOf10}`);
+        const points = (unitValue * 10 ) * powersOf10;
+        return points;
+    }
+
+    static async recordWin(username, points) {
+        const response = await db.query("SELECT * from hero WHERE user_id = (SELECT id FROM users WHERE username = $1);", [username]);
+        if (response.rowCount != 1) throw new Error('Database failed to return specified hero...');
+        const hero = response.rows[0];
+
+        await db.query("UPDATE hero SET current_level = current_level + 1, total_points = total_points + $1 WHERE user_id = $2", [points, hero.id]);
     }
 
     async simBattle() {

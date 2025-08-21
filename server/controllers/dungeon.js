@@ -24,11 +24,9 @@ async function simulateBattle(req, res) {
         // update points and level here
 
         if (won) {
-            const unitValue = dungeon.level % 10;
-            const powersOf10 = Math.floor(Math.log10(dungeon.level)) + 1;
-            console.log(`(${unitValue} * 10) * ${powersOf10}`);
-            const points = (unitValue * 10 ) * powersOf10;
-
+            const points = Dungeon.pointsWon(dungeon);
+            Dungeon.recordWin(username, points);
+            
             res.status(200).json({
                 'won': won,
                 'points_gained': points,

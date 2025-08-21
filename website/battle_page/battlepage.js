@@ -74,7 +74,6 @@ async function simulateBattle() {
 
     loadWinnerImage(result);
     
-    console.log(result);
     if (result.won) {
         const winnerText = document.querySelector(".vs-text");
         if (winnerText) winnerText.textContent = 'YOUR HERO WAS VICTORIOUS';
