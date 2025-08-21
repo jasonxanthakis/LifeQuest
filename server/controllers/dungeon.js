@@ -3,7 +3,7 @@ const Dungeon = require('../models/Dungeon.js');
 
 async function loadDungeon(req, res) {
     try {
-        const username = req.user.username;
+        const username = req.user;
         console.log(username);
     } catch (error) {
         res.status(400).json({ error: error.message });
