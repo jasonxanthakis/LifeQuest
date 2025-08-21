@@ -54,12 +54,10 @@ CREATE TABLE hero (
 
 CREATE TABLE enemy (
     id INT GENERATED ALWAYS AS IDENTITY,
-    hero_id INT NOT NULL,
     enemy_name VARCHAR(30) NOT NULL,
-    enemy_XP INT NOT NULL,
     enemy_level INT NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (hero_id) REFERENCES hero(id)
+    enemy_XP INT NOT NULL,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE battle (
