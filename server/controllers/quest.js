@@ -47,6 +47,39 @@ const createQuest = async (req, res) => {
     };
 };
 
+const modifyQuest = async (req, res) => {
+    userId = req.params.user
+    questId = req.params.quest
+
+    try {
+        const quest = await Quest.getByQuestId(questId);
+        
+        quest = await Quest.modify({
+            title: req.body.title,
+            description: req.body.description,
+            category: req.body.category
+        });
+
+        return res.status(204).json(edit);
+    } catch (err) {
+        return res.status(400).json({error: err.message});
+    };
+};
+
+const destroyQuest = async (req, res) => {
+    userId = req.params.user
+    questId = req.params.quest
+
+    try {
+        const quest = await Quest.getByQuestId(questId);
+        quest.destroy()
+        res.status(204).json(quest)
+    } catch (err) {
+        res.status(400).json({error: err.message})
+    }
+}
+
+
 module.exports = {
-    createQuest, getQuest
+    createQuest, getQuest, modifyQuest, destroyQuest
 }
