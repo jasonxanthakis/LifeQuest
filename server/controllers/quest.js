@@ -1,4 +1,4 @@
-const Quest = require("../model/Quest");
+const Quest = require("../models/Quest");
 
 const getQuests = async (req, res) => {
     const userId = req.params.user
@@ -95,5 +95,5 @@ const destroyQuest = async (req, res) => {
 
 
 module.exports = {
-    createQuest, getQuests, modifyQuest, destroyQuest
+    createQuest, getQuests, modifyQuest, completeQuest, destroyQuest
 }
