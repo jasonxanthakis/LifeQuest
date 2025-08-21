@@ -1,6 +1,6 @@
 const Quest = require("../model/Quest");
 
-const getQuest = async (req, res) => {
+const getQuests = async (req, res) => {
     const userId = req.params.user
 
     try {
@@ -48,11 +48,11 @@ const createQuest = async (req, res) => {
 };
 
 const modifyQuest = async (req, res) => {
-    userId = req.params.user
-    questId = req.params.quest
+    const userId = req.params.user
+    const questId = req.params.quest
 
     try {
-        const quest = await Quest.getByQuestId(questId);
+        const quest = await Quest.getByUserAndQuest(userId, questId);
         
         quest = await Quest.modify({
             title: req.body.title,
@@ -65,6 +65,20 @@ const modifyQuest = async (req, res) => {
         return res.status(400).json({error: err.message});
     };
 };
+
+const completeQuest = async (req, res) => {
+    const userId = req.params.user
+    const questId = req.params.quest
+
+    try {
+        const quest = await Quest.getByUserAndQuest(userId, questId);
+        quest.quest_complete()
+        res.status(204).json(quest)
+        } catch (err) {
+            res.status(400).json({error: err.message})
+        }
+    }
+
 
 const destroyQuest = async (req, res) => {
     userId = req.params.user
@@ -81,5 +95,5 @@ const destroyQuest = async (req, res) => {
 
 
 module.exports = {
-    createQuest, getQuest, modifyQuest, destroyQuest
+    createQuest, getQuests, modifyQuest, destroyQuest
 }
