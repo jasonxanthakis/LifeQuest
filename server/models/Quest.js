@@ -14,8 +14,9 @@
 const db = require('../database/connect');
 
 class Quest {
-    constructor({ id, title, description, category, points, completed }){
+    constructor({ id, user_id, title, description, category, points, completed }){
         this.id = id;
+        this.user_id = user_id;
         this.title = title;
         this.description = description;
         this.category = category;
@@ -50,9 +51,9 @@ class Quest {
         return new Quest(res.rows[0]);
     }
 
-    async quest_completed({uid, qid}) {
+    async quest_completed() {
         const res = await db.query("UPDATE user_quest_streaks SET active_streak = 1, WHERE user_id = $1 AND quest_id = $2 RETURNING *;", // active_streak is BOOLEAN so = 1 will set this to TRUE
-            [uid, qid]
+            [this.user_id, this.id]
         );
         if(res.rows.length === 0) throw new Error('streak status update failed');
         return new Quest(res.rows[0]);
