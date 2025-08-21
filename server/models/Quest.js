@@ -33,20 +33,25 @@ class Quest {
         return new Quest(res.rows[0]);
     }
 
-    static async getByUserId(uid) {
-        const res = await db.query("SELECT * FROM quests WHERE user_id = $1;", [uid]);
-        if(res.rows.length === 0) throw new Error('Quest not found.');
-        return new Quest(res.rows[0]);
-    }
-
-    static async getByQuestId(qid) {
+   static async getById(qid) {
         const res = await db.query("SELECT * FROM quests WHERE id = $1;", [qid]);
         if(res.rows.length === 0) throw new Error('Quest not found.');
         return new Quest(res.rows[0]);
     }
 
+    static async getByUserId(uid) {
+        const res = await db.query("SELECT * FROM quests WHERE user_id = $1;", [uid]);
+        return res.rows.map(row => new Quest(row));
+    }
+
+    static async getByUserAndQuest(uid, qid) {
+        const res = await db.query("SELECT * FROM quests WHERE id = $1 AND user_id = $2;", [qid, uid]);
+        if(res.rows.length === 0) throw new Error('Quest not found');
+        return new Quest(res.rows[0]);
+    }
+
     async quest_completed({uid, qid}) {
-        const res = await db.query("UPDATE user_quest_streaks SET active_streak = 1, WHERE user_id = $1 & quest_id = $2 RETURNING *;", // active_streak is BOOLEAN so = 1 will set this to TRUE
+        const res = await db.query("UPDATE user_quest_streaks SET active_streak = 1, WHERE user_id = $1 AND quest_id = $2 RETURNING *;", // active_streak is BOOLEAN so = 1 will set this to TRUE
             [uid, qid]
         );
         if(res.rows.length === 0) throw new Error('streak status update failed');
