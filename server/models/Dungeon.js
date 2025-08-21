@@ -25,12 +25,29 @@ class Dungeon {
         if (response.rowCount != 1) throw new Error('Database returned more than one enemy.');
         const values = response.rows[0];
         const enemy = new Enemy(values.enemy_name, 20, 10, 10);
+        // const enemy = new Enemy(values.enemy_name, 2000, 10, 10);
 
         return new Dungeon(hero.level, hero, enemy);
     }
 
     async simBattle() {
-        
+        while (this.hero.hp > 0 && this.enemy.hp > 0) {
+            let dmg = this.hero.att - this.enemy.def;
+            if (dmg <= 0) dmg = 1;
+            this.enemy.hp -= dmg;
+
+            if (this.enemy.hp <= 0) {
+                return true;
+            }
+
+            dmg = this.enemy.att - this.hero.def;
+            if (dmg <= 0) dmg = 1;
+            this.hero.hp -= dmg;
+
+            if (this.hero.hp <= 0) {
+                return false;
+            }
+        }
     }
 }
 

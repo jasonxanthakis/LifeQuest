@@ -106,11 +106,12 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFightButton();
 });
 
+// Functionality for the logout button
 const logout = document.getElementsByClassName('logout');
 for (let btn of logout) {
   btn.addEventListener('click', () => {
     localStorage.removeItem('token');
-    window.location.assign('../../login/login.html');
+    window.location.assign('../login/login.html');
   });
 }
 
@@ -122,7 +123,6 @@ async function loadDungeon() {
   const response = await getRequest(url);
   const result = await response.json();
 
-  console.log(result);
   setLevel(result.level);
   setBattleImages(result);
   setCharacterStatistics(result);
