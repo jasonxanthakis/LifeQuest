@@ -34,16 +34,36 @@ class Quest {
     }
 
     static async getByUserId(uid) {
-        const res = await db.query("SELECT * FROM quests WHERE id = $1;", [uid]);
+        const res = await db.query("SELECT * FROM quests WHERE user_id = $1;", [uid]);
         if(res.rows.length === 0) throw new Error('Quest not found.');
         return new Quest(res.rows[0]);
     }
 
     static async getByQuestId(qid) {
-        const res = await db.query("SELECT * FROM quests WHERE id = $1;", [uid]);
+        const res = await db.query("SELECT * FROM quests WHERE id = $1;", [qid]);
         if(res.rows.length === 0) throw new Error('Quest not found.');
         return new Quest(res.rows[0]);
     }
+
+    async quest_completed({uid, qid}) {
+        const res = await db.query("UPDATE user_quest_streaks SET active_streak = 1, WHERE user_id = $1 & quest_id = $2 RETURNING *;", // active_streak is BOOLEAN so = 1 will set this to TRUE
+            [uid, qid]
+        );
+        if(res.rows.length === 0) throw new Error('streak status update failed');
+        return new Quest(res.rows[0]);
     }
 
+    async modify({title, description, category}) {
+        const res = await db.query('UPDATE quests SET quest_title = $1, description = $2, category = $3 WHERE id = $4 RETURNING *;',
+            [title, description, category, this.id]
+        );
+        if(res.rows.length === 0) throw new Error('Quest update failed');
+    }
+
+    async destroy() {
+        return db.query('DELETE FROM quests WHERE id = $1;', [this.id]);
+    }
+}
+
+module.exports = Quest
 
