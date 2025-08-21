@@ -82,3 +82,27 @@ for (let btn of logout) {
     window.location.assign('../../login/login.html');
   });
 }
+
+async function loadDungeon() {
+  const API_URL = 'http://localhost:3000';
+
+  let url = API_URL + `/dungeon/${1}`;
+
+  const response = await getRequest(url);
+}
+
+async function getRequest(url) {
+    const options = {
+        method: "GET",
+        headers: {
+            "Authorization": localStorage.getItem("token"),
+            "Content-Type": "application/json"
+        }
+    }
+
+    const resp = await fetch(url, options);
+
+    return resp;
+};
+
+loadDungeon();
