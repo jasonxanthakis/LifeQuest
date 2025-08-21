@@ -23,6 +23,8 @@ CREATE TABLE quests (
     quest_title VARCHAR(50) NOT NULL,
     description VARCHAR(60) NOT NULL,
     category VARCHAR(30) NOT NULL,
+    points_value INT NOT NULL,
+    completed BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (id)
 );
 
@@ -30,6 +32,7 @@ CREATE TABLE user_quest_streaks (
     id INT GENERATED ALWAYS AS IDENTITY,
     user_id INT NOT NULL,
     quest_id INT NOT NULL,
+    active_streak BOOLEAN NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     current_streak INT NOT NULL,
@@ -53,12 +56,10 @@ CREATE TABLE hero (
 
 CREATE TABLE enemy (
     id INT GENERATED ALWAYS AS IDENTITY,
-    hero_id INT NOT NULL,
     enemy_name VARCHAR(30) NOT NULL,
-    enemy_XP INT NOT NULL,
     enemy_level INT NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (hero_id) REFERENCES hero(id)
+    enemy_XP INT NOT NULL,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE battle (
