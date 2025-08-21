@@ -39,10 +39,9 @@ async function logUserIn(req, res) {
     try {
 
         const { username, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS));
 
         const user = await User.getOneByUsername(username);
-        const success = await user.comparePassword(hashedPassword);
+        const success = await user.comparePassword(password);
 
         if (success) {
 
