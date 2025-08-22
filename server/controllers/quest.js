@@ -1,9 +1,10 @@
 const Quest = require("../models/Quest");
 
 const getQuests = async (req, res) => {
-    const userId = req.user.id
+    const username = req.user;
 
     try {
+        const userId = await Quest.getUserIdByUsername(username);
         const quests =  await Quest.getByUserId(userId)
         res.status(200).json(quests)
     } catch (err) {
@@ -13,8 +14,10 @@ const getQuests = async (req, res) => {
 
 
 const createQuest = async (req, res) => {
-    const userId = req.user.id
+    const username = req.user;
     const { title, description, category } = req.body;
+
+    const userId = await Quest.getUserIdByUsername(username);
 
     // check if quest already exists
     const exisitingQuests = await Quest.getByUserId(userId);
@@ -45,11 +48,11 @@ const createQuest = async (req, res) => {
             title,
             description,
             category,
-            points: 3,
-            completed: 0
+            points_value: 3,
+            complete: 0
         });
 
-        return res.status(201).json(newQuest);      
+        return res.status(201).json(newQuest);
 
     } catch (err) {
         console.log(err);
@@ -60,7 +63,9 @@ const createQuest = async (req, res) => {
 };
 
 const modifyQuest = async (req, res) => {
-    const userId = req.user.id
+    const username = req.user;
+    const userId = await Quest.getUserIdByUsername(username);
+
     const questId = req.params.quest
     const { title, description, category } = req.body;
 
@@ -88,8 +93,10 @@ const modifyQuest = async (req, res) => {
 };
 
 const completeQuest = async (req, res) => {
-    const userId = req.user.id
+    const username = req.user;
     const questId = req.params.quest
+
+    const userId = await Quest.getUserIdByUsername(username);
 
     // Need to work out how this is connecting to the front end:
     // Need to check that toggle has been switched to complete
@@ -105,10 +112,12 @@ const completeQuest = async (req, res) => {
 
 
 const destroyQuest = async (req, res) => {
-    const userId = req.user.id
+    const username = req.user;
     const questId = req.params.quest
 
     try {
+        const userId = await Quest.getUserIdByUsername(username);
+
         const deletedQuest = await Quest.getByUserAndQuest(userId, questId);
         await deletedQuest.destroy()
         res.status(200).json(deletedQuest)
