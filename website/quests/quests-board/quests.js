@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-start">
           <div class="flex-grow-1">
-            <h5 class="card-title">${questTitle}</h5>
             <h6 class="card-subtitle mb-2 text-muted">${category}</h6>
+            <h5 class="card-title">${questTitle}</h5>
             <p class="card-text">${description}</p>
           </div>
           <div class="d-flex flex-column gap-2">
@@ -45,10 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         card.classList.remove('bg-success', 'text-white');
     }
-    });
-
-    toggle.addEventListener('change', () => {
-    card.classList.toggle('done', toggle.checked);
     });
 
     // Add edit functionality
