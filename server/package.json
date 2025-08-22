@@ -2,8 +2,10 @@
   "name": "life-quest-server",
   "version": "1.0.0",
   "description": "Backend express RESTful API server for LifeQuest gamified habit reinforcement app",
-  "main": "index.js",
+  "license": "MIT",
+  "author": "ByteQuest dev team",
   "type": "commonjs",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
@@ -12,13 +14,11 @@
     "test": "jest --watchAll --verbose --detectOpenHandles --runInBand",
     "coverage": "jest --coverage"
   },
-  "author": "ByteQuest dev team",
-  "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2",
+    "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.8.0"
   },

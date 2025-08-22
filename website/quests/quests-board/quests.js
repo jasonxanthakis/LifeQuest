@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-start">
           <div class="flex-grow-1">
-            <h6 class="card-subtitle mb-2 text-muted">${category}</h6>
             <h5 class="card-title">${questTitle}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">${category}</h6>
             <p class="card-text">${description}</p>
           </div>
           <div class="d-flex flex-column gap-2">
@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </label>
             </div>
             <button class="btn btn-sm btn-outline-secondary edit-btn">Edit</button>
+            <button class="btn btn-sm btn-outline-danger delete-btn">Delete</button>
           </div>
         </div>
       </div>
@@ -45,6 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         card.classList.remove('bg-success', 'text-white');
     }
+    });
+
+    toggle.addEventListener('change', () => {
+    card.classList.toggle('done', toggle.checked);
     });
 
     // Add edit functionality
@@ -93,6 +98,14 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           alert('Please fill in all fields');
         }
+      }
+    });
+
+    // Add delete functionality
+    const deleteBtn = card.querySelector('.delete-btn');
+    deleteBtn.addEventListener('click', function() {
+      if (confirm('Are you sure you want to delete this quest?')) {
+        card.remove();
       }
     });
 

@@ -169,6 +169,52 @@ body {
     box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.5);
 }
 
+/*-----------Quest Edit Fields------------*/
+.edit-title,
+.edit-category,
+.edit-description {
+  color: black !important;
+  background-color: white !important;
+}
+
+.flex-grow-1 {
+  padding-right: 20px !important;
+}
+
+.edit-btn {
+  color: black !important;
+  border-color: #6b5e81 !important;
+  font-weight: 500;
+}
+
+.edit-btn:hover {
+  background-color: #6b5e81 !important;
+  border-color: #6b5e81 !important;
+  color: white !important;
+}
+
+.save-btn {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  color: white !important;
+}
+
+.save-btn:hover {
+  background-color: #218838 !important;
+  border-color: #1e7e34 !important;
+}
+
+/* Toggle switch grey color when checked */
+.form-check-input:checked {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+}
+
+.form-check-input:focus {
+  border-color: #6c757d !important;
+  box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.25) !important;
+}
+
 /*-----------Navbar------------*/
 
 .mainbar {
@@ -307,35 +353,32 @@ body {
     font-size: 3rem;
     font-weight: 400;
     color: #1a1913;
-    text-shadow: 0 0 13px rgba(238, 116, 8, 0.7);
+    text-shadow: 0 0 13px rgba(14, 77, 5, 0.7);
 }
 
 /* Rubik Moonrocks style for Level 5 */
+/* Glowing battle level */
 .battle-level {
-    font-family: 'Rubik Moonrocks', sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 3rem; 
-    color: #1a1913;    
-    text-shadow: 0 0 13px rgba(238, 116, 8, 0.7); 
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 3.2rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #0e4d05b3
+, #0e4d05b3
+);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 12px rgba(18, 45, 13, 0.9),
+               0 0 20px rgba(67, 212, 45, 0.8);
 }
 
-
-/* Oi style (for YOU & Opponent) */
+/* Cleaner player/enemy names */
 .name {
-    font-family: "Oi", serif;
-    font-size: 2rem;
-    font-weight: 400;
-    color: #151414;
-    -webkit-text-stroke: 1px #fff; 
-    text-shadow: 0 0 12px rgba(8, 133, 140, 0.8);
-    transition: transform 0.2s ease, text-shadow 0.3s ease;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(0,255,255,0.8);
 }
 
-.name:hover {
-    text-shadow: 0 0 15px rgb(9, 30, 41); 
-    transform: scale(1.1);
-}
 
 
 .rubik-distressed-regular {
@@ -439,7 +482,7 @@ body {
     font-weight: 400;
     color: #1a1913; 
     font-size: 2.2rem;
-    text-shadow: 0 0 13px rgba(238, 116, 8, 0.7);
+    text-shadow: 0 0 13px rgba(14, 77, 5, 0.7);
 }
 
 .battle-result {
@@ -455,7 +498,7 @@ body {
     font-size: 2.2rem;
     font-weight: 400;
     color: #1a1913;
-    text-shadow: 0 0 13px rgba(238, 116, 8, 0.7);
+    text-shadow: 0 0 13px rgba(5, 63, 63, 0.7);
     animation: glow 1.5s infinite alternate;
 }
 
@@ -469,10 +512,10 @@ body {
 /* Glow animation */
 @keyframes glow {
     from {
-        text-shadow: 0 0 10px rgba(238, 116, 8, 0.7);
+        text-shadow: 0 0 10px rgba(46, 79, 190, 0.7);
     }
     to {
-        text-shadow: 0 0 20px rgba(255, 140, 20, 0.9), 0 0 15px rgba(238, 116, 8, 0.8);
+        text-shadow: 0 0 20px rgba(23, 133, 103, 0.9), 0 0 15px rgba(238, 116, 8, 0.8);
     }
 }
 

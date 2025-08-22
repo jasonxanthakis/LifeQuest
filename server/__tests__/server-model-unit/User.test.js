@@ -10,22 +10,11 @@ jest.mock('../../database/connect.js', () => ({
 const db = require("../../database/connect.js");
 
 describe('User model functions', () => {
-    // let testUser;
-    // beforeAll(async () => {
-    //     testUser = await User.create({
-    //         full_name: 'Eva Smith',
-    //         username: 'EvaSmith',
-    //         password: 'testPassword',
-    //         email: 'email',
-    //         date_of_birth: '2002-08-29'
-    //     });
-    // });
-
     beforeEach(() => jest.clearAllMocks());
 
     afterAll(() => jest.resetAllMocks());
 
-    it('creates a user and retrieves by id', async () => {
+    it('retrieves a user by id', async () => {
         db.query.mockResolvedValueOnce({
             rows: [
                 {
@@ -96,6 +85,7 @@ describe('User model functions', () => {
             rows: [],
             rowCount: 0
         });
+        
         db.query.mockResolvedValueOnce({
             rows: [
                 {
@@ -109,6 +99,9 @@ describe('User model functions', () => {
             ],
             rowCount: 1
         });
+
+        db.query.mockResolvedValueOnce();
+
         db.query.mockResolvedValueOnce({
             rows: [
                 {
@@ -130,6 +123,10 @@ describe('User model functions', () => {
             email: 'test@example.org',
             date_of_birth: '2002-08-29'
         });
+
+        expect(foundUser).toBeInstanceOf(User);
+        expect(foundUser.full_name).toBe('Eva Smith');
+        expect(foundUser.email).toBe('test@example.org');
     });
 
     it('throws error if duplicate username is created', async () => {
