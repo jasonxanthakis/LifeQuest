@@ -490,11 +490,10 @@ body {
 
 .win-text {
     font-family: 'Rubik Moonrocks', sans-serif;
-    font-size: 4rem;
+    font-size: 2.2rem;
     font-weight: 400;
     color: #1a1913;
     text-shadow: 0 0 13px rgba(5, 63, 63, 0.7);
-    animation: glow 1.5s infinite alternate;
 }
 
 .points {

@@ -37,15 +37,25 @@ const monsters = [
 function loadWinnerImage(result) {
     const winnerName = document.querySelector(".battle-container .character .name");
     const winnerImg = document.querySelector(".battle-container .character img");
+    
     if (result.won) {
-        if (winnerName) winnerName.textContent = result.winner.name;
+        if (winnerName) winnerName.textContent = result.winner?.name || "Hero";
         if (winnerImg) winnerImg.src = `../assets/knight.png`;
     } else {
-        const enemy = monsters.find(
-            m => m.name.toLowerCase() === result.winner.name.toLowerCase()
-        );
-        if (winnerName) winnerName.textContent = enemy.name;
-        if (winnerImg) winnerImg.src = `../assets/${enemy.image}`;
+        // Check if result.winner exists before trying to access its name
+        if (result.winner && result.winner.name) {
+            const enemy = monsters.find(
+                m => m.name.toLowerCase() === result.winner.name.toLowerCase()
+            );
+            if (enemy) {
+                if (winnerName) winnerName.textContent = enemy.name;
+                if (winnerImg) winnerImg.src = `../assets/${enemy.image}`;
+            }
+        } else {
+            // Fallback if no winner info
+            if (winnerName) winnerName.textContent = "Enemy";
+            if (winnerImg) winnerImg.src = `../assets/goblin.jpeg`;
+        }
     }
 }
 
