@@ -603,6 +603,13 @@ body {
     color: #ccc !important;
 }
 
+/* Quest card styling */
+.card {
+    border: 2px solid #000000 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
 .card .card-title {
     color: #000 !important;
 }
