@@ -1,0 +1,83 @@
+// Users to GET their quests
+// GetById, GetByCateogory? (might need to analytcs), get by completed?
+
+// Users POST their quest
+// create 
+
+// users PATCH their quests
+// complete
+// modify
+
+// Users delete a quest
+// destroy
+
+const db = require('../database/connect');
+
+class Quest {
+    constructor({ id, user_id, quest_title, description, category, points_value, complete }){
+        this.id = id;
+        this.user_id = user_id;
+        this.title = quest_title;
+        this.description = description;
+        this.category = category;
+        this.points = points_value;
+        this.completed = complete;
+    }
+
+    // Get hero by username
+    static async getUserIdByUsername(username) {
+        const response = await db.query("SELECT id FROM users WHERE username = $1;", [username]);
+        
+        if (response.rowCount != 1) throw new Error('Database failed to find specified user...');
+
+        return response.rows[0].id;
+    }
+
+    static async create({ user_id, title, description, category, points_value, complete}){
+        const res = await db.query("INSERT INTO quests (user_id, quest_title, description, category, points_value, complete) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;", 
+            [user_id, title, description, category, points_value, complete]
+        );
+        if(res.rows.length === 0) throw new Error("Couldn't create quest.")
+
+        return new Quest(res.rows[0]);
+    }
+
+   static async getById(qid) {
+        const res = await db.query("SELECT * FROM quests WHERE id = $1;", [qid]);
+        if(res.rows.length === 0) throw new Error('Quest not found.');
+        return new Quest(res.rows[0]);
+    }
+
+    static async getByUserId(uid) {
+        const res = await db.query("SELECT * FROM quests WHERE user_id = $1;", [uid]);
+        return res.rows.map(row => new Quest(row));
+    }
+
+    static async getByUserAndQuest(uid, qid) {
+        const res = await db.query("SELECT * FROM quests WHERE id = $1 AND user_id = $2;", [qid, uid]);
+        if(res.rows.length === 0) throw new Error('Quest not found');
+        return new Quest(res.rows[0]);
+    }
+
+    async quest_completed() {
+        const res = await db.query("UPDATE user_quest_streaks SET active_streak = 1, WHERE user_id = $1 AND quest_id = $2 RETURNING *;", // active_streak is BOOLEAN so = 1 will set this to TRUE
+            [this.user_id, this.id]
+        );
+        if(res.rows.length === 0) throw new Error('streak status update failed');
+        return new Quest(res.rows[0]);
+    }
+
+    async modify({title, description, category}) {
+        const res = await db.query('UPDATE quests SET quest_title = $1, description = $2, category = $3 WHERE id = $4 RETURNING *;',
+            [title, description, category, this.id]
+        );
+        if(res.rows.length === 0) throw new Error('Quest update failed');
+    }
+
+    async destroy() {
+        return db.query('DELETE FROM quests WHERE id = $1;', [this.id]);
+    }
+}
+
+module.exports = Quest
+

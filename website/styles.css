@@ -1,0 +1,639 @@
+/*---------Variables-----------*/
+
+/*------------Body-------------*/
+
+body {
+  background-color: #222;
+  background-image: url('assets/dungeon-background.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  font-family: 'Cinzel Decorative', serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+/*----------Welcome-----------*/
+
+/* Navbar styling */
+.navbar {
+  padding: 1rem 2rem;
+  background-color: transparent;
+}
+
+.navbar h3 {
+  font-weight: bold;
+  color: #fff;
+  margin: 0;
+}
+
+/* Hero section */
+.welcome {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  padding: 2rem;
+}
+
+.welcome-text {
+  flex: 1;
+  min-width: 300px;
+  padding: 1rem;
+}
+
+.welcome-text h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.welcome-text p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.welcome-buttons .btn {
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  margin-right: 1rem;
+  margin-bottom: 10px;
+}
+
+.welcome-image {
+  flex: 1;
+  min-width: 300px;
+  text-align: center;
+}
+
+.welcome-image img {
+  max-width: 80%;
+  height: auto;
+  border-radius: 20px;
+  border: 4px solid #444;
+  box-shadow: 
+    0 0 20px rgba(255, 140, 0, 0.6),  /* warm torch glow */
+    0 0 40px rgba(100, 0, 200, 0.5); /* mystical purple aura */
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.welcome-image img:hover {
+  transform: scale(1.03);
+  box-shadow: 
+    0 0 25px rgba(255, 160, 0, 0.8),
+    0 0 50px rgba(120, 0, 255, 0.6);
+}
+
+.copyright-footer {
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(0,0,0,0.1);
+  color: #fff;
+}
+
+/*-----------Login------------*/
+
+.card-container,
+.signup-card,
+.login-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.form-btn,
+.login-btn,
+.signup-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.form-btn:hover,
+.login-btn:hover,
+.signup-btn:hover {
+  background-color: #45a049;
+}
+
+.alt-link,
+.signup-link,
+.login-link {
+  color: red;
+  text-decoration: none;
+}
+
+.alt-link:hover,
+.signup-link:hover,
+.login-link:hover {
+  text-decoration: underline;
+}
+
+/*-----------Buttons-----------*/
+
+.btn-white {
+    background-color: white !important;
+    border-color: #ccc !important;
+    color: black !important;
+}
+
+.btn-white:hover {
+    background-color: #f8f9fa !important;
+    border-color: #aaa !important;
+    color: black !important;
+}
+
+.btn-white:focus,
+.btn-white.focus {
+    box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
+}
+
+.btn-purple {
+    background-color: #6f42c1 !important;
+    border-color: #6f42c1 !important;
+    color: white !important;
+}
+
+.btn-purple:hover {
+    background-color: #5a32a3 !important;
+    border-color: #5a32a3 !important;
+    color: white !important;
+}
+
+.btn-purple:focus,
+.btn-purple.focus {
+    box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.5);
+}
+
+/*-----------Quest Edit Fields------------*/
+.edit-title,
+.edit-category,
+.edit-description {
+  color: black !important;
+  background-color: white !important;
+}
+
+.flex-grow-1 {
+  padding-right: 20px !important;
+}
+
+.edit-btn {
+  color: black !important;
+  border-color: #6b5e81 !important;
+  font-weight: 500;
+}
+
+.edit-btn:hover {
+  background-color: #6b5e81 !important;
+  border-color: #6b5e81 !important;
+  color: white !important;
+}
+
+.save-btn {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  color: white !important;
+}
+
+.save-btn:hover {
+  background-color: #218838 !important;
+  border-color: #1e7e34 !important;
+}
+
+/* Toggle switch grey color when checked */
+.form-check-input:checked {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+}
+
+.form-check-input:focus {
+  border-color: #6c757d !important;
+  box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.25) !important;
+}
+
+/*-----------Navbar------------*/
+
+.mainbar {
+    background-color: #6b5e81;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #6b5e81;
+  min-height: 100vh;
+  flex-direction: column;
+  padding: 1rem;
+}
+.sidebar-title {
+  font-weight: bold;
+  color: black;
+}
+.sidebar-link {
+  color: black !important;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.nav-link.active {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* Top navbar */
+.top-navbar {
+  background-color: #9c95a8;
+}
+.top-link {
+  color: black !important;
+  font-weight: bold;
+  padding: 0 1.5rem;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+    .top-navbar {
+        display: flex;
+    }
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+    .sidebar {
+        display: flex;
+    }
+    .top-navbar {
+        display: flex;
+    }
+}
+
+/*---------Dungeon-----------*/
+
+/* Import a gamish fantasy font */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Press+Start+2P&display=swap'); 
+
+/* Battle page styles */
+
+/* Stats styling */
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.stat {
+    background: rgba(0, 255, 255, 0.15);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-weight: bold;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+    color: #00fff0;
+    min-width: 60px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+}
+
+/* Fight button styling */
+.fight-btn {
+    margin-top: 2rem;
+    padding: 1rem 2.5rem;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.4rem;
+    color: #fff;
+    background: linear-gradient(45deg, #4a1a5c, #663399);
+    border: 2px solid #fff;
+    border-radius: 12px;
+    cursor: pointer;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 15px rgba(74, 26, 92, 0.7);
+    transition: all 0.3s ease;
+}
+
+.fight-btn:hover {
+    background: linear-gradient(45deg, #2c0e3a, #4a1a5c);
+    box-shadow: 0 0 25px rgba(102, 51, 153, 0.8);
+    transform: scale(1.05);
+}
+
+/* Battle stage */
+.battle-stage {
+    background: rgba(119, 118, 118, 0.58);
+    padding: 3rem;
+    border-radius: 20px;
+    max-width: 850px;
+    width: 100%;
+    border: 5px solid rgba(74, 26, 92, 0.6);
+    box-shadow: 3px 3px 25px rgba(142, 68, 173, 0.6);
+}
+
+.battle-container {
+    text-align: center;
+    padding: 3rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.battle-title {
+    font-family: 'Rubik Moonrocks', sans-serif;
+    font-size: 3rem;
+    font-weight: 400;
+    color: #1a1913;
+    text-shadow: 0 0 13px rgba(14, 77, 5, 0.7);
+}
+
+/* Rubik Moonrocks style for Level 5 */
+/* Glowing battle level */
+.battle-level {
+  font-family: 'Rubik Moonrocks', sans-serif;
+  font-size: 3rem;
+  font-weight: 400;
+  color: #1a1913;
+  text-shadow: 0 0 13px rgba(14, 77, 5, 0.7);
+}
+
+/* Cleaner player/enemy names */
+.name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(0,255,255,0.8);
+}
+
+
+
+.rubik-distressed-regular {
+  font-family: "Rubik Distressed", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+/* --- PLAYER & OPPONENT NAMES --- */
+.name {
+    font-family: 'Luckiest Guy', serif;
+    font-size: 5rem; 
+    font-weight: bold;
+    margin-top: 0.5rem;
+    color: #000000; /* white for contrast */
+    text-shadow: 
+        2px 2px 0 #f8f8f8,  
+         2px 2px 0 #0d0808,
+        2px  2px 0 #080505,  
+         2px  2px 0 #f7f7f7; 
+    transition: transform 0.2s ease, text-shadow 0.3s ease;
+}
+
+.name:hover {
+    transform: scale(1.1);
+    text-shadow: 
+        -2px -2px 0 #000,  
+         2px -2px 0 #000,
+        -2px  2px 0 #000,  
+         2px  2px 0 #000,
+}
+
+/* Opponent hover */
+.character.opponent .name:hover {
+    text-shadow: 
+        -2px -2px 0 #000,  
+         2px -2px 0 #000,
+        -2px  2px 0 #000,  
+         2px  2px 0 #000,
+         0 0 20px #ff2ec4; 
+}
+
+
+
+.battle-characters {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 3rem;
+    margin: 2rem 0;
+}
+
+.character {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.avatar {
+    margin-bottom: 10px; 
+    position: relative;
+    width: 180px;
+    height: 180px;
+    border-radius: 17px;
+    background: #111; 
+    border: 1px solid #663399;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* big neon glow */
+    box-shadow:
+        0 0 2px #4a1a5c,
+        0 0 2px #663399,
+        0 0 4px #8e44ad,
+        0 0 4px #9b59b6;
+
+    animation: borderPulse 1.5s infinite alternate;
+    overflow: hidden; 
+}
+
+.avatar img {
+    width: 100%;  
+    height: 100%;
+    object-fit: cover;
+    border-radius: 7px; 
+}
+
+.name {
+    margin-top: 5px; 
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.vs-text {
+    margin-top: 70px; 
+    text-align: center; 
+    font-family: 'Rubik Moonrocks', sans-serif;
+    font-weight: 400;
+    color: #1a1913; 
+    font-size: 2.2rem;
+    text-shadow: 0 0 13px rgba(14, 77, 5, 0.7);
+}
+
+.battle-result {
+    margin-top: 2rem;
+}
+
+.battle-result .fight-btn {
+    margin-top: 1rem;
+}
+
+.win-text {
+    font-family: 'Rubik Moonrocks', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: #1a1913;
+    text-shadow: 0 0 13px rgba(5, 63, 63, 0.7);
+}
+
+.points {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-top: 0.75rem;
+    color: #ffd700;
+}
+
+/* Glow animation */
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px rgba(46, 79, 190, 0.7);
+    }
+    to {
+        text-shadow: 0 0 20px rgba(23, 133, 103, 0.9), 0 0 15px rgba(238, 116, 8, 0.8);
+    }
+}
+
+/* Radiant border pulse animation */
+@keyframes borderPulse {
+  0% {
+    box-shadow: 
+      0 0 6px #663399,
+      0 0 18px #8e44ad,
+      0 0 30px #9b59b6;
+  }
+  100% {
+    box-shadow: 
+      0 0 10px #8e44ad,
+      0 0 28px #9b59b6,
+      0 0 50px #ba6bcc;
+  }
+}
+
+/* ---- Media Queries for Mobile ---- */
+
+/* General mobile adjustments */
+@media (max-width: 768px) {
+    .battle-characters {
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+    flex-direction: column;
+    gap: 2.5rem;
+    margin: 1rem 0;
+    }
+
+    .avatar {
+        width: 140px;
+        height: 140px;
+    }
+
+    .name {
+        font-size: 1.2rem;
+    }
+
+    .vs-text {
+        font-size: 1.5rem;
+        margin-top: 0px;
+    }
+
+    .battle-stage {
+        padding: 2rem;
+        border-radius: 15px;
+        max-width: 95%;
+    }
+
+    .battle-title {
+        font-size: 2rem;
+    }
+
+    .battle-level {
+        font-size: 2rem;
+    }
+
+    .fight-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .win-text {
+        font-size: 1.5rem;
+    }
+
+    .points {
+        font-size: 1.2rem;
+    }
+}
+
+/* Desktop layout adjustments */
+@media (min-width: 769px) {
+    .sidebar {
+        display: flex;
+    }
+    .top-navbar {
+        display: flex;
+    }
+}
+
+/* Inventory page text styling */
+.content h2 {
+    color: #fff !important;
+}
+
+.content .text-muted {
+    color: #ccc !important;
+}
+
+/* Quest card styling */
+.card {
+    border: 2px solid #000000 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card .card-title {
+    color: #000 !important;
+}
+
+.card .card-text {
+    color: #000 !important;
+}
+
+.card .card-subtitle {
+    color: #000 !important;
+}
+
+.card .text-muted {
+    color: #000 !important;
+}
+
+#emptyInventory h4 {
+    color: #fff !important;
+}
+
+#emptyInventory p {
+    color: #ccc !important;
+}
+
+#emptyInventory a {
+    color: #007bff !important;
+}
