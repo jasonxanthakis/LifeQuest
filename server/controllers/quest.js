@@ -13,7 +13,7 @@ const getQuests = async (req, res) => {
 
 
 const createQuest = async (req, res) => {
-    const userId = req.params.user
+    const userId = req.user
 
     // check user is logged in
 
