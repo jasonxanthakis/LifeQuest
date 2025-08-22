@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Load inventory from backend instead of localStorage
 async function loadInventoryData() {
     try {
-        const url = `http://localhost:3000/hero/user/inventory/${1}`
+        const url = `https://lifequest-api.onrender.com/hero/user/inventory/${1}`
         
         const response = await getRequest(url);
         const data = await response.json();
@@ -91,7 +91,7 @@ async function handleEquip(event) {
     const isCurrentlyEquipped = button.textContent === 'Unequip';
     const newEquippedState = !isCurrentlyEquipped;
 
-    const url = 'http://localhost:3000/hero/user/inventory/equip';
+    const url = 'https://lifequest-api.onrender.com/hero/user/inventory/equip';
     const dat = {
         hero_items_id: itemId, 
         is_equipped: newEquippedState

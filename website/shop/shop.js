@@ -26,7 +26,7 @@ let currentPoints = 0;
 // Load shop items and user points from backend
 async function loadShopData() {
   try {
-    const url = `http://localhost:3000/hero/user/shop/${1}`;
+    const url = `https://lifequest-api.onrender.com/hero/user/shop/${1}`;
     
     const response = await getRequest(url);
     
@@ -120,7 +120,7 @@ async function handlePurchase(event) {
   const card = button.closest('.card');
   const itemTitle = card.querySelector('.card-title').textContent;
 
-  const url = 'http://localhost:3000/hero/user/shop/item';
+  const url = 'https://lifequest-api.onrender.com/hero/user/shop/item';
   
   // Check if hero has enough points
   if (currentPoints < itemCost) {

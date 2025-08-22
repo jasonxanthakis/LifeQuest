@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const API_URL = 'http://localhost:3000';
+  const API_URL = 'https://lifequest-api.onrender.com';
   const form = document.querySelector('form');
 
   form.addEventListener('submit', async (e) => {

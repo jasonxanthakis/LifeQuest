@@ -117,7 +117,7 @@ for (let btn of logout) {
 }
 
 async function loadDungeon() {
-  const API_URL = 'http://localhost:3000';
+  const API_URL = 'https://lifequest-api.onrender.com';
 
   let url = API_URL + `/dungeon/${1}`;
 

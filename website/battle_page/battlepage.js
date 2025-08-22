@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Ask the database to run a battle simulation
 async function simulateBattle() {
-    const API_URL = 'http://localhost:3000';
+    const API_URL = 'https://lifequest-api.onrender.com';
 
     let url = API_URL + `/dungeon/${1}/battle`;
 
