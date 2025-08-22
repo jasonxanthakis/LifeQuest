@@ -37,7 +37,7 @@ class Hero {
             SELECT hi.id as hero_items_id, hi.hero_id, hi.item_id, hi.is_equipped, 
                    i.item_name, i.description, i.item_cost 
             FROM hero_items hi 
-            JOIN items i ON hi.item_id = i.id 
+            JOIN items i ON hi.item_id = i.item_id 
             JOIN hero h ON hi.hero_id = h.id
             WHERE h.user_id = $1
         `;
@@ -47,7 +47,7 @@ class Hero {
 
     // Get all shop items
     static async getShopItems() {
-        const query = 'SELECT id as item_id, item_name, description, item_cost FROM items ORDER BY item_cost ASC';
+        const query = 'SELECT item_id, item_name, description, item_cost FROM items ORDER BY item_cost ASC';
         const response = await db.query(query);
         return response.rows;
     }
@@ -70,7 +70,7 @@ class Hero {
             const currentPoints = heroResult.rows[0].total_points || 0;
 
             // Get item cost
-            const itemQuery = 'SELECT item_cost FROM items WHERE id = $1';
+            const itemQuery = 'SELECT item_cost FROM items WHERE item_id = $1';
             const itemResult = await db.query(itemQuery, [itemId]);
 
             if (itemResult.rows.length === 0) {

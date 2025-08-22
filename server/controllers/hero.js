@@ -43,7 +43,7 @@ const getShopItems = async (req, res) => {
 };
 
 // POST /hero/user/shop/item
-// Body: { userid, itemid }
+// Body: { itemid }
 // Returns: { points: new_points, items: [all items for userid], shop_items: [all items in shop] }
 const purchaseItem = async (req, res) => {
   try {
@@ -66,7 +66,7 @@ const purchaseItem = async (req, res) => {
     });
     
   } catch (error) {
-    // console.error('Error purchasing item:', error);
+    console.error('Error purchasing item:', error);
     
     // Handle specific error types
     if (error.message === 'Hero not found') {
@@ -81,8 +81,8 @@ const purchaseItem = async (req, res) => {
   }
 };
 
-// PUT /hero/user/inventory/equip
-// Body: { userid, hero_items_id, is_equipped }
+// PATCH /hero/user/inventory/equip
+// Body: { hero_items_id, is_equipped }
 // Returns: { message: "Item equipped/unequipped successfully" }
 const equipItem = async (req, res) => {
   try {

@@ -10,14 +10,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Load inventory from backend instead of localStorage
 async function loadInventoryData() {
     try {
-        const userid = getUserId();
+        const url = `http://localhost:3000/hero/user/inventory/${1}`
         
-        const response = await fetch(`http://localhost:3000/hero/user/inventory/${userid}`, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        
+        const response = await getRequest(url);
         const data = await response.json();
         
         if (response.ok) {
@@ -105,20 +100,15 @@ async function handleEquip(event) {
     // Determine current state and toggle
     const isCurrentlyEquipped = button.textContent === 'Unequip';
     const newEquippedState = !isCurrentlyEquipped;
+
+    const url = 'http://localhost:3000/hero/user/inventory/equip';
+    const dat = {
+        hero_items_id: itemId, 
+        is_equipped: newEquippedState
+    }
     
     try {
-        const response = await fetch('http://localhost:3000/hero/user/inventory/equip', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-                userid: userid, 
-                hero_items_id: itemId, 
-                is_equipped: newEquippedState 
-            })
-        });
-        
+        const response = await sendPatchRequest(url, dat);
         const data = await response.json();
         
         if (response.ok) {
@@ -198,3 +188,32 @@ for (let btn of logout) {
         window.location.assign('../../login/login.html');
     });
 }
+
+async function getRequest(url) {
+  const options = {
+    method: "GET",
+    headers: {
+      "Authorization": localStorage.getItem("token"),
+      "Content-Type": "application/json"
+    }
+  }
+
+  const resp = await fetch(url, options);
+
+  return resp;
+};
+
+async function sendPatchRequest(url, data) {
+    const options = {
+        method: "PATCH",
+        headers: {
+          "Authorization": localStorage.getItem("token"),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }
+
+    const resp = await fetch(url, options);
+
+    return resp;
+};

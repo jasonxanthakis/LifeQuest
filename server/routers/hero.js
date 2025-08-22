@@ -7,6 +7,6 @@ const heroRouter = express.Router();
 heroRouter.get('/user/inventory/:userid', authenticator, heroController.getUserInventory);
 heroRouter.get('/user/shop/:userid', authenticator, heroController.getShopItems);
 heroRouter.post('/user/shop/item', authenticator, heroController.purchaseItem);
-heroRouter.put('/user/inventory/equip', authenticator, heroController.equipItem);
+heroRouter.patch('/user/inventory/equip', authenticator, heroController.equipItem);
 
 module.exports = heroRouter;
