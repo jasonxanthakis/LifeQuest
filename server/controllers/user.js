@@ -13,14 +13,12 @@ async function createUser(req, res) {
 
         const user = await User.create({ fullname, username, hashedPassword, email, date_of_birth });
 
-        const payload = {username: user.username}
+        const payload = {id: user.id, username: user.username}
 
         const sendToken = (err, token) => {
             if (err) {
                 throw new Error('Error in token generation');
             }
-
-            const payload = {username: user.username};
 
             res.status(201).json({
                 success: true,

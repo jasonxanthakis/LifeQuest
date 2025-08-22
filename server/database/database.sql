@@ -28,7 +28,7 @@ CREATE TABLE users (
 -- ---------------------------
 CREATE TABLE quests (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    quest_title VARCHAR(50) NOT NULL,
+    quest_title VARCHAR(50) NOT NULL UNIQUE,
     description VARCHAR(100) NOT NULL,
     category VARCHAR(30) NOT NULL,
     points_value INT NOT NULL,
@@ -77,7 +77,8 @@ CREATE TABLE hero (
     total_points INT NOT NULL,
     health INT NOT NULL,
     damage INT NOT NULL,
-    defense INT NOT NULL,    next_enemy VARCHAR(30) NOT NULL
+    defense INT NOT NULL,    
+    next_enemy VARCHAR(30) NOT NULL
 );
 
 -- ---------------------------

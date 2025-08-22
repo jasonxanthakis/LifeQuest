@@ -13,26 +13,40 @@ const getQuests = async (req, res) => {
 
 
 const createQuest = async (req, res) => {
-    const userId = req.params.user
-
-    // check user is logged in
+    const userId = req.user.id
+    const { title, description, category } = req.body;
 
     // check if quest already exists
 
+    const exisitingQuests = await Quest.getByUserId(userId);
+    if (exisitingQuests.some(q => q.title === title)) {
+        return res.status(400).json({error: "A quest with this title already exists."});
+    }
+
     // check user has entered value for title
 
+    if (!title || title.trim() === '') {
+        return res.status(400).json({error: "Quest title is required."});
+    }
     // check user has entered value for description
 
+    if (!description || description.trim() === '') {
+        return res.status(400).json({error: 'Quest description is required'});
+    }
     // check user has selected a category
+    // I have included trim eventhough categories are predetermined as future feature may include 'other' cateory selection in which user can input their own category
 
+    if (!category || category.trim() === '') {
+        return res.status(400).json({error: 'Must select a quest category'})
+    }
     // 
 
     try {
         const newQuest = await Quest.create({
             user_id: userId,
-            title: req.body.title,
-            description: req.body.description,
-            category: req.body.category,
+            title,
+            description,
+            category,
             points: 3,
             completed: 0
         });
@@ -48,7 +62,7 @@ const createQuest = async (req, res) => {
 };
 
 const modifyQuest = async (req, res) => {
-    const userId = req.params.user
+    const userId = req.user.id
     const questId = req.params.quest
 
     // check quest exists for user
