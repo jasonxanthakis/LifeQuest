@@ -12,10 +12,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
-            <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
-    <!-- Inventory JS -->
-    <script src="inventory.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" defer></script>
     </head>
     <body>
 
@@ -37,8 +34,8 @@
                 <!-- Top navbar: collapsable navbar -->
                 <div class="collapse navbar-collapse" id="mobileNavbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="../quests/quests-board/quests.html">Quests</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="#">Hero</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="../quests/quests-board/quests.html">Quests</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../inventory/inventory.html">Hero</a></li>
                         <li class="nav-item"><a class="nav-link" href="../dungeon/dungeon.html">Dungeon</a></li>
                     </ul>
                 </div>
@@ -54,8 +51,8 @@
                         <img class="mb-3" src="../assets/logo.png" alt="LifeQuest Logo" height="50" class="me-2">
                     </a>
                     <ul class="nav flex-column">
-                        <li class="nav-item my-1"><a class="nav-link text-white" href="../quests/quests-board/quests.html">Quests</a></li>
-                        <li class="nav-item my-1"><a class="nav-link text-white active" href="#">Hero</a></li>
+                        <li class="nav-item my-1"><a class="nav-link text-white active" href="../quests-board/quests.html">Quests</a></li>
+                        <li class="nav-item my-1"><a class="nav-link text-white" href="../inventory/inventory.html">Hero</a></li>
                         <li class="nav-item my-1"><a class="nav-link text-white" href="../dungeon/dungeon.html">Dungeon</a></li>
                     </ul>
                     <div class="mt-auto">
@@ -70,33 +67,16 @@
                     <nav class="navbar top-navbar sticky-top">
                         <div class="container-fluid justify-content-center">
                             <ul class="navbar-nav flex-row">
-                                <li class="nav-item"><a class="nav-link text-black px-3 active" href="../inventory/inventory.html">Inventory</a></li>
-                                <li class="nav-item"><a class="nav-link text-black px-3" href="../shop/shop.html">Shop</a></li>
+                                <li class="nav-item"><a class="nav-link text-black px-3" href="../quests/quests-board/quests.html">Quests</a></li>
+                                <li class="nav-item"><a class="nav-link text-black px-3 active" href="#">Achievements</a></li>
+                                <li class="nav-item"><a class="nav-link text-black px-3" href="../metrics/metrics.html">Metrics</a></li>
                             </ul>
                         </div>
                     </nav>
 
                     <!-- Page content -->
                     <main class="content p-3 flex-grow-1">
-                        <!-- Points Display -->
-                        <div class="d-flex justify-content-start mb-3">
-                            <div id="totalPointsDisplay" class="p-2 bg-light border rounded">
-                                Total Points: <span id="pointsValue">100</span>
-                            </div>
-                        </div>
-
-                        <h2>Your Inventory</h2>
                         
-                        <!-- Inventory Items -->
-                        <div id="inventoryList" class="row">
-                            <!-- Items will be loaded here by JavaScript -->
-                        </div>
-                        
-                        <!-- Empty inventory message -->
-                        <div id="emptyInventory" class="text-center mt-5" style="display: none;">
-                            <h4 class="text-muted">Your inventory is empty</h4>
-                            <p class="text-muted">Visit the <a href="../shop/shop.html">shop</a> to purchase items!</p>
-                        </div>
                     
                     </main>
                 </div>
