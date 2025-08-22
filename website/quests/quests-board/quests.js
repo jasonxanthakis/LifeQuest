@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const API_URL = 'http://localhost:3000/quests';
 
   // Load existing quests
-  fetch(API_URL).then(r => r.json()).then(data => data.forEach(q => addQuestCard(q.quest_title, q.description, q.category, q.points_value))).catch(console.error);
+  fetch(API_URL).then(r => r.json()).then(data => data.forEach(q => addQuestCard(q.id, q.quest_title, q.description, q.category, q.points_value))).catch(console.error);
 
   questForm.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     questForm.reset(); questModal.hide();
   });
 
-  function addQuestCard(questTitle, description, category, points=10) {
+  function addQuestCard( questId, questTitle, description, category, points=3) {
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
@@ -54,6 +54,19 @@ document.addEventListener('DOMContentLoaded', () => {
       card.classList.toggle('bg-success', toggle.checked);
       card.classList.toggle('text-white', toggle.checked);
       card.classList.toggle('done', toggle.checked);
+
+      // connecting the toggle to the backend
+      fetch(`${API_URL}/${questId}/complete`, {
+        method: 'PATCH',
+        header: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem("token")
+        },
+        body: JSON.stringify({ completed: toggle.checked})
+      })
+      .then(res => res.json())
+      .then(data => console.log('Quest completion updated', data))
+      .catch(console.error)
     });
 
     const editBtn = card.querySelector('.edit-btn');
@@ -91,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close the modal
     questModal.hide();
-  });
+  };
 
   const logout = document.getElementsByClassName('logout');
   for (let btn of logout) {
@@ -99,5 +112,5 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem('token');
       window.location.assign('../../login/login.html');
     });
-  }
+  };
 });
