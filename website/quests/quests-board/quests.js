@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close the modal
     questModal.hide();
-  });
+  };
 
   const logout = document.getElementsByClassName('logout');
   for (let btn of logout) {
