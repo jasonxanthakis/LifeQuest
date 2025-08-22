@@ -44,8 +44,8 @@ class User {
 
         const newId = response.rows[0].id;
         await db.query(
-            'INSERT INTO hero (user_id, current_level, hero_name, total_points, total_XP, next_enemy) VALUES ($1, $2, $3, $4, $5, $6)',
-            [newId, 1, username, 0, 0, "???"]
+            'INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+            [newId, 1, username, 0, 120, 10, 10, "???"]
         );
 
         return await User.getOneById(newId);

@@ -75,8 +75,9 @@ CREATE TABLE hero (
     current_level INT NOT NULL,
     hero_name VARCHAR(30) NOT NULL,
     total_points INT NOT NULL,
-    total_XP INT NOT NULL,
-    next_enemy VARCHAR(30) NOT NULL
+    health INT NOT NULL,
+    damage INT NOT NULL,
+    defense INT NOT NULL,    next_enemy VARCHAR(30) NOT NULL
 );
 
 -- ---------------------------

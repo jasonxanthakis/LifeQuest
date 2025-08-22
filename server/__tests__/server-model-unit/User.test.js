@@ -123,6 +123,10 @@ describe('User model functions', () => {
             email: 'test@example.org',
             date_of_birth: '2002-08-29'
         });
+
+        expect(foundUser).toBeInstanceOf(User);
+        expect(foundUser.full_name).toBe('Eva Smith');
+        expect(foundUser.email).toBe('test@example.org');
     });
 
     it('throws error if duplicate username is created', async () => {
