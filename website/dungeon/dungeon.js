@@ -55,18 +55,19 @@ function setBattleImages(result) {
   if (playerImg) {
     playerImg.src = `../assets/knight.png`;
     const playerName = document.querySelector(".battle-characters .character:nth-child(1) .name");
-    if (playerName) playerName.textContent = result.hero.name;
+    if (playerName) playerName.textContent = result.hero?.name || "Hero";
   }
 
   // Enemy retrieved from database
-  if (enemyImg) {
+  if (enemyImg && result.enemy && result.enemy.name) {
     const enemy = monsters.find(
       m => m.name.toLowerCase() === result.enemy.name.toLowerCase()
     );
-    enemyImg.src = `../assets/${enemy.image}`;
-
-    const enemyName = document.querySelector(".battle-characters .character:nth-child(3) .name");
-    if (enemyName) enemyName.textContent = enemy.name;
+    if (enemy) {
+      enemyImg.src = `../assets/${enemy.image}`;
+      const enemyName = document.querySelector(".battle-characters .character:nth-child(3) .name");
+      if (enemyName) enemyName.textContent = enemy.name;
+    }
   }
 }
 
