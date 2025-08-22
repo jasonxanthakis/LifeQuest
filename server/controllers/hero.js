@@ -4,9 +4,10 @@ const Hero = require('../models/Hero.js');
 // Returns: { items: [all items for userid], points: number }
 const getUserInventory = async (req, res) => {
   try {
-    const { userid } = req.params;
+    const username = req.user;
     
     // Use Hero model methods
+    const userid = await Hero.getUserIdByUsername(username);
     const items = await Hero.getInventoryByUserId(userid);
     const points = await Hero.getPointsByUserId(userid);
     
@@ -15,7 +16,7 @@ const getUserInventory = async (req, res) => {
       points: points
     });
   } catch (error) {
-    console.error('Error getting user inventory:', error);
+    // console.error('Error getting user inventory:', error);
     res.status(500).json({ error: 'Failed to get inventory' });
   }
 };
@@ -24,9 +25,10 @@ const getUserInventory = async (req, res) => {
 // Returns: { items: [all items in shop], points: number }
 const getShopItems = async (req, res) => {
   try {
-    const { userid } = req.params;
+    const username = req.user;
     
     // Use Hero model methods
+    const userid = await Hero.getUserIdByUsername(username);
     const items = await Hero.getShopItems();
     const points = await Hero.getPointsByUserId(userid);
     
@@ -35,7 +37,7 @@ const getShopItems = async (req, res) => {
       points: points
     });
   } catch (error) {
-    console.error('Error getting shop items:', error);
+    // console.error('Error getting shop items:', error);
     res.status(500).json({ error: 'Failed to get shop items' });
   }
 };
@@ -45,7 +47,10 @@ const getShopItems = async (req, res) => {
 // Returns: { points: new_points, items: [all items for userid], shop_items: [all items in shop] }
 const purchaseItem = async (req, res) => {
   try {
-    const { userid, itemid } = req.body;
+    const { itemid } = req.body;
+    const username = req.user;
+
+    const userid = await Hero.getUserIdByUsername(username);
     
     // Use Hero model to handle the purchase
     const result = await Hero.purchaseItem(userid, itemid);
@@ -61,7 +66,7 @@ const purchaseItem = async (req, res) => {
     });
     
   } catch (error) {
-    console.error('Error purchasing item:', error);
+    // console.error('Error purchasing item:', error);
     
     // Handle specific error types
     if (error.message === 'Hero not found') {
@@ -81,8 +86,11 @@ const purchaseItem = async (req, res) => {
 // Returns: { message: "Item equipped/unequipped successfully" }
 const equipItem = async (req, res) => {
   try {
-    const { userid, hero_items_id, is_equipped } = req.body;
+    const { hero_items_id, is_equipped } = req.body;
+    const username = req.user;
     
+    const userid = await Hero.getUserIdByUsername(username);
+
     // Use Hero model to equip/unequip the item
     await Hero.equipItem(userid, hero_items_id, is_equipped);
     
@@ -90,7 +98,7 @@ const equipItem = async (req, res) => {
     res.status(200).json({ message: `Item ${action} successfully` });
     
   } catch (error) {
-    console.error('Error equipping item:', error);
+    // console.error('Error equipping item:', error);
     if (error.message.includes('not found') || error.message.includes('does not belong')) {
       res.status(404).json({ error: error.message });
     } else {

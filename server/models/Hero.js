@@ -1,23 +1,25 @@
 const db = require('../database/connect');
 
 class Hero {
-    constructor({ id, user_id, current_level, hero_name, total_points, total_XP, next_enemy }) {
+    constructor({ id, user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy }) {
         this.id = id;
         this.user_id = user_id;
         this.current_level = current_level;
         this.hero_name = hero_name;
         this.total_points = total_points;
-        this.total_XP = total_XP;
+        this.hp = health;
+        this.att = damage;
+        this.def = defense;
         this.next_enemy = next_enemy;
     }
 
-    // Get hero by user_id
-    static async getByUserId(userId) {
-        const response = await db.query('SELECT * FROM hero WHERE user_id = $1', [userId]);
-        if (response.rows.length === 0) {
-            throw new Error('Hero not found');
-        }
-        return new Hero(response.rows[0]);
+    // Get hero by username
+    static async getUserIdByUsername(username) {
+        const response = await db.query("SELECT id FROM users WHERE username = $1;", [username]);
+        
+        if (response.rowCount != 1) throw new Error('Database failed to find specified user...');
+
+        return response.rows[0].id;
     }
 
     // Get hero's points
@@ -141,8 +143,8 @@ class Hero {
     // Create a new hero for a user
     static async create(userId, heroName) {
         const query = `
-            INSERT INTO hero (user_id, current_level, hero_name, total_points, total_XP, next_enemy) 
-            VALUES ($1, 1, $2, 0, 0, 'Goblin') 
+            INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy) 
+            VALUES ($1, 1, $2, 0, 0, 0, 0, 'Goblin') 
             RETURNING *
         `;
         const response = await db.query(query, [userId, heroName]);

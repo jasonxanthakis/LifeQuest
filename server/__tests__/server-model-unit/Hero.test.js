@@ -14,40 +14,31 @@ describe('Hero model functions', () => {
 
     afterAll(() => jest.resetAllMocks());
 
-    describe('getByUserId', () => {
-        it('retrieves a hero by user_id', async () => {
+    describe('getUserIdByUsername', () => {
+        it('retrieves a user_id by username', async () => {
             db.query.mockResolvedValueOnce({
                 rows: [
                     {
-                        id: 1,
-                        user_id: 1,
-                        current_level: 5,
-                        hero_name: 'Test Hero',
-                        total_points: 100,
-                        total_XP: 500,
-                        next_enemy: 'Goblin'
+                        id: 1
                     }
                 ],
                 rowCount: 1
             });
 
-            const foundHero = await Hero.getByUserId(1);
+            const userId = await Hero.getUserIdByUsername(1);
 
-            expect(foundHero).toBeInstanceOf(Hero);
-            expect(foundHero.hero_name).toBe('Test Hero');
-            expect(foundHero.total_points).toBe(100);
-            expect(foundHero.current_level).toBe(5);
+            expect(userId).toBe(1);
         });
 
-        it('throws an error if hero not found', async () => {
+        it('throws an error if user not found', async () => {
             db.query.mockResolvedValueOnce({
                 rows: [],
                 rowCount: 0
             });
 
-            await expect(Hero.getByUserId(999))
+            await expect(Hero.getUserIdByUsername(999))
                 .rejects
-                .toThrow("Hero not found");
+                .toThrow('Database failed to find specified user...');
         });
     });
 
@@ -262,7 +253,9 @@ describe('Hero model functions', () => {
                 current_level: 1,
                 hero_name: 'New Hero',
                 total_points: 0,
-                total_XP: 0,
+                health: 50,
+                damage: 10,
+                defense: 10,
                 next_enemy: 'Goblin'
             };
 
