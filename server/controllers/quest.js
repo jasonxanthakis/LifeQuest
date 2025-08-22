@@ -73,15 +73,13 @@ const modifyQuest = async (req, res) => {
     }
 
     try {
-        const modifiedQuest = await Quest.getByUserAndQuest(userId, questId);
-        
-        await modifiedQuest.modify({
-            title: req.body.title,
-            description: req.body.description,
-            category: req.body.category
+        await quest.modify({
+            title,
+            description,
+            category
         });
 
-        return res.status(200).json(modifiedQuest);
+        return res.status(200).json(quest);
     } catch (err) {
         return res.status(400).json({error: err.message});
     };
