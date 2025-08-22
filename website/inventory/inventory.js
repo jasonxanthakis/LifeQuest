@@ -183,7 +183,6 @@ window.addEventListener('inventoryUpdated', function() {
 
 const logout = document.getElementsByClassName('logout');
 for (let btn of logout) {
-    console.log(btn);
     btn.addEventListener('click', () => {
         localStorage.removeItem('token');
         window.location.assign('../login/login.html');
