@@ -105,7 +105,7 @@ INSERT INTO enemy (enemy_name, enemy_level, enemy_health, enemy_damage, enemy_de
 ('Witch', 5, 420, 43, 32, 120),
 ('Giant', 6, 520, 55, 40, 150),
 ('Werewolf', 7, 630, 69, 49, 185),
-('Minotar', 8, 740, 83, 58, 220),
+('Minotaur', 8, 740, 83, 58, 220),
 ('Basilisk', 9, 860, 99, 68, 260),
 ('Dragon', 10, 990, 115, 78, 300);
 
