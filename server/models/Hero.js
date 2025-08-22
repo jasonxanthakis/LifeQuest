@@ -120,8 +120,20 @@ class Hero {
         }
 
         // Update the is_equipped status
-        const updateQuery = 'UPDATE hero_items SET is_equipped = $1 WHERE id = $2';
+        let updateQuery = 'UPDATE hero_items SET is_equipped = $1 WHERE id = $2';
         await db.query(updateQuery, [isEquipped, heroItemsId]);
+
+        // Get the item stats
+        const itemQuery = 'SELECT * FROM items JOIN hero_items ON hero_items.item_id = items.item_id WHERE hero_items.id = $1;';
+        const item = (await db.query(itemQuery, [heroItemsId])).rows[0];
+        
+        // Update the hero stats based on the equipment
+        if (isEquipped) {
+            updateQuery = 'UPDATE hero SET health = health + $1, damage = damage + $2, defense = defense + $3 WHERE user_id = $4';
+        } else {
+            updateQuery = 'UPDATE hero SET health = health - $1, damage = damage - $2, defense = defense - $3 WHERE user_id = $4';
+        }
+        await db.query(updateQuery, [item.item_health, item.item_damage, item.item_defense, userId]);
 
         return { success: true };
     }
@@ -149,22 +161,6 @@ class Hero {
         `;
         const response = await db.query(query, [userId, heroName]);
         return new Hero(response.rows[0]);
-    }
-
-    // Instance methods for updating hero properties
-    async updatePoints(newPoints) {
-        await db.query('UPDATE hero SET total_points = $1 WHERE id = $2', [newPoints, this.id]);
-        this.total_points = newPoints;
-    }
-
-    async updateLevel(newLevel) {
-        await db.query('UPDATE hero SET current_level = $1 WHERE id = $2', [newLevel, this.id]);
-        this.current_level = newLevel;
-    }
-
-    async updateXP(newXP) {
-        await db.query('UPDATE hero SET total_XP = $1 WHERE id = $2', [newXP, this.id]);
-        this.total_XP = newXP;
     }
 }
 

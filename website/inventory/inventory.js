@@ -1,8 +1,3 @@
-// Helper function to get user ID
-function getUserId() {
-    return localStorage.getItem('userid') || '1'; 
-}
-
 document.addEventListener('DOMContentLoaded', async function() {
     await loadInventoryData();
 });
@@ -77,11 +72,7 @@ function createInventoryCard(item) {
                 <p class="card-text">${item.description || 'Item from your collection'}</p>
                 <div class="mt-auto">
                     <div class="d-flex justify-content-end align-items-center">
-                        <button class="btn ${equipButtonClass} btn-sm btn-equip" 
-                                data-item-id="${item.hero_items_id}" 
-                                data-item-name="${item.item_name}">
-                            ${equipButtonText}
-                        </button>
+                        <button class="btn ${equipButtonClass} btn-sm btn-equip" data-item-id="${item.hero_items_id}" data-item-name="${item.item_name}">${equipButtonText}</button>
                     </div>
                 </div>
             </div>
@@ -95,7 +86,6 @@ async function handleEquip(event) {
     const button = event.target;
     const itemId = button.getAttribute('data-item-id');
     const itemName = button.getAttribute('data-item-name');
-    const userid = getUserId();
     
     // Determine current state and toggle
     const isCurrentlyEquipped = button.textContent === 'Unequip';
@@ -139,20 +129,17 @@ async function handleEquip(event) {
 function updateEquipButtons(items) {
     const equipButtons = document.querySelectorAll('.btn-equip');
     
-    equipButtons.forEach(button => {
+    for (let button of equipButtons) {
         const itemId = button.getAttribute('data-item-id');
-        const item = items.find(item => (item.item_id || item.id) == itemId);
         
-        if (item && item.is_equipped) {
-            button.textContent = 'Unequip';
+        if (button.textContent == 'Unequip') {
             button.classList.remove('btn-success');
             button.classList.add('btn-warning');
-        } else {
-            button.textContent = 'Equip';
+        } else if (button.textContent == 'Equip') {
             button.classList.remove('btn-warning');
             button.classList.add('btn-success');
         }
-    });
+    };
 }
 
 function showEquipMessage(itemName, isEquipped) {

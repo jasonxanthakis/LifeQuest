@@ -66,7 +66,7 @@ const purchaseItem = async (req, res) => {
     });
     
   } catch (error) {
-    console.error('Error purchasing item:', error);
+    // console.error('Error purchasing item:', error);
     
     // Handle specific error types
     if (error.message === 'Hero not found') {

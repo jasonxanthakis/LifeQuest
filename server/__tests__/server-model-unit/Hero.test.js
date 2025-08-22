@@ -227,7 +227,13 @@ describe('Hero model functions', () => {
             db.query.mockResolvedValueOnce({
                 rows: [{ id: 1 }]
             }); // Verify query
-            db.query.mockResolvedValueOnce({ rows: [] }); // Update query
+            db.query.mockResolvedValueOnce({ rows: [] }); // Update isEquipped
+            db.query.mockResolvedValueOnce({ rows: [{
+                item_health: 0,
+                item_damage: 0,
+                item_defense: 0
+            }] }); // Get item stats
+            db.query.mockResolvedValueOnce({ rows: [] }); // Update hero stats
 
             const result = await Hero.equipItem(1, 1, true);
 
