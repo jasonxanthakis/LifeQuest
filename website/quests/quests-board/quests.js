@@ -71,28 +71,32 @@ function addQuestCard( questId, questTitle, description, category, points=3) {
 
   // Add toggle behavior
   const toggle = card.querySelector('.done-toggle');
-  toggle.addEventListener('change', () => {
+  toggle.addEventListener('change', async () => {
     card.classList.toggle('bg-success', toggle.checked);
     card.classList.toggle('text-white', toggle.checked);
     card.classList.toggle('done', toggle.checked);
 
     // connecting the toggle to the backend
-    fetch(`${API_URL}/${questId}/complete`, {
-      method: 'PATCH',
-      header: {
-        'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem("token")
-      },
-      body: JSON.stringify({ completed: toggle.checked})
-    })
-    .then(res => res.json())
-    .then(data => console.log('Quest completion updated', data))
-    .catch(console.error)
+    let url = `http://localhost:3000/main/quests/${questId}/complete`;
+    
+    try {
+      const response = await sendPatchRequest(url, { completed: toggle.checked });
+      const data = response.json();
+      
+      if (response.status == 200) {
+        console.log('Quest completion updated', data);
+      } else {
+        console.log(data.error);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
   });
 
   // Add edit functionality
   const editBtn = card.querySelector('.edit-btn');
-  editBtn.addEventListener('click', function() {
+  editBtn.addEventListener('click', async () => {
     if (editBtn.textContent === 'Edit') {
       // Switch to edit mode
       const cardTitle = card.querySelector('.card-title');
@@ -122,13 +126,22 @@ function addQuestCard( questId, questTitle, description, category, points=3) {
       const newDescription = card.querySelector('.edit-description').value.trim();
       
       if (newTitle && newCategory && newDescription) {
-        const cardTitle = card.querySelector('.card-title');
-        const cardSubtitle = card.querySelector('.card-subtitle');
-        const cardText = card.querySelector('.card-text');
+        let url = `http://localhost:3000/main/quests/${questId}/`;
+
+        const response = await sendPatchRequest(url, { title: newTitle, description: newDescription, category: newCategory });
         
-        cardTitle.textContent = newTitle;
-        cardSubtitle.textContent = newCategory;
-        cardText.textContent = newDescription;
+        if (response.status == 200) {
+          const cardTitle = card.querySelector('.card-title');
+          const cardSubtitle = card.querySelector('.card-subtitle');
+          const cardText = card.querySelector('.card-text');
+          
+          cardTitle.textContent = newTitle;
+          cardSubtitle.textContent = newCategory;
+          cardText.textContent = newDescription;
+        }
+        else {
+          console.error('Error: ', response.error)
+        }
         
         // Change button back to Edit
         editBtn.textContent = 'Edit';
@@ -171,6 +184,21 @@ async function getRequest(url) {
       "Authorization": localStorage.getItem("token"),
       "Content-Type": "application/json"
     }
+  }
+
+  const resp = await fetch(url, options);
+
+  return resp;
+};
+
+async function sendPatchRequest(url, data) {
+  const options = {
+    method: "PATCH",
+    headers: {
+      "Authorization": localStorage.getItem("token"),
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
   }
 
   const resp = await fetch(url, options);
