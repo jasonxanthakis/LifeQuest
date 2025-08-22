@@ -26,14 +26,9 @@ let currentPoints = 0;
 // Load shop items and user points from backend
 async function loadShopData() {
   try {
-    const token = localStorage.getItem('token');
-    const userid = getUserId();
+    const url = `http://localhost:3000/hero/user/shop/${1}`;
     
-    const response = await fetch(`http://localhost:3000/hero/user/shop/${userid}`, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await getRequest(url);
     
     const data = await response.json();
     
@@ -124,8 +119,8 @@ async function handlePurchase(event) {
   const itemCost = parseInt(button.getAttribute('data-item-cost'));
   const card = button.closest('.card');
   const itemTitle = card.querySelector('.card-title').textContent;
-  const userid = getUserId();
-  const token = localStorage.getItem('token');
+
+  const url = 'http://localhost:3000/hero/user/shop/item';
   
   // Check if hero has enough points
   if (currentPoints < itemCost) {
@@ -134,14 +129,9 @@ async function handlePurchase(event) {
   }
   
   try {
-    const response = await fetch('http://localhost:3000/hero/user/shop/item', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ userid, itemid: itemId })
-    });
-    
+    const dat = { itemid: itemId };
+
+    const response = await sendPostRequest(url, dat);
     const data = await response.json();
     
     if (response.ok) {
@@ -231,6 +221,35 @@ const logout = document.getElementsByClassName('logout');
 for (let btn of logout) {
   btn.addEventListener('click', () => {
     localStorage.removeItem('token');
-    window.location.assign('../../login/login.html');
+    window.location.assign('../login/login.html');
   });
 }
+
+async function getRequest(url) {
+  const options = {
+    method: "GET",
+    headers: {
+      "Authorization": localStorage.getItem("token"),
+      "Content-Type": "application/json"
+    }
+  }
+
+  const resp = await fetch(url, options);
+
+  return resp;
+};
+
+async function sendPostRequest(url, data) {
+    const options = {
+        method: "POST",
+        headers: {
+          "Authorization": localStorage.getItem("token"),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }
+
+    const resp = await fetch(url, options);
+
+    return resp;
+};

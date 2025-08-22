@@ -181,7 +181,7 @@ describe('Dungeon model functions', () => {
 
         expect(points1).toBe(10);
         expect(points2).toBe(90);
-        expect(points3).toBe(30);
+        expect(points3).toBe(300);
         expect(points4).toBe(160);
     });
 

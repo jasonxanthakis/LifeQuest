@@ -1,8 +1,3 @@
-// Helper function to get user ID
-function getUserId() {
-    return localStorage.getItem('userid') || '1'; 
-}
-
 document.addEventListener('DOMContentLoaded', async function() {
     await loadInventoryData();
 });
@@ -10,14 +5,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Load inventory from backend instead of localStorage
 async function loadInventoryData() {
     try {
-        const userid = getUserId();
+        const url = `http://localhost:3000/hero/user/inventory/${1}`
         
-        const response = await fetch(`http://localhost:3000/hero/user/inventory/${userid}`, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        
+        const response = await getRequest(url);
         const data = await response.json();
         
         if (response.ok) {
@@ -82,11 +72,7 @@ function createInventoryCard(item) {
                 <p class="card-text">${item.description || 'Item from your collection'}</p>
                 <div class="mt-auto">
                     <div class="d-flex justify-content-end align-items-center">
-                        <button class="btn ${equipButtonClass} btn-sm btn-equip" 
-                                data-item-id="${item.hero_items_id}" 
-                                data-item-name="${item.item_name}">
-                            ${equipButtonText}
-                        </button>
+                        <button class="btn ${equipButtonClass} btn-sm btn-equip" data-item-id="${item.hero_items_id}" data-item-name="${item.item_name}">${equipButtonText}</button>
                     </div>
                 </div>
             </div>
@@ -100,25 +86,19 @@ async function handleEquip(event) {
     const button = event.target;
     const itemId = button.getAttribute('data-item-id');
     const itemName = button.getAttribute('data-item-name');
-    const userid = getUserId();
     
     // Determine current state and toggle
     const isCurrentlyEquipped = button.textContent === 'Unequip';
     const newEquippedState = !isCurrentlyEquipped;
+
+    const url = 'http://localhost:3000/hero/user/inventory/equip';
+    const dat = {
+        hero_items_id: itemId, 
+        is_equipped: newEquippedState
+    }
     
     try {
-        const response = await fetch('http://localhost:3000/hero/user/inventory/equip', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-                userid: userid, 
-                hero_items_id: itemId, 
-                is_equipped: newEquippedState 
-            })
-        });
-        
+        const response = await sendPatchRequest(url, dat);
         const data = await response.json();
         
         if (response.ok) {
@@ -149,20 +129,17 @@ async function handleEquip(event) {
 function updateEquipButtons(items) {
     const equipButtons = document.querySelectorAll('.btn-equip');
     
-    equipButtons.forEach(button => {
+    for (let button of equipButtons) {
         const itemId = button.getAttribute('data-item-id');
-        const item = items.find(item => (item.item_id || item.id) == itemId);
         
-        if (item && item.is_equipped) {
-            button.textContent = 'Unequip';
+        if (button.textContent == 'Unequip') {
             button.classList.remove('btn-success');
             button.classList.add('btn-warning');
-        } else {
-            button.textContent = 'Equip';
+        } else if (button.textContent == 'Equip') {
             button.classList.remove('btn-warning');
             button.classList.add('btn-success');
         }
-    });
+    };
 }
 
 function showEquipMessage(itemName, isEquipped) {
@@ -195,6 +172,35 @@ const logout = document.getElementsByClassName('logout');
 for (let btn of logout) {
     btn.addEventListener('click', () => {
         localStorage.removeItem('token');
-        window.location.assign('../../login/login.html');
+        window.location.assign('../login/login.html');
     });
 }
+
+async function getRequest(url) {
+  const options = {
+    method: "GET",
+    headers: {
+      "Authorization": localStorage.getItem("token"),
+      "Content-Type": "application/json"
+    }
+  }
+
+  const resp = await fetch(url, options);
+
+  return resp;
+};
+
+async function sendPatchRequest(url, data) {
+    const options = {
+        method: "PATCH",
+        headers: {
+          "Authorization": localStorage.getItem("token"),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }
+
+    const resp = await fetch(url, options);
+
+    return resp;
+};
