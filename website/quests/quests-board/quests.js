@@ -3,14 +3,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const questList = document.getElementById('questList');
   const questModal = new bootstrap.Modal(document.getElementById('addQuestModal'));
 
-  questForm.addEventListener('submit', function (event) {
-    event.preventDefault();
+  // Load existing quests
+  fetch(API_URL).then(r => r.json()).then(data => data.forEach(q => addQuestCard(q.id, q.quest_title, q.description, q.category, q.points_value))).catch(console.error);
 
     const questTitle = document.getElementById('questTitle').value.trim();
     const description = document.getElementById('questDescription').value.trim();
     const category = document.getElementById('questCategory').value;
+    const points_value = 10; // default points
 
-    // Create the card (matches quests table structure)
+    if (!questTitle || !description || !category) return alert('Please fill in all fields');
+
+    fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ quest_title: questTitle, description, category, points_value })
+    }).then(r => r.json())
+      .then(q => addQuestCard(q.quest_title, q.description, q.category, q.points_value))
+      .catch(console.error);
+
+    questForm.reset(); questModal.hide();
+  });
+
+  function addQuestCard( questId, questTitle, description, category, points=3) {
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
@@ -41,15 +55,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add toggle behavior
     const toggle = card.querySelector('.done-toggle');
     toggle.addEventListener('change', () => {
-    if (toggle.checked) {
-        card.classList.add('bg-success', 'text-white');
-    } else {
-        card.classList.remove('bg-success', 'text-white');
-    }
-    });
+      card.classList.toggle('bg-success', toggle.checked);
+      card.classList.toggle('text-white', toggle.checked);
+      card.classList.toggle('done', toggle.checked);
 
-    toggle.addEventListener('change', () => {
-    card.classList.toggle('done', toggle.checked);
+      // connecting the toggle to the backend
+      fetch(`${API_URL}/${questId}/complete`, {
+        method: 'PATCH',
+        header: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem("token")
+        },
+        body: JSON.stringify({ completed: toggle.checked})
+      })
+      .then(res => res.json())
+      .then(data => console.log('Quest completion updated', data))
+      .catch(console.error)
     });
 
     // Add edit functionality
@@ -123,5 +144,5 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem('token');
       window.location.assign('../../login/login.html');
     });
-  }
+  };
 });
