@@ -1,12 +1,13 @@
 -- ---------------------------
 -- Drop existing tables
 -- ---------------------------
-DROP TABLE IF EXISTS hero_items;
-DROP TABLE IF EXISTS items;
+DROP TABLE IF EXISTS user_quests;
 DROP TABLE IF EXISTS battle;
+DROP TABLE IF EXISTS hero_items;
 DROP TABLE IF EXISTS enemy;
 DROP TABLE IF EXISTS hero;
 DROP TABLE IF EXISTS user_quest_streaks;
+DROP TABLE IF EXISTS items;
 DROP TABLE IF EXISTS quests;
 DROP TABLE IF EXISTS users;
 
@@ -16,18 +17,33 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     full_name VARCHAR(50) NOT NULL,
-    username VARCHAR(30) NOT NULL,
-    password_hash CHAR(64) NOT NULL,
+    username VARCHAR(30) NOT NULL UNIQUE,
+    password CHAR(60) NOT NULL,
     email VARCHAR(50) NOT NULL,
     date_of_birth DATE NOT NULL
 );
+
+-- ---------------------------
+-- User Quests table
+-- ---------------------------
+
+--CREATE TABLE user_quests (
+--    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--    user_id INT NOT NULL REFERENCES users(id),
+--    quest_title VARCHAR(50) NOT NULL UNIQUE,
+--    description VARCHAR(100) NOT NULL,
+--    category VARCHAR(30) NOT NULL,
+--    points_value INT NOT NULL,
+--    complete BOOLEAN NOT NULL DEFAULT FALSE
+--);
 
 -- ---------------------------
 -- Quests table
 -- ---------------------------
 CREATE TABLE quests (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    quest_title VARCHAR(50) NOT NULL,
+    user_id INT NOT NULL REFERENCES users(id),
+    quest_title VARCHAR(50) NOT NULL UNIQUE,
     description VARCHAR(100) NOT NULL,
     category VARCHAR(30) NOT NULL,
     points_value INT NOT NULL,
@@ -37,19 +53,19 @@ CREATE TABLE quests (
 -- ---------------------------
 -- Predefined quests
 -- ---------------------------
-INSERT INTO quests (quest_title, description, category, points_value, complete)
-VALUES
-('Skip Smoking', 'Avoid smoking for a full day', 'Smoking', 20, FALSE),
-('Limit Cigarettes', 'Cut your daily cigarette intake in half today', 'Smoking', 15, FALSE),
-('Push-Up Challenge', 'Complete 3 sets of 15 push-ups throughout the day', 'Exercise', 10, FALSE),
-('Stretch Breaks', 'Take 5 minutes every hour to stretch', 'Exercise', 5, FALSE),
-('Track Triggers', 'Write down the times you crave a cigarette and avoid one', 'Smoking', 10, FALSE),
-('Exercise Instead', 'Replace TV time with 20 minutes of exercise', 'Exercise', 10, FALSE),
-('Nicotine-Free Evening', 'Stay smoke-free after 6 PM', 'Smoking', 15, FALSE),
-('Morning Jog', 'Go for at least a 20-minute jog in the morning', 'Exercise', 15, FALSE),
-('Reward Yourself', 'Go the whole day without smoking and treat yourself in a healthy way', 'Smoking', 20, FALSE),
-('Hydration Boost', 'Drink at least 8 glasses of water to stay energized for exercise', 'Exercise', 5, FALSE),
-('Early Bedtime', 'Go to bed 30 minutes earlier to improve recovery after exercise', 'Exercise', 10, FALSE);
+--INSERT INTO quests (quest_title, description, category, points_value, complete)
+--VALUES
+--('Skip Smoking', 'Avoid smoking for a full day', 'Smoking', 20, FALSE),
+--('Limit Cigarettes', 'Cut your daily cigarette intake in half today', 'Smoking', 15, FALSE),
+--('Push-Up Challenge', 'Complete 3 sets of 15 push-ups throughout the day', 'Exercise', 10, FALSE),
+--('Stretch Breaks', 'Take 5 minutes every hour to stretch', 'Exercise', 5, FALSE),
+--('Track Triggers', 'Write down the times you crave a cigarette and avoid one', 'Smoking', 10, FALSE),
+--('Exercise Instead', 'Replace TV time with 20 minutes of exercise', 'Exercise', 10, FALSE),
+--('Nicotine-Free Evening', 'Stay smoke-free after 6 PM', 'Smoking', 15, FALSE),
+--('Morning Jog', 'Go for at least a 20-minute jog in the morning', 'Exercise', 15, FALSE),
+--('Reward Yourself', 'Go the whole day without smoking and treat yourself in a healthy way', 'Smoking', 20, FALSE),
+--('Hydration Boost', 'Drink at least 8 glasses of water to stay energized for exercise', 'Exercise', 5, FALSE),
+--('Early Bedtime', 'Go to bed 30 minutes earlier to improve recovery after exercise', 'Exercise', 10, FALSE);
 
 -- ---------------------------
 -- User quest streaks table
@@ -74,7 +90,9 @@ CREATE TABLE hero (
     current_level INT NOT NULL,
     hero_name VARCHAR(30) NOT NULL,
     total_points INT NOT NULL,
-    total_XP INT NOT NULL,
+    health INT NOT NULL,
+    damage INT NOT NULL,
+    defense INT NOT NULL,    
     next_enemy VARCHAR(30) NOT NULL
 );
 
@@ -102,7 +120,7 @@ INSERT INTO enemy (enemy_name, enemy_level, enemy_health, enemy_damage, enemy_de
 ('Witch', 5, 420, 43, 32, 120),
 ('Giant', 6, 520, 55, 40, 150),
 ('Werewolf', 7, 630, 69, 49, 185),
-('Minotar', 8, 740, 83, 58, 220),
+('Minotaur', 8, 740, 83, 58, 220),
 ('Basilisk', 9, 860, 99, 68, 260),
 ('Dragon', 10, 990, 115, 78, 300);
 

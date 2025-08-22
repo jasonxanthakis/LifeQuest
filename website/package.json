@@ -30,6 +30,7 @@
     "verbose": true,
     "testPathIgnorePatterns": [
       "/__tests__/helpers.js"
-    ]
+    ],
+    "testEnvironment": "jsdom"
   }
 }

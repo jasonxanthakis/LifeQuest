@@ -27,7 +27,7 @@
                     <button class="navbar-toggler mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar" aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <button id="logoutbtn" type="button" class="btn nav-btn btn-outline-dark me-2">
+                    <button id="logoutbtn" type="button" class="btn nav-btn btn-outline-dark me-2 logout">
                         <span class="material-symbols-outlined" style="display: flex;">Logout</span>
                     </button>
                 </div>
@@ -57,7 +57,7 @@
                         <li class="nav-item my-1"><a class="nav-link text-white" href="../../dungeon/dungeon.html">Dungeon</a></li>
                     </ul>
                     <div class="mt-auto">
-                        <button id="logoutbtn" type="button" class="btn nav-btn btn-outline-none me-2">
+                        <button id="logoutbtn" type="button" class="btn nav-btn btn-outline-none me-2 logout">
                             <span class="text-white" style="display: flex;">Logout</span>
                         </button>
                     </div>
@@ -69,7 +69,7 @@
                         <div class="container-fluid justify-content-center">
                             <ul class="navbar-nav flex-row">
                                 <li class="nav-item"><a class="nav-link text-black px-3 active" href="../quests-board/quests.html">Quests</a></li>
-                                <li class="nav-item"><a class="nav-link text-black px-3" href="#">Achievements</a></li>
+                                <li class="nav-item"><a class="nav-link text-black px-3" href="../../achievements/achievements.html">Achievements</a></li>
                                 <li class="nav-item"><a class="nav-link text-black px-3" href="../../metrics/metrics.html">Metrics</a></li>
                             </ul>
                         </div>
@@ -103,14 +103,6 @@
                             <div class="modal-body">
                                 <form id="questForm">
                                 <div class="mb-3">
-                                    <label for="questTitle" class="form-label">Title</label>
-                                    <input type="text" class="form-control" id="questTitle" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="questDescription" class="form-label">Description</label>
-                                    <textarea class="form-control" id="questDescription" rows="3" required></textarea>
-                                </div>
-                                <div class="mb-3">
                                     <label for="questCategory" class="form-label">Category</label>
                                     <select class="form-select" id="questCategory" required>
                                     <option value="">Choose...</option>
@@ -118,11 +110,19 @@
                                     <option value="Exercise">Exercise</option>
                                     </select>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="questTitle" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="questTitle" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="questDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="questDescription" rows="3" required></textarea>
+                                </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" form="questForm" class="btn btn-purple">Add Quest</button>
+                                <button id="addQuestBtn" type="submit" form="questForm" class="btn btn-purple">Add Quest</button>
                             </div>
                             </div>
                         </div>
