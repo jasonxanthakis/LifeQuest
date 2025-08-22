@@ -608,11 +608,15 @@ body {
 }
 
 .card .card-text {
-    color: #666 !important;
+    color: #000 !important;
+}
+
+.card .card-subtitle {
+    color: #000 !important;
 }
 
 .card .text-muted {
-    color: #888 !important;
+    color: #000 !important;
 }
 
 #emptyInventory h4 {
