@@ -23,7 +23,9 @@ describe('Dungeon model functions', () => {
                 current_level: 2,
                 hero_name: 'EvaSmith',
                 total_points: 10,
-                total_xp: 0,
+                health: 100,
+                damage: 10,
+                defense: 10,
                 next_enemy: '???'
                 }
             ],
@@ -64,7 +66,9 @@ describe('Dungeon model functions', () => {
                     id: 1,
                     enemy_name: 'goblin',
                     enemy_level: 1,
-                    enemy_xp: 0
+                    enemy_health: 50,
+                    enemy_damage: 10,
+                    enemy_defense: 10
                     }
                 ],
                 rowCount: 1
@@ -75,6 +79,8 @@ describe('Dungeon model functions', () => {
             expect(dungeon.level).toBe(1);
             expect(dungeon.hero.name).toBe('EvaSmith');
             expect(dungeon.enemy.name).toBe('goblin');
+            expect(dungeon.hero.att - dungeon.enemy.def).toBe(0);
+            expect(dungeon.enemy.att - dungeon.hero.def).toBe(0);
         });
 
         it('Throws an error if the level is invalid', async () => {
@@ -129,7 +135,9 @@ describe('Dungeon model functions', () => {
                     id: 1,
                     enemy_name: 'goblin',
                     enemy_level: 1,
-                    enemy_xp: 0
+                    enemy_health: 50,
+                    enemy_damage: 10,
+                    enemy_defense: 10
                     }
                 ],
                 rowCount: 1
@@ -190,7 +198,9 @@ describe('Dungeon model functions', () => {
                     current_level: 2,
                     hero_name: 'EvaSmith',
                     total_points: 10,
-                    total_xp: 0,
+                    health: 100,
+                    damage: 10,
+                    defense: 10,
                     next_enemy: '???'
                     }
                 ],

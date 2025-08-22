@@ -14,7 +14,7 @@ class Dungeon {
         if (response.rowCount != 1) throw new Error('Database failed to return specified hero...');
         const values = response.rows[0];
 
-        return { 'name': values.hero_name, 'hp': 100, 'att': 10, 'def': 10, 'level': values.current_level };
+        return { 'name': values.hero_name, 'hp': values.health, 'att': values.damage, 'def': values.defense, 'level': values.current_level };
     }
 
     static async loadLevel(hero) {
@@ -24,8 +24,7 @@ class Dungeon {
 
         if (response.rowCount != 1) throw new Error('Database failed to return specified enemy...');
         const values = response.rows[0];
-        const enemy = new Enemy(values.enemy_name, 20, 10, 10);
-        // const enemy = new Enemy(values.enemy_name, 2000, 10, 10);
+        const enemy = new Enemy(values.enemy_name, values.enemy_health, values.enemy_damage, values.enemy_defense);
 
         return new Dungeon(hero.level, hero, enemy);
     }
