@@ -76,9 +76,9 @@ const modifyQuest = async (req, res) => {
         const modifiedQuest = await Quest.getByUserAndQuest(userId, questId);
         
         await modifiedQuest.modify({
-            title: req.body.title,
-            description: req.body.description,
-            category: req.body.category
+            title,
+            description,
+            category
         });
 
         return res.status(200).json(modifiedQuest);
