@@ -19,6 +19,11 @@ const mockStatus = jest.fn(() => ({
 
 const mockRes = { status: mockStatus };
 
+jest.mock('../../database/connect.js', () => ({
+    query: jest.fn(),
+    end: jest.fn()
+}));
+
 describe('User Controller', () => {
     beforeEach(() => jest.clearAllMocks());
 

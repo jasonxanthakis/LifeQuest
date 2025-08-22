@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </label>
             </div>
             <button class="btn btn-sm btn-outline-secondary edit-btn">Edit</button>
+            <button class="btn btn-sm btn-outline-danger delete-btn">Delete</button>
           </div>
         </div>
       </div>
@@ -97,6 +98,14 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           alert('Please fill in all fields');
         }
+      }
+    });
+
+    // Add delete functionality
+    const deleteBtn = card.querySelector('.delete-btn');
+    deleteBtn.addEventListener('click', function() {
+      if (confirm('Are you sure you want to delete this quest?')) {
+        card.remove();
       }
     });
 
