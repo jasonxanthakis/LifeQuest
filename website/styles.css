@@ -359,16 +359,11 @@ body {
 /* Rubik Moonrocks style for Level 5 */
 /* Glowing battle level */
 .battle-level {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: 3.2rem;
-  font-weight: bold;
-  background: linear-gradient(45deg, #0e4d05b3
-, #0e4d05b3
-);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 12px rgba(18, 45, 13, 0.9),
-               0 0 20px rgba(67, 212, 45, 0.8);
+  font-family: 'Rubik Moonrocks', sans-serif;
+  font-size: 3rem;
+  font-weight: 400;
+  color: #1a1913;
+  text-shadow: 0 0 13px rgba(14, 77, 5, 0.7);
 }
 
 /* Cleaner player/enemy names */
@@ -495,7 +490,7 @@ body {
 
 .win-text {
     font-family: 'Rubik Moonrocks', sans-serif;
-    font-size: 2.2rem;
+    font-size: 4rem;
     font-weight: 400;
     color: #1a1913;
     text-shadow: 0 0 13px rgba(5, 63, 63, 0.7);
