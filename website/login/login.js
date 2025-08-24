@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const response = await sendPostRequest(url, data);
     const result = await response.json();
+    alert(result.error);
 
     if (response.status == 200) {
       localStorage.setItem("token", result.token);
@@ -51,4 +52,8 @@ async function sendPostRequest(url, data) {
     const resp = await fetch(url, options);
 
     return resp;
+};
+
+module.exports = {
+  sendPostRequest
 };

@@ -138,14 +138,15 @@ function addQuestCard( questId, questTitle, description, category, points=3) {
           cardTitle.textContent = newTitle;
           cardSubtitle.textContent = newCategory;
           cardText.textContent = newDescription;
+
+          // Change button back to Edit
+          editBtn.textContent = 'Edit';
+          editBtn.className = 'btn btn-sm btn-outline-secondary edit-btn';
         }
         else {
           console.error('Error: ', response.error)
         }
         
-        // Change button back to Edit
-        editBtn.textContent = 'Edit';
-        editBtn.className = 'btn btn-sm btn-outline-secondary edit-btn';
       } else {
         alert('Please fill in all fields');
       }
