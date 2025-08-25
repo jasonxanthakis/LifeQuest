@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function simulateBattle() {
     const API_URL = 'http://localhost:3000';
 
-    let url = API_URL + `/dungeon/${1}/battle`;
+    let url = API_URL + `/dungeon/battle`;
 
     const response = await sendPatchRequest(url, {});
     const result = await response.json();

@@ -113,7 +113,7 @@ for (let btn of logout) {
 export async function loadDungeon() {
   const API_URL = 'http://localhost:3000';
 
-  let url = API_URL + `/dungeon/${1}`;
+  let url = API_URL + `/dungeon`;
 
   const response = await getRequest(url);
   const result = await response.json();
