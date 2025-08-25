@@ -7,13 +7,13 @@
         <title>Quests</title>
         <meta name="description" content="width=device-width, initial-scale=1.0">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../styles.css">
+        <link rel="stylesheet" href="../../styles.css">
 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" defer></script>
-        <script src="shop.js" defer></script>
+        <script type="module" src="shop.js" defer></script>
     </head>
     <body>
 
@@ -21,7 +21,7 @@
         <nav class="navbar navbar-expand-lg mainbar d-lg-none">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" href="#">
-                    <img src="../assets/logo.png" alt="LifeQuest Logo" height="50" class="me-2">
+                    <img src="../../assets/logo.png" alt="LifeQuest Logo" height="50" class="me-2">
                 </a>
                 <div class="d-flex ms-auto align-items-center">
                     <button class="navbar-toggler mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar" aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,9 +35,9 @@
                 <!-- Top navbar: collapsable navbar -->
                 <div class="collapse navbar-collapse" id="mobileNavbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="../quests/quests-board/quests.html">Quests</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../../quests/quests-board/quests.html">Quests</a></li>
                         <li class="nav-item"><a class="nav-link active" href="../inventory/inventory.html">Hero</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../dungeon/dungeon.html">Dungeon</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../../dungeon/dungeon.html">Dungeon</a></li>
                     </ul>
                 </div>
             </div>
@@ -49,12 +49,12 @@
             <!-- Sidebar (desktop only) -->
                 <nav class="col-lg-2 d-none d-lg-flex flex-column sidebar p-3 align-items-center text-center min-vh-100">
                     <a class="navbar-brand d-flex align-items-center" href="#">
-                        <img class="mb-3" src="../assets/logo.png" alt="LifeQuest Logo" height="50" class="me-2">
+                        <img class="mb-3" src="../../assets/logo.png" alt="LifeQuest Logo" height="50" class="me-2">
                     </a>
                     <ul class="nav flex-column">
-                        <li class="nav-item my-1"><a class="nav-link text-white" href="../quests/quests-board/quests.html">Quests</a></li>
+                        <li class="nav-item my-1"><a class="nav-link text-white" href="../../quests/quests-board/quests.html">Quests</a></li>
                         <li class="nav-item my-1"><a class="nav-link text-white active" href="../inventory/inventory.html">Hero</a></li>
-                        <li class="nav-item my-1"><a class="nav-link text-white" href="../dungeon/dungeon.html">Dungeon</a></li>
+                        <li class="nav-item my-1"><a class="nav-link text-white" href="../../dungeon/dungeon.html">Dungeon</a></li>
                     </ul>
                     <div class="mt-auto">
                         <button id="logoutbtn" type="button" class="btn nav-btn btn-outline-none me-2 logout">
@@ -89,7 +89,7 @@
                             <!-- Health Potion -->
                             <div class="col-md-4 mb-4">
                                 <div class="card h-100">
-                                    <img src="../assets/health-potion.jpg" class="card-img-top" alt="Health Potion" style="height: 200px; object-fit: cover;">
+                                    <img src="../../assets/health-potion.jpg" class="card-img-top" alt="Health Potion" style="height: 200px; object-fit: cover;">
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">Health Potion</h5>
                                         <p class="card-text">Restores 50 HP instantly. Perfect for tough battles!</p>
@@ -106,7 +106,7 @@
                             <!-- Magic Sword -->
                             <div class="col-md-4 mb-4">
                                 <div class="card h-100">
-                                    <img src="../assets/magic-sword.jpeg" class="card-img-top" alt="Magic Sword" style="height: 200px; object-fit: cover;">
+                                    <img src="../../assets/magic-sword.jpeg" class="card-img-top" alt="Magic Sword" style="height: 200px; object-fit: cover;">
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">Magic Sword</h5>
                                         <p class="card-text">A powerful weapon that increases attack damage by 15.</p>
@@ -123,7 +123,7 @@
                             <!-- Shield of Protection -->
                             <div class="col-md-4 mb-4">
                                 <div class="card h-100">
-                                    <img src="../assets/shield-of-protection.jpg" class="card-img-top" alt="Shield of Protection" style="height: 200px; object-fit: cover;">
+                                    <img src="../../assets/shield-of-protection.jpg" class="card-img-top" alt="Shield of Protection" style="height: 200px; object-fit: cover;">
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">Shield of Protection</h5>
                                         <p class="card-text">Reduces incoming damage by 20%. Essential for defense!</p>
@@ -140,7 +140,7 @@
                             <!-- Mana Crystal -->
                             <div class="col-md-4 mb-4">
                                 <div class="card h-100">
-                                    <img src="../assets/mana-crystal.jpg" class="card-img-top" alt="Mana Crystal" style="height: 200px; object-fit: cover;">
+                                    <img src="../../assets/mana-crystal.jpg" class="card-img-top" alt="Mana Crystal" style="height: 200px; object-fit: cover;">
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">Mana Crystal</h5>
                                         <p class="card-text">Restores 30 MP and increases spell power temporarily.</p>
@@ -157,7 +157,7 @@
                             <!-- Lucky Charm -->
                             <div class="col-md-4 mb-4">
                                 <div class="card h-100">
-                                    <img src="../assets/lucky-charm.jpg" class="card-img-top" alt="Lucky Charm" style="height: 200px; object-fit: cover;">
+                                    <img src="../../assets/lucky-charm.jpg" class="card-img-top" alt="Lucky Charm" style="height: 200px; object-fit: cover;">
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">Lucky Charm</h5>
                                         <p class="card-text">Increases your chance of finding rare items by 15%.</p>
@@ -174,7 +174,7 @@
                             <!-- Premium Quest Scroll -->
                             <div class="col-md-4 mb-4">
                                 <div class="card h-100">
-                                    <img src="../assets/premium-quest-scroll.jpg" class="card-img-top" alt="Premium Quest Scroll" style="height: 200px; object-fit: cover;">
+                                    <img src="../../assets/premium-quest-scroll.jpg" class="card-img-top" alt="Premium Quest Scroll" style="height: 200px; object-fit: cover;">
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">Premium Quest Scroll</h5>
                                         <p class="card-text">Unlocks a special high-reward quest with epic loot!</p>

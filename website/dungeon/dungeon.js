@@ -90,7 +90,7 @@ export function setupFightButton() {
   if (fightBtn) {
     fightBtn.addEventListener("click", () => {
       // Redirect to battle page
-      window.location.href = "../battle_page/battlepage.html";
+      window.location.href = "./battle_page/battlepage.html";
     });
   }
 }
