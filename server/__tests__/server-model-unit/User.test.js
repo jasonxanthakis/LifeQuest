@@ -156,6 +156,7 @@ describe('User model functions', () => {
     });
 
     it('deletes a user by id', async () => {
+        db.query.mockResolvedValueOnce({});
         db.query.mockResolvedValueOnce({
             rows: [
                 {
