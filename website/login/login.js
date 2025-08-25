@@ -1,59 +1,63 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const API_URL = 'http://localhost:3000';
-  const form = document.querySelector('form');
+export async function handleLogin(usernameInput, passwordInput) {
+  const API_URL = 'http://localhost:3000';
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  const username = usernameInput.value.trim(); 
+  const password = passwordInput.value.trim();
 
-    const username = document.getElementById('username').value.trim(); 
-    const password = document.getElementById('password').value.trim();
+  // Basic validation
+  if (!username || !password) {
+    alert('Please fill in all fields.');
+    return;
+  }
 
-    // Basic validation
-    if (!username || !password) {
-      alert('Please fill in all fields.');
-      return;
-    }
+  const data = {
+    username: username,
+    password: password
+  }
 
-    const data = {
-      username: username,
-      password: password
-    }
+  let url = API_URL + '/user/login';
 
-    let url = API_URL + '/user/login';
+  const response = await sendPostRequest(url, data);
+  const result = await response.json();
 
-    const response = await sendPostRequest(url, data);
-    const result = await response.json();
+  if (response.status == 200) {
+    localStorage.setItem("token", result.token);
+
+    usernameInput.value = '';
+    passwordInput.value = '';
+
+    window.location.assign("../quests/quests-board/quests.html");
+  } else {
     alert(result.error);
+    return;
+  }
+}
 
-    if (response.status == 200) {
-      localStorage.setItem("token", result.token);
+export async function sendPostRequest(url, data) {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  }
 
-      document.getElementById('username').value = '';
-      document.getElementById('password').value = '';
+  const resp = await fetch(url, options);
 
-      window.location.assign("../quests/quests-board/quests.html");
-    } else {
-      alert(result.error);
-      return;
-    }
+  return resp;
+};
 
+if (typeof window !== undefined) {
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+
+      handleLogin(usernameInput, passwordInput);
+    });
   });
-});
-
-async function sendPostRequest(url, data) {
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    }
-
-    const resp = await fetch(url, options);
-
-    return resp;
-};
-
-module.exports = {
-  sendPostRequest
-};
+}

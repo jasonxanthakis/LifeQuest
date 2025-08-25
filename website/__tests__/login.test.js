@@ -345,8 +345,19 @@
 //     });
 // });
 
+window.alert = vi.fn();
+
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { sendPostRequest } from '../login/login.js';
+import { sendPostRequest, handleLogin  } from '../login/login.js';
+// const {sendPostRequest, handleLogin} = require('../login/login.js');
+
+document.body.innerHTML = `
+  <input id="username" />
+  <input id="password" />
+`;
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+await handleLogin(usernameInput, passwordInput);
 
 // Mock globals
 global.fetch = vi.fn();
@@ -358,6 +369,40 @@ window.location = { assign: vi.fn() };
 // Import login.js to execute the DOMContentLoaded listener
 import '../login/login.js';
 
+describe('sendPostRequest', () => {
+  beforeEach(() => {
+    fetch.mockReset();
+  });
+
+  it('sends POST request with correct data', async () => {
+    const mockResponse = { token: 'abc123' };
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => mockResponse
+    });
+
+    const data = { username: 'user', password: 'pass' };
+    const url = 'http://localhost:3000/user/login';
+
+    const response = await sendPostRequest(url, data);
+    const json = await response.json();
+
+    expect(fetch).toHaveBeenCalledWith(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    expect(json).toEqual(mockResponse);
+  });
+
+  it('handles fetch rejection', async () => {
+    fetch.mockRejectedValueOnce(new Error('Network failure'));
+
+    await expect(sendPostRequest('url', {})).rejects.toThrow('Network failure');
+  });
+});
+
 describe('Login form submission', () => {
   let form, usernameInput, passwordInput;
 
@@ -366,19 +411,35 @@ describe('Login form submission', () => {
 
     // Setup DOM
     document.body.innerHTML = `
-      <form id="loginForm">
-        <input id="username" />
-        <input id="password" />
-        <button type="submit">Submit</button>
+      <form>
+        <div class="mb-3 text-start">
+          <label for="username" class="form-label text-black">Username</label>
+          <input type="text" class="form-control" id="username" placeholder="Enter username">
+        </div>
+        <div class="mb-3 text-start">
+          <label for="password" class="form-label text-black">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter password">
+        </div>
+        <button type="submit" class="btn login-btn w-100 mb-3">Login</button>
       </form>
     `;
 
-    form = document.querySelector('form');
     usernameInput = document.getElementById('username');
     passwordInput = document.getElementById('password');
+  });
 
-    // Trigger DOMContentLoaded so the event listener attaches
-    document.dispatchEvent(new Event('DOMContentLoaded'));
+  afterEach(() => {
+    // Reset mock calls between tests
+    vi.clearAllMocks();
+  });
+
+  it('alerts if fields are empty', async () => {
+    usernameInput.value = '';
+    passwordInput.value = '';
+
+    await handleLogin(usernameInput, passwordInput);
+
+    expect(alert).toHaveBeenCalledWith('Please fill in all fields.');
   });
 
   it('should handle successful login', async () => {
@@ -391,9 +452,7 @@ describe('Login form submission', () => {
       json: async () => ({ token: 'abc123', error: '' })
     });
 
-    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-
-    await new Promise((r) => setTimeout(r, 0));
+    await handleLogin(usernameInput, passwordInput);
 
     expect(fetch).toHaveBeenCalledWith('http://localhost:3000/user/login', {
       method: 'POST',
@@ -404,6 +463,7 @@ describe('Login form submission', () => {
     expect(usernameInput.value).toBe('');
     expect(passwordInput.value).toBe('');
     expect(window.location.assign).toHaveBeenCalledWith('../quests/quests-board/quests.html');
+    expect(alert).not.toHaveBeenCalled();
   });
 
   it('should alert if login fails', async () => {
@@ -416,9 +476,7 @@ describe('Login form submission', () => {
       json: async () => ({ error: 'Invalid credentials' })
     });
 
-    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-
-    await new Promise((r) => setTimeout(r, 0));
+    await handleLogin(usernameInput, passwordInput);
 
     expect(alert).toHaveBeenCalledWith('Invalid credentials');
     expect(localStorage.setItem).not.toHaveBeenCalled();
