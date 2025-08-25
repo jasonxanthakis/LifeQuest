@@ -9,7 +9,7 @@ let container;
 
 beforeEach(() => {
   const html = fs.readFileSync(
-    path.resolve(__dirname, "../inventory/inventory.html"),
+    path.resolve(__dirname, "../../hero/inventory/inventory.html"),
     "utf8"
   );
   document.documentElement.innerHTML = html;

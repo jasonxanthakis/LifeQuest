@@ -26,14 +26,9 @@ let currentPoints = 0;
 // Load shop items and user points from backend
 async function loadShopData() {
   try {
-    const token = localStorage.getItem('token');
-    const userid = getUserId();
+    const url = `http://localhost:3000/hero/user/shop`;
     
-    const response = await fetch(`http://localhost:3000/hero/user/shop/${userid}`, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await getRequest(url);
     
     const data = await response.json();
     
@@ -81,16 +76,16 @@ function createShopItemCard(item) {
   
   // Map item names to image files
   const imageMap = {
-    'Health Potion': '../assets/health-potion.jpg',
-    'Magic Sword': '../assets/magic-sword.jpeg',
-    'Shield': '../assets/shield-of-protection.jpg',
-    'Shield of Protection': '../assets/shield-of-protection.jpg',
-    'Mana Crystal': '../assets/mana-crystal.jpg',
-    'Lucky Charm': '../assets/lucky-charm.jpg',
-    'Premium Quest Scroll': '../assets/premium-quest-scroll.jpg'
+    'Health Potion': '../../assets/health-potion.jpg',
+    'Magic Sword': '../../assets/magic-sword.jpeg',
+    'Shield': '../../assets/shield-of-protection.jpg',
+    'Shield of Protection': '../../assets/shield-of-protection.jpg',
+    'Mana Crystal': '../../assets/mana-crystal.jpg',
+    'Lucky Charm': '../../assets/lucky-charm.jpg',
+    'Premium Quest Scroll': '../../assets/premium-quest-scroll.jpg'
   };
   
-  const imageSrc = imageMap[item.item_name] || '../assets/placeholder-item.png';
+  const imageSrc = imageMap[item.item_name] || '../../assets/placeholder-item.png';
   
   col.innerHTML = `
     <div class="card h-100">
@@ -124,8 +119,8 @@ async function handlePurchase(event) {
   const itemCost = parseInt(button.getAttribute('data-item-cost'));
   const card = button.closest('.card');
   const itemTitle = card.querySelector('.card-title').textContent;
-  const userid = getUserId();
-  const token = localStorage.getItem('token');
+
+  const url = 'http://localhost:3000/hero/user/shop/item';
   
   // Check if hero has enough points
   if (currentPoints < itemCost) {
@@ -134,14 +129,9 @@ async function handlePurchase(event) {
   }
   
   try {
-    const response = await fetch('http://localhost:3000/hero/user/shop/item', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ userid, itemid: itemId })
-    });
-    
+    const dat = { itemid: itemId };
+
+    const response = await sendPostRequest(url, dat);
     const data = await response.json();
     
     if (response.ok) {
@@ -234,3 +224,32 @@ for (let btn of logout) {
     window.location.assign('../../login/login.html');
   });
 }
+
+async function getRequest(url) {
+  const options = {
+    method: "GET",
+    headers: {
+      "Authorization": localStorage.getItem("token"),
+      "Content-Type": "application/json"
+    }
+  }
+
+  const resp = await fetch(url, options);
+
+  return resp;
+};
+
+async function sendPostRequest(url, data) {
+    const options = {
+        method: "POST",
+        headers: {
+          "Authorization": localStorage.getItem("token"),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }
+
+    const resp = await fetch(url, options);
+
+    return resp;
+};

@@ -8,7 +8,7 @@
         <meta name="description" content="width=device-width, initial-scale=1.0">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="../../styles.css">
-        <script src="quests.js" defer></script>
+        <script type="module" src="quests.js" defer></script>
 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
@@ -36,7 +36,7 @@
                 <div class="collapse navbar-collapse" id="mobileNavbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link active" href="../quests-board/quests.html">Quests</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../../inventory/inventory.html">Hero</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../../hero/inventory/inventory.html">Hero</a></li>
                         <li class="nav-item"><a class="nav-link" href="../../dungeon/dungeon.html">Dungeon</a></li>
                     </ul>
                 </div>
@@ -53,7 +53,7 @@
                     </a>
                     <ul class="nav flex-column">
                         <li class="nav-item my-1"><a class="nav-link text-white active" href="../quests-board/quests.html">Quests</a></li>
-                        <li class="nav-item my-1"><a class="nav-link text-white" href="../../inventory/inventory.html">Hero</a></li>
+                        <li class="nav-item my-1"><a class="nav-link text-white" href="../../hero/inventory/inventory.html">Hero</a></li>
                         <li class="nav-item my-1"><a class="nav-link text-white" href="../../dungeon/dungeon.html">Dungeon</a></li>
                     </ul>
                     <div class="mt-auto">
@@ -69,8 +69,8 @@
                         <div class="container-fluid justify-content-center">
                             <ul class="navbar-nav flex-row">
                                 <li class="nav-item"><a class="nav-link text-black px-3 active" href="../quests-board/quests.html">Quests</a></li>
-                                <li class="nav-item"><a class="nav-link text-black px-3" href="#">Achievements</a></li>
-                                <li class="nav-item"><a class="nav-link text-black px-3" href="../../metrics/metrics.html">Metrics</a></li>
+                                <li class="nav-item"><a class="nav-link text-black px-3" href="../achievements/achievements.html">Achievements</a></li>
+                                <li class="nav-item"><a class="nav-link text-black px-3" href="../metrics/metrics.html">Metrics</a></li>
                             </ul>
                         </div>
                     </nav>
@@ -103,14 +103,6 @@
                             <div class="modal-body">
                                 <form id="questForm">
                                 <div class="mb-3">
-                                    <label for="questTitle" class="form-label">Title</label>
-                                    <input type="text" class="form-control" id="questTitle" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="questDescription" class="form-label">Description</label>
-                                    <textarea class="form-control" id="questDescription" rows="3" required></textarea>
-                                </div>
-                                <div class="mb-3">
                                     <label for="questCategory" class="form-label">Category</label>
                                     <select class="form-select" id="questCategory" required>
                                     <option value="">Choose...</option>
@@ -118,11 +110,19 @@
                                     <option value="Exercise">Exercise</option>
                                     </select>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="questTitle" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="questTitle" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="questDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="questDescription" rows="3" required></textarea>
+                                </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" form="questForm" class="btn btn-purple">Add Quest</button>
+                                <button id="addQuestBtn" type="submit" form="questForm" class="btn btn-purple">Add Quest</button>
                             </div>
                             </div>
                         </div>

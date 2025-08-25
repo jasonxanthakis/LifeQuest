@@ -5,7 +5,7 @@ const images = [
   "dragon.jpeg",
   "giant.jpeg",
   "goblin.jpeg",
-  "golem.jpeg",
+  "golum.jpeg",
   "health-potion.jpg",
   "lucky-charm.jpg",
   "magic-sword.jpeg",
@@ -26,28 +26,22 @@ const monsters = [
   { name: "Dragon", image: "dragon.jpeg" },
   { name: "Giant", image: "giant.jpeg" },
   { name: "Goblin", image: "goblin.jpeg" },
-  { name: "Golem", image: "golem.jpeg" },
+  { name: "Golum", image: "golum.jpeg" },
   { name: "Minotaur", image: "minotaur.jpeg" },
   { name: "Werewolf", image: "werewolf.jpeg" },
   { name: "Witch", image: "witch.jpg" },
   { name: "Zombie", image: "zombie.jpeg" }
 ];
 
-// Function to get a random item from an array
-function getRandomItem(arr) {
-  const index = Math.floor(Math.random() * arr.length);
-  return arr[index];
-}
-
 // Set level text to level from database
-function setLevel(level) {
+export function setLevel(level) {
   const levelText = document.querySelector(".battle-level");
 
   if (levelText) levelText.textContent = `Level ${level}`
 }
 
 // Set random images for player and enemy
-function setBattleImages(result) {
+export function setBattleImages(result) {
   const playerImg = document.querySelector(".battle-characters .character:nth-child(1) img");
   const enemyImg = document.querySelector(".battle-characters .character:nth-child(3) img");
 
@@ -55,23 +49,24 @@ function setBattleImages(result) {
   if (playerImg) {
     playerImg.src = `../assets/knight.png`;
     const playerName = document.querySelector(".battle-characters .character:nth-child(1) .name");
-    if (playerName) playerName.textContent = result.hero.name;
+    if (playerName) playerName.textContent = result.hero?.name || "Hero";
   }
 
   // Enemy retrieved from database
-  if (enemyImg) {
+  if (enemyImg && result.enemy && result.enemy.name) {
     const enemy = monsters.find(
       m => m.name.toLowerCase() === result.enemy.name.toLowerCase()
     );
-    enemyImg.src = `../assets/${enemy.image}`;
-
-    const enemyName = document.querySelector(".battle-characters .character:nth-child(3) .name");
-    if (enemyName) enemyName.textContent = enemy.name;
+    if (enemy) {
+      enemyImg.src = `../assets/${enemy.image}`;
+      const enemyName = document.querySelector(".battle-characters .character:nth-child(3) .name");
+      if (enemyName) enemyName.textContent = enemy.name;
+    }
   }
 }
 
 // Set character statistics to statistics from database
-function setCharacterStatistics(result) {
+export function setCharacterStatistics(result) {
   const playerHp = document.querySelector(".battle-characters .character:nth-child(1) .health");
   const playerAtt = document.querySelector(".battle-characters .character:nth-child(1) .attack");
   const playerDef = document.querySelector(".battle-characters .character:nth-child(1) .defense");
@@ -90,12 +85,12 @@ function setCharacterStatistics(result) {
 }
 
 // Navigate to battle page on fight
-function setupFightButton() {
+export function setupFightButton() {
   const fightBtn = document.querySelector(".fight-btn");
   if (fightBtn) {
     fightBtn.addEventListener("click", () => {
       // Redirect to battle page
-      window.location.href = "../battle_page/battlepage.html";
+      window.location.href = "./battle_page/battlepage.html";
     });
   }
 }
@@ -115,10 +110,10 @@ for (let btn of logout) {
   });
 }
 
-async function loadDungeon() {
+export async function loadDungeon() {
   const API_URL = 'http://localhost:3000';
 
-  let url = API_URL + `/dungeon/${1}`;
+  let url = API_URL + `/dungeon`;
 
   const response = await getRequest(url);
   const result = await response.json();
@@ -128,16 +123,16 @@ async function loadDungeon() {
   setCharacterStatistics(result);
 }
 
-async function getRequest(url) {
-    const options = {
-        method: "GET",
-        headers: {
-            "Authorization": localStorage.getItem("token"),
-            "Content-Type": "application/json"
-        }
+export async function getRequest(url) {
+  const options = {
+    method: "GET",
+    headers: {
+      "Authorization": localStorage.getItem("token"),
+      "Content-Type": "application/json"
     }
+  }
 
-    const resp = await fetch(url, options);
+  const resp = await fetch(url, options);
 
-    return resp;
+  return resp;
 };

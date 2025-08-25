@@ -20,7 +20,14 @@ class Dungeon {
     static async loadLevel(hero) {
         if (hero.level < 1) throw new Error('Invalid level. Something went wrong...');
 
-        const response = await db.query("SELECT * FROM enemy WHERE enemy_level = $1;", [hero.level % 10]);
+        let level = 0;
+        if (hero.level % 10 != 0) {
+            level = hero.level % 10;
+        } else {
+            level = 10;
+        }
+
+        const response = await db.query("SELECT * FROM enemy WHERE enemy_level = $1;", [level]);
 
         if (response.rowCount != 1) throw new Error('Database failed to return specified enemy...');
         const values = response.rows[0];
@@ -32,13 +39,13 @@ class Dungeon {
     static pointsWon(dungeon) {
         const unitValue = dungeon.level % 10;
         if (unitValue == 0) {
-            const powersOf10 = Math.floor(Math.log10(dungeon.level)) + 1;
-            console.log(`(${unitValue + 1} * 10) * ${powersOf10}`);
-            const points = ((unitValue + 1) * 10 ) * powersOf10;
+            const powersOf10 = Math.floor(Math.log10(dungeon.level) + 1);
+            // console.log(`(${10} * 10) * ${powersOf10}`);
+            const points = ((10) * 10 ) * powersOf10;
             return points;
         }
         const powersOf10 = Math.floor(Math.log10(dungeon.level)) + 1;
-        console.log(`(${unitValue} * 10) * ${powersOf10}`);
+        // console.log(`(${unitValue} * 10) * ${powersOf10}`);
         const points = (unitValue * 10 ) * powersOf10;
         return points;
     }

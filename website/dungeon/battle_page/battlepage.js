@@ -5,7 +5,7 @@ const images = [
     "dragon.jpeg",
     "giant.jpeg",
     "goblin.jpeg",
-    "golem.jpeg",
+    "golum.jpeg",
     "health-potion.jpg",
     "lucky-charm.jpg",
     "magic-sword.jpeg",
@@ -26,7 +26,7 @@ const monsters = [
     { name: "Dragon", image: "dragon.jpeg" },
     { name: "Giant", image: "giant.jpeg" },
     { name: "Goblin", image: "goblin.jpeg" },
-    { name: "Golem", image: "golem.jpeg" },
+    { name: "Golum", image: "golum.jpeg" },
     { name: "Minotaur", image: "minotaur.jpeg" },
     { name: "Werewolf", image: "werewolf.jpeg" },
     { name: "Witch", image: "witch.jpg" },
@@ -37,15 +37,25 @@ const monsters = [
 function loadWinnerImage(result) {
     const winnerName = document.querySelector(".battle-container .character .name");
     const winnerImg = document.querySelector(".battle-container .character img");
+    
     if (result.won) {
-        if (winnerName) winnerName.textContent = result.winner.name;
-        if (winnerImg) winnerImg.src = `../assets/knight.png`;
+        if (winnerName) winnerName.textContent = result.winner?.name || "Hero";
+        if (winnerImg) winnerImg.src = `../../assets/knight.png`;
     } else {
-        const enemy = monsters.find(
-            m => m.name.toLowerCase() === result.winner.name.toLowerCase()
-        );
-        if (winnerName) winnerName.textContent = enemy.name;
-        if (winnerImg) winnerImg.src = `../assets/${enemy.image}`;
+        // Check if result.winner exists before trying to access its name
+        if (result.winner && result.winner.name) {
+            const enemy = monsters.find(
+                m => m.name.toLowerCase() === result.winner.name.toLowerCase()
+            );
+            if (enemy) {
+                if (winnerName) winnerName.textContent = enemy.name;
+                if (winnerImg) winnerImg.src = `../../assets/${enemy.image}`;
+            }
+        } else {
+            // Fallback if no winner info
+            if (winnerName) winnerName.textContent = "Enemy";
+            if (winnerImg) winnerImg.src = `../../assets/goblin.jpeg`;
+        }
     }
 }
 
@@ -54,7 +64,7 @@ const logout = document.getElementsByClassName('logout');
 for (let btn of logout) {
     btn.addEventListener('click', () => {
         localStorage.removeItem('token');
-        window.location.assign('../login/login.html');
+        window.location.assign('../../login/login.html');
     });
 }
 
@@ -67,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function simulateBattle() {
     const API_URL = 'http://localhost:3000';
 
-    let url = API_URL + `/dungeon/${1}/battle`;
+    let url = API_URL + `/dungeon/battle`;
 
     const response = await sendPatchRequest(url, {});
     const result = await response.json();

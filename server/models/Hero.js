@@ -1,23 +1,25 @@
 const db = require('../database/connect');
 
 class Hero {
-    constructor({ id, user_id, current_level, hero_name, total_points, total_XP, next_enemy }) {
+    constructor({ id, user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy }) {
         this.id = id;
         this.user_id = user_id;
         this.current_level = current_level;
         this.hero_name = hero_name;
         this.total_points = total_points;
-        this.total_XP = total_XP;
+        this.hp = health;
+        this.att = damage;
+        this.def = defense;
         this.next_enemy = next_enemy;
     }
 
-    // Get hero by user_id
-    static async getByUserId(userId) {
-        const response = await db.query('SELECT * FROM hero WHERE user_id = $1', [userId]);
-        if (response.rows.length === 0) {
-            throw new Error('Hero not found');
-        }
-        return new Hero(response.rows[0]);
+    // Get hero by username
+    static async getUserIdByUsername(username) {
+        const response = await db.query("SELECT id FROM users WHERE username = $1;", [username]);
+        
+        if (response.rowCount != 1) throw new Error('Database failed to find specified user...');
+
+        return response.rows[0].id;
     }
 
     // Get hero's points
@@ -35,7 +37,7 @@ class Hero {
             SELECT hi.id as hero_items_id, hi.hero_id, hi.item_id, hi.is_equipped, 
                    i.item_name, i.description, i.item_cost 
             FROM hero_items hi 
-            JOIN items i ON hi.item_id = i.id 
+            JOIN items i ON hi.item_id = i.item_id 
             JOIN hero h ON hi.hero_id = h.id
             WHERE h.user_id = $1
         `;
@@ -45,7 +47,7 @@ class Hero {
 
     // Get all shop items
     static async getShopItems() {
-        const query = 'SELECT id as item_id, item_name, description, item_cost FROM items ORDER BY item_cost ASC';
+        const query = 'SELECT item_id, item_name, description, item_cost FROM items ORDER BY item_cost ASC';
         const response = await db.query(query);
         return response.rows;
     }
@@ -68,7 +70,7 @@ class Hero {
             const currentPoints = heroResult.rows[0].total_points || 0;
 
             // Get item cost
-            const itemQuery = 'SELECT item_cost FROM items WHERE id = $1';
+            const itemQuery = 'SELECT item_cost FROM items WHERE item_id = $1';
             const itemResult = await db.query(itemQuery, [itemId]);
 
             if (itemResult.rows.length === 0) {
@@ -118,8 +120,20 @@ class Hero {
         }
 
         // Update the is_equipped status
-        const updateQuery = 'UPDATE hero_items SET is_equipped = $1 WHERE id = $2';
+        let updateQuery = 'UPDATE hero_items SET is_equipped = $1 WHERE id = $2';
         await db.query(updateQuery, [isEquipped, heroItemsId]);
+
+        // Get the item stats
+        const itemQuery = 'SELECT * FROM items JOIN hero_items ON hero_items.item_id = items.item_id WHERE hero_items.id = $1;';
+        const item = (await db.query(itemQuery, [heroItemsId])).rows[0];
+        
+        // Update the hero stats based on the equipment
+        if (isEquipped) {
+            updateQuery = 'UPDATE hero SET health = health + $1, damage = damage + $2, defense = defense + $3 WHERE user_id = $4';
+        } else {
+            updateQuery = 'UPDATE hero SET health = health - $1, damage = damage - $2, defense = defense - $3 WHERE user_id = $4';
+        }
+        await db.query(updateQuery, [item.item_health, item.item_damage, item.item_defense, userId]);
 
         return { success: true };
     }
@@ -141,28 +155,12 @@ class Hero {
     // Create a new hero for a user
     static async create(userId, heroName) {
         const query = `
-            INSERT INTO hero (user_id, current_level, hero_name, total_points, total_XP, next_enemy) 
-            VALUES ($1, 1, $2, 0, 0, 'Goblin') 
+            INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy) 
+            VALUES ($1, 1, $2, 0, 0, 0, 0, 'Goblin') 
             RETURNING *
         `;
         const response = await db.query(query, [userId, heroName]);
         return new Hero(response.rows[0]);
-    }
-
-    // Instance methods for updating hero properties
-    async updatePoints(newPoints) {
-        await db.query('UPDATE hero SET total_points = $1 WHERE id = $2', [newPoints, this.id]);
-        this.total_points = newPoints;
-    }
-
-    async updateLevel(newLevel) {
-        await db.query('UPDATE hero SET current_level = $1 WHERE id = $2', [newLevel, this.id]);
-        this.current_level = newLevel;
-    }
-
-    async updateXP(newXP) {
-        await db.query('UPDATE hero SET total_XP = $1 WHERE id = $2', [newXP, this.id]);
-        this.total_XP = newXP;
     }
 }
 
