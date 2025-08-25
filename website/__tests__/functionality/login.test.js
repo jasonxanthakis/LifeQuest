@@ -346,7 +346,7 @@
 window.alert = vi.fn();
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { sendPostRequest, handleLogin  } from '../login/login.js';
+import { sendPostRequest, handleLogin  } from '../../login/login.js';
 
 // Mock globals
 global.fetch = vi.fn();

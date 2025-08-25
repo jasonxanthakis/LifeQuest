@@ -1,7 +1,7 @@
 window.alert = vi.fn();
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { sendPostRequest, handleSignup  } from '../signup/signup.js';
+import { sendPostRequest, handleSignup  } from '../../signup/signup.js';
 
 // Mock globals
 global.fetch = vi.fn();

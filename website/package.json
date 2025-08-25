@@ -32,7 +32,8 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "/__tests__/helpers.js"
+      "/__tests__/helpers.js",
+      "/__tests__/functionality/*"
     ],
     "testEnvironment": "jsdom"
   }

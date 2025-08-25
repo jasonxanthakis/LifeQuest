@@ -1,7 +1,7 @@
 window.alert = vi.fn();
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { setLevel, setBattleImages, setCharacterStatistics, setupFightButton, loadDungeon, getRequest } from '../dungeon/dungeon.js';
+import { setLevel, setBattleImages, setCharacterStatistics, setupFightButton, loadDungeon, getRequest } from '../../dungeon/dungeon.js';
 
 // Mock globals
 global.fetch = vi.fn();

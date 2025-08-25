@@ -7,9 +7,9 @@ export default defineConfig({
       'node_modules',
       'dist',
       '**/*.skip.test.js',
-      '**/inventory.test.js',
-      '**/quest.test.js',
-      '**/shop.test.js',
+      '**/inventory.spec.js',
+      '**/quest.spec.js',
+      '**/shop.spec.js',
     ],
     coverage: {
       provider: 'istanbul',
