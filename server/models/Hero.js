@@ -152,16 +152,16 @@ class Hero {
         return response.rows;
     }
 
-    // Create a new hero for a user
-    static async create(userId, heroName) {
-        const query = `
-            INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy) 
-            VALUES ($1, 1, $2, 0, 0, 0, 0, 'Goblin') 
-            RETURNING *
-        `;
-        const response = await db.query(query, [userId, heroName]);
-        return new Hero(response.rows[0]);
-    }
+    // // Create a new hero for a user
+    // static async create(userId, heroName) {
+    //     const query = `
+    //         INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy) 
+    //         VALUES ($1, 1, $2, 0, 0, 0, 0, 'Goblin') 
+    //         RETURNING *
+    //     `;
+    //     const response = await db.query(query, [userId, heroName]);
+    //     return new Hero(response.rows[0]);
+    // }
 }
 
 module.exports = Hero;
