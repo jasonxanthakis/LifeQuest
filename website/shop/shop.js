@@ -26,7 +26,7 @@ let currentPoints = 0;
 // Load shop items and user points from backend
 async function loadShopData() {
   try {
-    const url = `http://localhost:3000/hero/user/shop/${1}`;
+    const url = `http://localhost:3000/hero/user/shop`;
     
     const response = await getRequest(url);
     

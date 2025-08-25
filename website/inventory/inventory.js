@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Load inventory from backend instead of localStorage
 async function loadInventoryData() {
     try {
-        const url = `http://localhost:3000/hero/user/inventory/${1}`
+        const url = `http://localhost:3000/hero/user/inventory`
         
         const response = await getRequest(url);
         const data = await response.json();
