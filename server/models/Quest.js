@@ -14,22 +14,30 @@
 const db = require('../database/connect');
 
 class Quest {
-    constructor({ id, user_id, title, description, category, points_value, complete }){
+    constructor({ id, user_id, quest_title, description, category, points_value, complete }){
         this.id = id;
         this.user_id = user_id;
-        this.title = title;
+        this.title = quest_title;
         this.description = description;
         this.category = category;
         this.points = points_value;
         this.completed = complete;
     }
 
+    // Get hero by username
+    static async getUserIdByUsername(username) {
+        const response = await db.query("SELECT id FROM users WHERE username = $1;", [username]);
+        
+        if (response.rowCount != 1) throw new Error('Database failed to find specified user...');
+
+        return response.rows[0].id;
+    }
+
     static async create({ user_id, title, description, category, points_value, complete}){
-        const res = await db.query("INSERT INTO quests (user_id, quest_title, description, category, point_value, complete) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;", 
+        const res = await db.query("INSERT INTO quests (user_id, quest_title, description, category, points_value, complete) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;", 
             [user_id, title, description, category, points_value, complete]
         );
-        if(res.rows.length === 0) 
-            throw new Error("Couldn't create quest.")
+        if(res.rows.length === 0) throw new Error("Couldn't create quest.")
 
         return new Quest(res.rows[0]);
     }
