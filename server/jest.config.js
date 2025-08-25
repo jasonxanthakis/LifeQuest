@@ -26,7 +26,7 @@ module.exports = {
         testMatch: [
             "<rootDir>/__tests__/integration/integration-db/**/*.test.js",
             "<rootDir>/__tests__/integration/integration-flow/**/*.test.js",
-            "<rootDir>/__tests__/integration/integration-middleware/**/*.test.js"
+            "<rootDir>/__tests__/integration/integration-controller/**/*.test.js"
         ],
         setupFilesAfterEnv: ["<rootDir>/__tests__/jest.setup.js"],
         testEnvironment: "node",
