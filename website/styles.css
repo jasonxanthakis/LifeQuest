@@ -637,3 +637,70 @@ body {
 #emptyInventory a {
     color: #007bff !important;
 }
+
+/*----------Achievements-----------*/
+
+.achievement-header h2 {
+    color: #fff !important;
+}
+
+.stat-card {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.stat-card h4 {
+    color: #6f42c1 !important;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card p {
+    color: #666 !important;
+    font-size: 0.9rem;
+}
+
+.achievement-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid #6b5e81 !important;
+    border-radius: 8px !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.achievement-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.achievement-achieved {
+    border-color: #28a745 !important;
+    background-color: rgba(240, 255, 240, 0.95) !important;
+}
+
+.achievement-locked {
+    border-color: #6c757d !important;
+    background-color: rgba(248, 249, 250, 0.95) !important;
+}
+
+.achievement-locked .card-title,
+.achievement-locked .card-text {
+    color: #6c757d !important;
+}
+
+.achievement-achieved .card-title {
+    color: #155724 !important;
+    font-weight: bold;
+}
+
+.achievement-achieved .card-text {
+    color: #155724 !important;
+}
+
+.achievement-icon {
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.achievement-locked .achievement-icon {
+    filter: grayscale(100%) opacity(0.5);
+}

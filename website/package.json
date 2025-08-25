@@ -31,6 +31,8 @@
     "vitest": "^3.2.4"
   },
   "jest": {
+    "testEnvironment": "jsdom",
+    "verbose": true,
     "testPathIgnorePatterns": [
       "/__tests__/helpers.js",
       "/__tests__/functionality/*"
