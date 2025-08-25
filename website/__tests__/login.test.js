@@ -1,6 +1,4 @@
-// /**
-//  * @jest-environment jsdom
-// */
+
 
 // const { getAllByText, getByText, fireEvent } = require("@testing-library/dom");
 // require("@testing-library/jest-dom");
@@ -349,15 +347,6 @@ window.alert = vi.fn();
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { sendPostRequest, handleLogin  } from '../login/login.js';
-// const {sendPostRequest, handleLogin} = require('../login/login.js');
-
-document.body.innerHTML = `
-  <input id="username" />
-  <input id="password" />
-`;
-const usernameInput = document.getElementById('username');
-const passwordInput = document.getElementById('password');
-await handleLogin(usernameInput, passwordInput);
 
 // Mock globals
 global.fetch = vi.fn();
@@ -365,9 +354,6 @@ global.alert = vi.fn();
 global.localStorage = { setItem: vi.fn() };
 delete window.location;
 window.location = { assign: vi.fn() };
-
-// Import login.js to execute the DOMContentLoaded listener
-import '../login/login.js';
 
 describe('sendPostRequest', () => {
   beforeEach(() => {
@@ -404,7 +390,7 @@ describe('sendPostRequest', () => {
 });
 
 describe('Login form submission', () => {
-  let form, usernameInput, passwordInput;
+  let usernameInput, passwordInput;
 
   beforeEach(() => {
     vi.resetAllMocks();
@@ -481,5 +467,16 @@ describe('Login form submission', () => {
     expect(alert).toHaveBeenCalledWith('Invalid credentials');
     expect(localStorage.setItem).not.toHaveBeenCalled();
     expect(window.location.assign).not.toHaveBeenCalled();
+  });
+
+  it('throws on network error', async () => {
+    usernameInput.value = 'user';
+    passwordInput.value = 'pass';
+
+    fetch.mockRejectedValueOnce(new Error('Network failure'));
+
+    await expect(
+      handleLogin(usernameInput, passwordInput)
+    ).rejects.toThrow('Network failure');
   });
 });
