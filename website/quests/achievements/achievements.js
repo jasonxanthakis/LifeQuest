@@ -30,7 +30,7 @@ function displayAchievements(achievements, stats) {
     // Create achievements grid with title and images
     const achievementsHTML = `
         <div class="mb-4">
-            <h2 class="text-white">Your Achievements</h2>
+            <h2 class="page-title">Your Achievements</h2>
         </div>
         <div class="achievements-grid">
             <div class="row">
