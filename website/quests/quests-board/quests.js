@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let data = await response.json();
 
   if (data.length > 0) {
-    data.forEach(q => addQuestCard(q.id, q.title, q.description, q.category, q.points_value));
+    data.forEach(q => addQuestCard(q.id, q.title, q.category, q.description, q.points_value));
   }
 
   document.getElementById("addQuestBtn").addEventListener("click", (e) => {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const description = document.getElementById('questDescription').value.trim();
     const category = document.getElementById('questCategory').value;
 
-    if (!questTitle || !description || !category) return alert('Please fill in all fields');
+    if (!title || !description || !category) return alert('Please fill in all fields');
 
     url = 'http://localhost:3000/main/quests/';
 
@@ -30,9 +30,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         "Authorization": localStorage.getItem("token"),
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ title, description, category })
+      body: JSON.stringify({ title, category, description })
     }).then(r => r.json())
-      .then(q => addQuestCard(q.title, q.description, q.category, q.points))
+      .then(q => addQuestCard(q.id, q.title, q.category, q.description))
       .catch(console.error);
 
     questForm.reset();
@@ -41,16 +41,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 
-function addQuestCard( questId, questTitle, description, category, points=3) {
+function addQuestCard( questId, title, category, description, points=3) {
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start">
         <div class="flex-grow-1">
-          <h5 class="card-title">${questTitle}</h5>
+          <h5 class="card-title">${title}</h5>
           <h6 class="card-subtitle mb-2 text-muted">${category}</h6>
           <p class="card-text">${description}</p>
+          <h6 class="card-points">${points} points</h6>
         </div>
         <div class="d-flex flex-column gap-2">
           <div class="form-check form-switch">
