@@ -11,6 +11,7 @@ export default defineConfig({
       '**/inventory.spec.js',
       '**/quest.spec.js',
       '**/shop.spec.js',
+      '**/*.spec.js', // Exclude Jest spec files
     ],
     coverage: {
       provider: 'istanbul',
