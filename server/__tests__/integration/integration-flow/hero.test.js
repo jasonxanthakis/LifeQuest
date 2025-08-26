@@ -3,7 +3,6 @@ const request = require("supertest");
 
 let app;
 let token;
-let userId;
 
 describe("Server-side: Hero flow", () => {
     beforeAll(async () => {
@@ -27,9 +26,12 @@ describe("Server-side: Hero flow", () => {
             });
 
         token = signupRes.body.token;
-        userId = signupRes.body.user?.id || null;
-    });
 
+        jest.clearAllMocks();
+    });
+    
+    afterAll(() => jest.resetAllMocks());
+    
     it("should fetch shop items", async () => {
         const res = await request(app)
             .get("/hero/user/shop")

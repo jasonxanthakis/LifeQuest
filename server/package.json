@@ -12,6 +12,8 @@
     "setup-db": "node ./database/setup.js",
     "live": "live-server",
     "test": "jest --runInBand",
+    "test:unit": "jest --selectProjects unit --runInBand --watchAll",
+    "test:integration": "jest --selectProjects integration --runInBand",
     "watch": "jest --watchAll --verbose --detectOpenHandles --runInBand",
     "coverage": "jest --coverage"
   },
