@@ -14,8 +14,7 @@ const getUserAchievements = async (req, res) => {
         
         res.status(200).json({
             achievements: result.achievements,
-            current_streak: result.current_streak,
-            stats: await Achievements.getAchievementStats(userId)
+            current_streak: result.current_streak
         });
         
     } catch (error) {
@@ -23,13 +22,7 @@ const getUserAchievements = async (req, res) => {
         res.status(500).json({ 
             error: 'Failed to get achievements',
             achievements: [],
-            current_streak: 0,
-            stats: {
-                achieved_count: 0,
-                total_count: 9,
-                completion_percentage: 0,
-                current_streak: 0
-            }
+            current_streak: 0
         });
     }
 };

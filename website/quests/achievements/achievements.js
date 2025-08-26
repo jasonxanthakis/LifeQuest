@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Load achievements from backend
 async function loadAchievements() {
     try {
-        const url = `http://localhost:3000/main/1/achievements`;
+        const url = `http://localhost:3000/main/achievements`;
         
         const response = await getRequest(url);
         const data = await response.json();
@@ -27,40 +27,7 @@ async function loadAchievements() {
 function displayAchievements(achievements, stats) {
     const content = document.querySelector('main.content');
     
-    // Create achievement header with stats
-    const headerHTML = `
-        <div class="achievement-header mb-4">
-            <h2 class="text-white mb-3">Your Achievements</h2>
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="stat-card bg-light text-dark p-3 rounded text-center">
-                        <h4>${stats.achieved_count}</h4>
-                        <p class="mb-0">Achieved</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stat-card bg-light text-dark p-3 rounded text-center">
-                        <h4>${stats.total_count}</h4>
-                        <p class="mb-0">Total</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stat-card bg-light text-dark p-3 rounded text-center">
-                        <h4>${stats.completion_percentage}%</h4>
-                        <p class="mb-0">Complete</p>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stat-card bg-light text-dark p-3 rounded text-center">
-                        <h4>${stats.current_streak}</h4>
-                        <p class="mb-0">Current Streak</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create achievements grid
+    // Create achievements grid with only images
     const achievementsHTML = `
         <div class="achievements-grid">
             <div class="row">
@@ -69,48 +36,22 @@ function displayAchievements(achievements, stats) {
         </div>
     `;
     
-    content.innerHTML = headerHTML + achievementsHTML;
+    content.innerHTML = achievementsHTML;
 }
 
 // Create individual achievement card
 function createAchievementCard(achievement) {
-    const cardClass = achievement.achieved ? 'achievement-achieved' : 'achievement-locked';
-    const badgeClass = achievement.achieved ? 'bg-success' : 'bg-secondary';
-    const iconClass = achievement.achieved ? 'text-warning' : 'text-muted';
-    
-    // Map achievement names to appropriate icons/images
-    const getAchievementIcon = (name) => {
-        const iconMap = {
-            'First Step': '🏃‍♂️',
-            'Strong Start': '💪',
-            'One Week Sober': '📅',
-            'Half a Month': '🎯',
-            'Milestone Month': '🏆',
-            'Building Strength': '🔥',
-            'Quarter Year': '⭐',
-            'Half a Year Free': '🌟',
-            'One Year Sober': '👑'
-        };
-        return iconMap[name] || '🏅';
-    };
+    const opacity = achievement.achieved ? '1' : '0.3';
+    const filter = achievement.achieved ? '' : 'grayscale(100%)';
     
     return `
         <div class="col-md-4 col-lg-3 mb-4">
-            <div class="card achievement-card ${cardClass} h-100">
-                <div class="card-body text-center">
-                    <div class="achievement-icon mb-3" style="font-size: 3rem;">
-                        ${getAchievementIcon(achievement.name)}
-                    </div>
-                    <h5 class="card-title">${achievement.name}</h5>
-                    <p class="card-text">${achievement.description}</p>
-                    <span class="badge ${badgeClass}">
-                        ${achievement.days_required} day${achievement.days_required > 1 ? 's' : ''}
-                    </span>
-                    ${achievement.achieved ? 
-                        '<div class="mt-2"><span class="badge bg-success">✓ Achieved</span></div>' : 
-                        '<div class="mt-2"><span class="badge bg-secondary">🔒 Locked</span></div>'
-                    }
-                </div>
+            <div class="achievement-image-container">
+                <img src="../../assets/${achievement.image}" 
+                     alt="${achievement.name}" 
+                     class="achievement-image"
+                     style="opacity: ${opacity}; filter: ${filter}; width: 200px; height: 200px; object-fit: cover; border-radius: 10px; cursor: pointer; display: block; margin: 0 auto;"
+                     title="${achievement.achieved ? achievement.name : 'Locked Achievement'}">
             </div>
         </div>
     `;
