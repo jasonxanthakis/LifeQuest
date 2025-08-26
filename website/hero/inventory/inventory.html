@@ -81,7 +81,7 @@
                         <!-- Points Display -->
                         <div class="d-flex justify-content-start mb-3">
                             <div id="totalPointsDisplay" class="p-2 bg-light border rounded">
-                                Total Points: <span id="pointsValue">100</span>
+                                Total Points: <span id="pointsValue">0</span>
                             </div>
                         </div>
 
@@ -94,8 +94,10 @@
                         
                         <!-- Empty inventory message -->
                         <div id="emptyInventory" class="text-center mt-5" style="display: none;">
-                            <h4 class="text-muted">Your inventory is empty</h4>
-                            <p class="text-muted">Visit the <a href="../shop/shop.html">shop</a> to purchase items!</p>
+                            <div class="battle-stage" style="max-width: 500px; margin: 0 auto;">
+                                <h2 class="text-white mb-3">Your inventory is empty</h2>
+                                <p class="text-muted">Visit the <a href="../shop/shop.html" style="color: #007bff; text-decoration: underline;">shop</a> to purchase items!</p>
+                            </div>
                         </div>
                     
                     </main>

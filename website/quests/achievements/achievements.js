@@ -27,8 +27,11 @@ async function loadAchievements() {
 function displayAchievements(achievements, stats) {
     const content = document.querySelector('main.content');
     
-    // Create achievements grid with only images
+    // Create achievements grid with title and images
     const achievementsHTML = `
+        <div class="mb-4">
+            <h2 class="text-white">Your Achievements</h2>
+        </div>
         <div class="achievements-grid">
             <div class="row">
                 ${achievements.map(achievement => createAchievementCard(achievement)).join('')}

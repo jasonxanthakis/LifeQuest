@@ -144,7 +144,7 @@ class Hero {
             SELECT hi.id as hero_items_id, hi.hero_id, hi.item_id, hi.is_equipped, 
                    i.item_name, i.description, i.item_cost 
             FROM hero_items hi 
-            JOIN items i ON hi.item_id = i.id 
+            JOIN items i ON hi.item_id = i.item_id 
             JOIN hero h ON hi.hero_id = h.id
             WHERE h.user_id = $1 AND hi.is_equipped = true
         `;
