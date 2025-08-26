@@ -1,6 +1,4 @@
 const bcrypt = require("bcrypt");
-const { GenericContainer } = require("testcontainers");
-const { Pool } = require("pg");
 
 const { expect, beforeAll } = require("@jest/globals");
 
@@ -87,7 +85,7 @@ describe("User model integration", () => {
         const user = await User.getOneByUsername("user");
         const del = await user.destroy();
         expect(del.rowCount).toBe(1);
-        
+
         const res = await db.query("SELECT * FROM users WHERE username = $1", ["user"]);
         expect(res.rows.length).toBe(0);
     });
