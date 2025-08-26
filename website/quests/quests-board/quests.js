@@ -5,15 +5,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let url = 'http://localhost:3000/main/quests';
 
-  // Load existing quests
-  /*let response = await getRequest(url)
-  let data = await response.json();
-
-  if (data.length > 0) {
-    data.forEach(q => addQuestCard(q.id, q.title, q.category, q.description, q.points, q.completed));
-    updateTotalPoints();
-  } */
-
   let response = await getRequest(url)
   let { quests, hero } = await response.json();
 
@@ -110,23 +101,6 @@ function addQuestCard( questId, title, category, description, points=3, complete
       console.error(err);
     };
   })
-}
-/*function updateTotalPoints() {
-  const cards = document.querySelectorAll("#questList .card");
-  let total = 0;
-
-  cards.forEach(card => {
-    if (card.classList.contains('done')) {
-      const pointsText = card.querySelector('.card-points').textContent;
-      const points = parseInt(pointsText); // pointsText = '3 points', points = 3
-      total += points;
-    }
-
-    document.getElementById('pointsValue').textContent = total;
-
-  });
-} */
-
 
 
   // Add edit functionality
@@ -203,6 +177,8 @@ function addQuestCard( questId, title, category, description, points=3, complete
       }
     }
   });
+}
+
 
 const logout = document.getElementsByClassName('logout');
 for (let btn of logout) {
