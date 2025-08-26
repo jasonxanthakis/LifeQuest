@@ -12,6 +12,6 @@ router.patch("/quests/:quest", authenticator, QuestController.modifyQuest);
 router.delete("/quests/:quest", authenticator, QuestController.destroyQuest);
 
 // Achievements endpoint
-router.get("/main/:user/achievements", authenticator, AchievementsController.getUserAchievements);
+router.get("/achievements", authenticator, AchievementsController.getUserAchievements);
 
 module.exports = router;

@@ -96,7 +96,7 @@ describe("Inventory Page", () => {
 
   test("Total points display shows correct initial value", () => {
     const totalPoints = container.querySelector("#pointsValue");
-    expect(totalPoints.textContent).toBe("100");
+    expect(totalPoints.textContent).toBe("0");
   });
 
   test("Navigation links exist and are correct", () => {

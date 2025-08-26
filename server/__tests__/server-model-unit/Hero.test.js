@@ -251,31 +251,31 @@ describe('Hero model functions', () => {
         });
     });
 
-    describe('create', () => {
-        it('creates a new hero', async () => {
-            const mockHero = {
-                id: 1,
-                user_id: 1,
-                current_level: 1,
-                hero_name: 'New Hero',
-                total_points: 0,
-                health: 50,
-                damage: 10,
-                defense: 10,
-                next_enemy: 'Goblin'
-            };
+    // describe('create', () => {
+    //     it('creates a new hero', async () => {
+    //         const mockHero = {
+    //             id: 1,
+    //             user_id: 1,
+    //             current_level: 1,
+    //             hero_name: 'New Hero',
+    //             total_points: 0,
+    //             health: 50,
+    //             damage: 10,
+    //             defense: 10,
+    //             next_enemy: 'Goblin'
+    //         };
 
-            db.query.mockResolvedValueOnce({
-                rows: [mockHero],
-                rowCount: 1
-            });
+    //         db.query.mockResolvedValueOnce({
+    //             rows: [mockHero],
+    //             rowCount: 1
+    //         });
 
-            const newHero = await Hero.create(1, 'New Hero');
+    //         const newHero = await Hero.create(1, 'New Hero');
 
-            expect(newHero).toBeInstanceOf(Hero);
-            expect(newHero.hero_name).toBe('New Hero');
-            expect(newHero.current_level).toBe(1);
-            expect(newHero.total_points).toBe(0);
-        });
-    });
+    //         expect(newHero).toBeInstanceOf(Hero);
+    //         expect(newHero.hero_name).toBe('New Hero');
+    //         expect(newHero.current_level).toBe(1);
+    //         expect(newHero.total_points).toBe(0);
+    //     });
+    // });
 });

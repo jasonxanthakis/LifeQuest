@@ -16,7 +16,7 @@ const getUserInventory = async (req, res) => {
       points: points
     });
   } catch (error) {
-    // console.error('Error getting user inventory:', error);
+    console.error('Error getting user inventory:', error);
     res.status(500).json({ error: 'Failed to get inventory' });
   }
 };

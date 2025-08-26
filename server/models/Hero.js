@@ -153,7 +153,7 @@ class Hero {
             SELECT hi.id as hero_items_id, hi.hero_id, hi.item_id, hi.is_equipped, 
                    i.item_name, i.description, i.item_cost 
             FROM hero_items hi 
-            JOIN items i ON hi.item_id = i.id 
+            JOIN items i ON hi.item_id = i.item_id 
             JOIN hero h ON hi.hero_id = h.id
             WHERE h.user_id = $1 AND hi.is_equipped = true
         `;
@@ -161,16 +161,16 @@ class Hero {
         return response.rows;
     }
 
-    // Create a new hero for a user
-    static async create(userId, heroName) {
-        const query = `
-            INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy) 
-            VALUES ($1, 1, $2, 0, 0, 0, 0, 'Goblin') 
-            RETURNING *
-        `;
-        const response = await db.query(query, [userId, heroName]);
-        return new Hero(response.rows[0]);
-    }
+    // // Create a new hero for a user
+    // static async create(userId, heroName) {
+    //     const query = `
+    //         INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy) 
+    //         VALUES ($1, 1, $2, 0, 0, 0, 0, 'Goblin') 
+    //         RETURNING *
+    //     `;
+    //     const response = await db.query(query, [userId, heroName]);
+    //     return new Hero(response.rows[0]);
+    // }
 
     // Update hero points when a quest is completed
     static async updateTotalPoints(userId, newTotal) {
