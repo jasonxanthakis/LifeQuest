@@ -13,6 +13,15 @@ class Hero {
         this.next_enemy = next_enemy;
     }
 
+
+    // Get all by user_id
+
+    static async getByUserId(userId) {
+        const res = await db.query("SELECT * FROM hero WHERE user_id = $1;", [userId]);
+        if (res.rows.length === 0) throw new Error("Hero not found");
+        return res.rows[0];
+    }
+
     // Get hero by username
     static async getUserIdByUsername(username) {
         const response = await db.query("SELECT id FROM users WHERE username = $1;", [username]);
@@ -161,6 +170,16 @@ class Hero {
         `;
         const response = await db.query(query, [userId, heroName]);
         return new Hero(response.rows[0]);
+    }
+
+    // Update hero points when a quest is completed
+    static async updateTotalPoints(userId, newTotal) {
+        const res = db.query('UPDATE hero SET total_points = $1 WHERE user_id = $2 RETURNING *;',
+            [newTotal, userId]
+        );
+
+        if (res.rows.length === 0) throw new Error("Points not be updated or Hero not found");
+        return res.rows[0];
     }
 }
 

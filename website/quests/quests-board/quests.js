@@ -6,13 +6,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   let url = 'http://localhost:3000/main/quests';
 
   // Load existing quests
-  let response = await getRequest(url)
+  /*let response = await getRequest(url)
   let data = await response.json();
 
   if (data.length > 0) {
     data.forEach(q => addQuestCard(q.id, q.title, q.category, q.description, q.points, q.completed));
     updateTotalPoints();
+  } */
+
+  let response = await getRequest(url)
+  let { quests, hero } = await response.json();
+
+  if (quests.length > 0) {
+  quests.forEach(q => addQuestCard(q.id, q.title, q.category, q.description, q.points, q.completed));
   }
+
+  document.getElementById('pointsValue').textContent = hero.total_points;
 
   document.getElementById("addQuestBtn").addEventListener("click", (e) => {
     e.preventDefault(); // stop the page from reloading
@@ -82,7 +91,7 @@ function addQuestCard( questId, title, category, description, points=3, complete
     card.classList.toggle('text-white', toggle.checked);
     card.classList.toggle('done', toggle.checked);
 
-    updateTotalPoints();
+    //updateTotalPoints();
 
     // connecting the toggle to the backend
     let url = `http://localhost:3000/main/quests/${questId}/complete`;
@@ -91,27 +100,18 @@ function addQuestCard( questId, title, category, description, points=3, complete
       const response = await sendPatchRequest(url, { completed: toggle.checked });
       const data = await response.json();
       
-     if (!response.ok) {
-      // revert UI if backend failed
-      toggle.checked = !toggle.checked;
-      card.classList.toggle('bg-success', toggle.checked);
-      card.classList.toggle('text-white', toggle.checked);
-      card.classList.toggle('done', toggle.checked);
-      updateTotalPoints();
-      console.error(data.error || 'Failed to update completion');
-      }
+      // connecting total points from the backend
+      if (response.ok) {
+      document.getElementById('pointsValue').textContent = data.hero.total_points;
+      } else {
+        console.error(data.error || 'Failed to updated completion');
+      } 
     } catch (err) {
-      toggle.checked = !toggle.checked;
-      card.classList.toggle('bg-success', toggle.checked);
-      card.classList.toggle('text-white', toggle.checked);
-      card.classList.toggle('done', toggle.checked);
-      updateTotalPoints();
       console.error(err);
-    }
-
-  });
-
-function updateTotalPoints() {
+    };
+  })
+}
+/*function updateTotalPoints() {
   const cards = document.querySelectorAll("#questList .card");
   let total = 0;
 
@@ -121,10 +121,13 @@ function updateTotalPoints() {
       const points = parseInt(pointsText); // pointsText = '3 points', points = 3
       total += points;
     }
-  });
 
-  document.getElementById('pointsValue').textContent = total;
-}
+    document.getElementById('pointsValue').textContent = total;
+
+  });
+} */
+
+
 
   // Add edit functionality
   const editBtn = card.querySelector('.edit-btn');
@@ -200,7 +203,6 @@ function updateTotalPoints() {
       }
     }
   });
-};
 
 const logout = document.getElementsByClassName('logout');
 for (let btn of logout) {
@@ -252,4 +254,5 @@ async function sendDeleteRequest(url) {
 
   return resp;
 }
+
 
