@@ -1,4 +1,4 @@
-const Quest = require("../models/Quest");
+const Quest = require("../models/quest");
 
 const getQuests = async (req, res) => {
     const username = req.user;
