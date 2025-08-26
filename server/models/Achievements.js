@@ -32,7 +32,7 @@ class Achievements {
                 name: "Strong Start",
                 description: "3 days of progress!",
                 days_required: 3,
-                image: "strong-start.png"
+                image: "3-days.png"
             },
             {
                 id: 3,
@@ -46,38 +46,31 @@ class Achievements {
                 name: "Half a Month",
                 description: "14 days of dedication!",
                 days_required: 14,
-                image: "half-month.png"
+                image: "14-days.png"
             },
             {
                 id: 5,
                 name: "Milestone Month",
                 description: "30 days of success!",
                 days_required: 30,
-                image: "milestone-month.png"
+                image: "one-month.png"
             },
             {
                 id: 6,
-                name: "Building Strength",
-                description: "60 days of perseverance!",
-                days_required: 60,
-                image: "building-strength.png"
-            },
-            {
-                id: 7,
                 name: "Quarter Year",
                 description: "90 days of commitment!",
                 days_required: 90,
-                image: "quarter-year.png"
+                image: "90-days.png"
             },
             {
-                id: 8,
+                id: 7,
                 name: "Half a Year Free",
                 description: "180 days of freedom!",
                 days_required: 180,
-                image: "half-year.png"
+                image: "180-days.png"
             },
             {
-                id: 9,
+                id: 8,
                 name: "One Year Sober",
                 description: "365 days of triumph!",
                 days_required: 365,
