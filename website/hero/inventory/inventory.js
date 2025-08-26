@@ -15,9 +15,15 @@ async function loadInventoryData() {
             loadInventory(data.items);
         } else {
             console.error('Failed to load inventory:', data.error);
+            // Show empty message if API fails
+            loadInventory([]);
+            loadPoints(0);
         }
     } catch (error) {
         console.error('Failed to load inventory:', error);
+        // Show empty message if request fails
+        loadInventory([]);
+        loadPoints(0);
     }
 }
 

@@ -84,7 +84,7 @@ class Achievements {
         try {
             // Get user's best streaks from quest completion data
             const streakQuery = `
-                SELECT MAX(current_streak) as best_streak
+                SELECT MAX(GREATEST(current_streak, best_streak)) as best_streak
                 FROM user_quest_streaks 
                 WHERE user_id = $1
             `;
@@ -95,18 +95,8 @@ class Achievements {
                 maxStreak = streakResult.rows[0].best_streak;
             }
 
-            // If no streak data, check completed quests as fallback
-            if (maxStreak === 0) {
-                const questQuery = `
-                    SELECT COUNT(*) as completed_count
-                    FROM quests 
-                    WHERE complete = true
-                `;
-                const questResult = await db.query(questQuery);
-                if (questResult.rows.length > 0) {
-                    maxStreak = parseInt(questResult.rows[0].completed_count) || 0;
-                }
-            }
+            // If no streak data exists at all, default to 0 (no fallback to quests table)
+            // This means achievements are based purely on streak performance
 
             // Get all achievement milestones
             const milestones = this.getAchievementMilestones();
@@ -124,24 +114,6 @@ class Achievements {
 
         } catch (error) {
             throw new Error(`Failed to get user achievements: ${error.message}`);
-        }
-    }
-
-    // Get achievement statistics
-    static async getAchievementStats(userId) {
-        try {
-            const achievements = await this.getUserAchievements(userId);
-            const achievedCount = achievements.achievements.filter(a => a.achieved).length;
-            const totalCount = achievements.achievements.length;
-            
-            return {
-                achieved_count: achievedCount,
-                total_count: totalCount,
-                completion_percentage: Math.round((achievedCount / totalCount) * 100),
-                current_streak: achievements.current_streak
-            };
-        } catch (error) {
-            throw new Error(`Failed to get achievement stats: ${error.message}`);
         }
     }
 }

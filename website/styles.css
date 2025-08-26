@@ -215,6 +215,18 @@ body {
   box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.25) !important;
 }
 
+.page-title {
+    font-family: "Rubik Distressed", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.5rem;
+    color: #1a1913;
+    text-shadow: 0 0 13px rgba(14, 77, 5, 0.7);
+    margin-bottom: 1rem;
+}
+
+
+
 /*-----------Navbar------------*/
 
 .mainbar {
@@ -289,12 +301,12 @@ body {
 }
 
 .stat {
-    background: rgba(0, 255, 255, 0.15);
+    background: rgba(102, 51, 153, 0.3);
     padding: 0.4rem 0.8rem;
     border-radius: 6px;
     font-weight: bold;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
-    color: #00fff0;
+    color: #e6ccff;
     min-width: 60px;
     text-align: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -302,7 +314,7 @@ body {
 
 .stat:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+    box-shadow: 0 0 12px rgba(102, 51, 153, 0.8);
 }
 
 /* Fight button styling */
