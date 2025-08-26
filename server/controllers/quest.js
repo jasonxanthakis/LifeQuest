@@ -49,7 +49,7 @@ const createQuest = async (req, res) => {
             description,
             category,
             points_value: 3,
-            complete: 0
+            completed: 0
         });
 
         return res.status(201).json(newQuest);
@@ -86,24 +86,30 @@ const modifyQuest = async (req, res) => {
             category
         });
 
-        return res.status(200).json(quest);
+        return res.status(200).json(modifiedQuest);
     } catch (err) {
         return res.status(400).json({error: err.message});
     };
 };
 
-const completeQuest = async (req, res) => {
+const setQuestComplete = async (req, res) => {
     const username = req.user;
     const questId = req.params.quest
-
     const userId = await Quest.getUserIdByUsername(username);
+    const { completed } = req.body;
 
     // Need to work out how this is connecting to the front end:
     // Need to check that toggle has been switched to complete
 
     try {
+
+        if (typeof completed != 'boolean') {
+        return res.status(400).json({error: 'completed must be a boolean'});
+        }
+
         const completedQuest = await Quest.getByUserAndQuest(userId, questId);
-        await completedQuest.quest_completed()
+        await completedQuest.setCompleted(completed);
+
         res.status(200).json(completedQuest)
         } catch (err) {
             res.status(400).json({error: err.message})
@@ -128,5 +134,5 @@ const destroyQuest = async (req, res) => {
 
 
 module.exports = {
-    createQuest, getQuests, modifyQuest, completeQuest, destroyQuest
+    createQuest, getQuests, modifyQuest, setQuestComplete, destroyQuest
 }

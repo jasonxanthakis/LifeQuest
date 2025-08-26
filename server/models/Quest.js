@@ -14,14 +14,14 @@
 const db = require('../database/connect');
 
 class Quest {
-    constructor({ id, user_id, quest_title, description, category, points_value, complete }){
+    constructor({ id, user_id, quest_title, description, category, points_value, completed }){
         this.id = id;
         this.user_id = user_id;
         this.title = quest_title;
         this.description = description;
         this.category = category;
         this.points = points_value;
-        this.completed = complete;
+        this.completed = completed;
     }
 
     // Get hero by username
@@ -33,9 +33,9 @@ class Quest {
         return response.rows[0].id;
     }
 
-    static async create({ user_id, title, description, category, points_value, complete}){
-        const res = await db.query("INSERT INTO quests (user_id, quest_title, description, category, points_value, complete) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;", 
-            [user_id, title, description, category, points_value, complete]
+    static async create({ user_id, title, description, category, points_value, completed}){
+        const res = await db.query("INSERT INTO quests (user_id, quest_title, description, category, points_value, completed) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;", 
+            [user_id, title, description, category, points_value, completed]
         );
         if(res.rows.length === 0) throw new Error("Couldn't create quest.")
 
@@ -59,8 +59,28 @@ class Quest {
         return new Quest(res.rows[0]);
     }
 
+    // Quest toggled to complete on front-end
+    async setCompleted(completed) {
+    const res = await db.query(
+        "UPDATE quests SET completed = $1 WHERE id = $2 AND user_id = $3 RETURNING *;",
+        [completed, this.id, this.user_id]
+    );
+    if (res.rows.length === 0) throw new Error("Quest not found or not updated.");
+
+    const row = res.rows[0];
+  
+    this.title = row.quest_title;
+    this.description = row.description;
+    this.category = row.category;
+    this.points = row.points_value;
+    this.completed = row.completed;
+
+    return this;
+    }
+
+
     async quest_completed() {
-        const res = await db.query("UPDATE user_quest_streaks SET active_streak = 1, WHERE user_id = $1 AND quest_id = $2 RETURNING *;", // active_streak is BOOLEAN so = 1 will set this to TRUE
+        const res = await db.query("UPDATE user_quest_streaks SET active_streak = 1 WHERE user_id = $1 AND quest_id = $2 RETURNING *;", // active_streak is BOOLEAN so = 1 will set this to TRUE
             [this.user_id, this.id]
         );
         if(res.rows.length === 0) throw new Error('streak status update failed');

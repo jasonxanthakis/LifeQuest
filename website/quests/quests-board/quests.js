@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let data = await response.json();
 
   if (data.length > 0) {
-    data.forEach(q => addQuestCard(q.id, q.title, q.category, q.description, q.points_value));
+    data.forEach(q => addQuestCard(q.id, q.title, q.category, q.description, q.points, q.completed));
     updateTotalPoints();
   }
 
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       },
       body: JSON.stringify({ title, category, description })
     }).then(r => r.json())
-      .then(q => addQuestCard(q.id, q.title, q.category, q.description))
+      .then(q => addQuestCard(q.id, q.title, q.category, q.description, q.points, q.completed))
       .catch(console.error);
 
     questForm.reset();
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 
-function addQuestCard( questId, title, category, description, points=3) {
+function addQuestCard( questId, title, category, description, points=3, completed=false) {
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
@@ -56,7 +56,7 @@ function addQuestCard( questId, title, category, description, points=3) {
         </div>
         <div class="d-flex flex-column gap-2">
           <div class="form-check form-switch">
-            <input class="form-check-input done-toggle" type="checkbox" role="switch" id="toggle-${Date.now()}">
+            <input class="form-check-input done-toggle" type="checkbox" role="switch" id="toggle-${Date.now()}" ${completed ? "checked" : ""}>
             <label class="form-check-label" for="toggle-${Date.now()}">
               Done
             </label>
@@ -67,6 +67,10 @@ function addQuestCard( questId, title, category, description, points=3) {
       </div>
     </div>
   `;
+
+  if (completed) {
+    card.classList.add('bg-success', 'text-white', 'done');
+  }
 
   // Append to quest list
   questList.appendChild(card);
@@ -85,14 +89,23 @@ function addQuestCard( questId, title, category, description, points=3) {
     
     try {
       const response = await sendPatchRequest(url, { completed: toggle.checked });
-      const data = response.json();
+      const data = await response.json();
       
-      if (response.status == 200) {
-        console.log('Quest completion updated', data);
-      } else {
-        console.log(data.error);
+     if (!response.ok) {
+      // revert UI if backend failed
+      toggle.checked = !toggle.checked;
+      card.classList.toggle('bg-success', toggle.checked);
+      card.classList.toggle('text-white', toggle.checked);
+      card.classList.toggle('done', toggle.checked);
+      updateTotalPoints();
+      console.error(data.error || 'Failed to update completion');
       }
     } catch (err) {
+      toggle.checked = !toggle.checked;
+      card.classList.toggle('bg-success', toggle.checked);
+      card.classList.toggle('text-white', toggle.checked);
+      card.classList.toggle('done', toggle.checked);
+      updateTotalPoints();
       console.error(err);
     }
 

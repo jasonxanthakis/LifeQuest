@@ -47,7 +47,7 @@ CREATE TABLE quests (
     description VARCHAR(100) NOT NULL,
     category VARCHAR(30) NOT NULL,
     points_value INT NOT NULL,
-    complete BOOLEAN NOT NULL DEFAULT FALSE
+    completed BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 -- ---------------------------
