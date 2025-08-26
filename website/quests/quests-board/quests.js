@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (data.length > 0) {
     data.forEach(q => addQuestCard(q.id, q.title, q.category, q.description, q.points_value));
+    updateTotalPoints();
   }
 
   document.getElementById("addQuestBtn").addEventListener("click", (e) => {
@@ -77,6 +78,8 @@ function addQuestCard( questId, title, category, description, points=3) {
     card.classList.toggle('text-white', toggle.checked);
     card.classList.toggle('done', toggle.checked);
 
+    updateTotalPoints();
+
     // connecting the toggle to the backend
     let url = `http://localhost:3000/main/quests/${questId}/complete`;
     
@@ -94,6 +97,21 @@ function addQuestCard( questId, title, category, description, points=3) {
     }
 
   });
+
+function updateTotalPoints() {
+  const cards = document.querySelectorAll("#questList .card");
+  let total = 0;
+
+  cards.forEach(card => {
+    if (card.classList.contains('done')) {
+      const pointsText = card.querySelector('.card-points').textContent;
+      const points = parseInt(pointsText); // pointsText = '3 points', points = 3
+      total += points;
+    }
+  });
+
+  document.getElementById('pointsValue').textContent = total;
+}
 
   // Add edit functionality
   const editBtn = card.querySelector('.edit-btn');
@@ -221,3 +239,4 @@ async function sendDeleteRequest(url) {
 
   return resp;
 }
+
