@@ -96,3 +96,6 @@ async function getRequest(url) {
     const resp = await fetch(url, options);
     return resp;
 }
+
+// Export all functions at once
+export { loadAchievements, displayAchievements, setupLogout, getRequest };
