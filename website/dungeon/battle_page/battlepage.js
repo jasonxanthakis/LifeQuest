@@ -40,7 +40,7 @@ function loadWinnerImage(result) {
     
     if (result.won) {
         if (winnerName) winnerName.textContent = result.winner?.name || "Hero";
-        if (winnerImg) winnerImg.src = `../assets/knight.png`;
+        if (winnerImg) winnerImg.src = `../../assets/knight.png`;
     } else {
         // Check if result.winner exists before trying to access its name
         if (result.winner && result.winner.name) {
@@ -49,12 +49,12 @@ function loadWinnerImage(result) {
             );
             if (enemy) {
                 if (winnerName) winnerName.textContent = enemy.name;
-                if (winnerImg) winnerImg.src = `../assets/${enemy.image}`;
+                if (winnerImg) winnerImg.src = `../../assets/${enemy.image}`;
             }
         } else {
             // Fallback if no winner info
             if (winnerName) winnerName.textContent = "Enemy";
-            if (winnerImg) winnerImg.src = `../assets/goblin.jpeg`;
+            if (winnerImg) winnerImg.src = `../../assets/goblin.jpeg`;
         }
     }
 }
@@ -64,7 +64,7 @@ const logout = document.getElementsByClassName('logout');
 for (let btn of logout) {
     btn.addEventListener('click', () => {
         localStorage.removeItem('token');
-        window.location.assign('../login/login.html');
+        window.location.assign('../../login/login.html');
     });
 }
 
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function simulateBattle() {
     const API_URL = 'http://localhost:3000';
 
-    let url = API_URL + `/dungeon/${1}/battle`;
+    let url = API_URL + `/dungeon/battle`;
 
     const response = await sendPatchRequest(url, {});
     const result = await response.json();

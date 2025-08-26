@@ -9,7 +9,7 @@ const fs = require("fs");
 const path = require("path");
 
 const html = fs.readFileSync(
-  path.resolve(__dirname, "../shop/shop.html"),
+  path.resolve(__dirname, "../../hero/shop/shop.html"),
   "utf8"
 );
 
@@ -76,9 +76,9 @@ describe("Shop page functionality", () => {
         .getAllByRole("link", { name: nameRegex })
         .map((a) => a.getAttribute("href"));
 
-    expect(hrefsFor(/^Quests$/i)).toContain("../quests/quests-board/quests.html");
+    expect(hrefsFor(/^Quests$/i)).toContain("../../quests/quests-board/quests.html");
     expect(hrefsFor(/^Hero$/i)).toContain("../inventory/inventory.html");
-    expect(hrefsFor(/^Dungeon$/i)).toContain("../dungeon/dungeon.html");
+    expect(hrefsFor(/^Dungeon$/i)).toContain("../../dungeon/dungeon.html");
   });
 
   // ---------- YOUR EXISTING TESTS (unchanged behavior) ----------

@@ -26,7 +26,7 @@ let currentPoints = 0;
 // Load shop items and user points from backend
 async function loadShopData() {
   try {
-    const url = `http://localhost:3000/hero/user/shop/${1}`;
+    const url = `http://localhost:3000/hero/user/shop`;
     
     const response = await getRequest(url);
     
@@ -76,16 +76,16 @@ function createShopItemCard(item) {
   
   // Map item names to image files
   const imageMap = {
-    'Health Potion': '../assets/health-potion.jpg',
-    'Magic Sword': '../assets/magic-sword.jpeg',
-    'Shield': '../assets/shield-of-protection.jpg',
-    'Shield of Protection': '../assets/shield-of-protection.jpg',
-    'Mana Crystal': '../assets/mana-crystal.jpg',
-    'Lucky Charm': '../assets/lucky-charm.jpg',
-    'Premium Quest Scroll': '../assets/premium-quest-scroll.jpg'
+    'Health Potion': '../../assets/health-potion.jpg',
+    'Magic Sword': '../../assets/magic-sword.jpeg',
+    'Shield': '../../assets/shield-of-protection.jpg',
+    'Shield of Protection': '../../assets/shield-of-protection.jpg',
+    'Mana Crystal': '../../assets/mana-crystal.jpg',
+    'Lucky Charm': '../../assets/lucky-charm.jpg',
+    'Premium Quest Scroll': '../../assets/premium-quest-scroll.jpg'
   };
   
-  const imageSrc = imageMap[item.item_name] || '../assets/placeholder-item.png';
+  const imageSrc = imageMap[item.item_name] || '../../assets/placeholder-item.png';
   
   col.innerHTML = `
     <div class="card h-100">
@@ -221,7 +221,7 @@ const logout = document.getElementsByClassName('logout');
 for (let btn of logout) {
   btn.addEventListener('click', () => {
     localStorage.removeItem('token');
-    window.location.assign('../login/login.html');
+    window.location.assign('../../login/login.html');
   });
 }
 

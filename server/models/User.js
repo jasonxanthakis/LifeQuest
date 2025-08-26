@@ -52,6 +52,7 @@ class User {
     }
 
     async destroy() {
+        await db.query("DELETE FROM hero WHERE user_id = $1;", [this.id]);
         return db.query('DELETE FROM users WHERE id = $1;', [this.id])
     }
 
