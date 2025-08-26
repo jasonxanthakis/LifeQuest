@@ -1,22 +1,3 @@
-// Helper function to get user ID from JWT token
-function getUserId() {
-    const token = localStorage.getItem('token');
-    if (!token) return null;
-    
-    try {
-        // Decode JWT token to get username
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        console.log('Token payload:', payload); // Debug what's actually in the token
-        
-        // Your JWT only has username, not user_id
-        // For now, return a test user ID
-        return '1'; // TODO: Update backend to include user_id in JWT
-    } catch (error) {
-        console.error('Error decoding token:', error);
-        return null;
-    }
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
   await loadShopData();
 });
@@ -24,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 let currentPoints = 0;
 
 // Load shop items and user points from backend
-async function loadShopData() {
+export async function loadShopData() {
   try {
     const url = `http://localhost:3000/hero/user/shop`;
     
@@ -45,7 +26,7 @@ async function loadShopData() {
 }
 
 // Render shop items in the UI
-function renderShopItems(items) {
+export function renderShopItems(items) {
   // Target the specific row container that holds shop items (not the navbar row)
   const shopContainer = document.querySelector('main .row'); // More specific selector
   
@@ -70,7 +51,7 @@ function renderShopItems(items) {
 }
 
 // Create a shop item card
-function createShopItemCard(item) {
+export function createShopItemCard(item) {
   const col = document.createElement('div');
   col.className = 'col-md-4 mb-4';
   
@@ -112,7 +93,7 @@ function createShopItemCard(item) {
 }
 
 // Handle purchase with backend API
-async function handlePurchase(event) {
+export async function handlePurchase(event) {
   const button = event.target;
   const itemId = button.getAttribute('data-item-id');
   const itemName = button.getAttribute('data-item-name');
@@ -167,14 +148,14 @@ async function handlePurchase(event) {
   }
 }
 
-function updatePointsDisplay() {
+export function updatePointsDisplay() {
   const pointsElement = document.getElementById('pointsValue');
   if (pointsElement) {
     pointsElement.textContent = currentPoints;
   }
 }
 
-function showPurchaseSuccess(itemName, cost) {
+export function showPurchaseSuccess(itemName, cost) {
   // Create and show a temporary success message
   const message = document.createElement('div');
   message.className = 'alert alert-success alert-dismissible fade show position-fixed';
@@ -196,7 +177,7 @@ function showPurchaseSuccess(itemName, cost) {
   }, 3000);
 }
 
-function showInsufficientPoints(requiredPoints) {
+export function showInsufficientPoints(requiredPoints) {
   // Create and show error message
   const message = document.createElement('div');
   message.className = 'alert alert-danger alert-dismissible fade show position-fixed';
@@ -225,7 +206,7 @@ for (let btn of logout) {
   });
 }
 
-async function getRequest(url) {
+export async function getRequest(url) {
   const options = {
     method: "GET",
     headers: {
@@ -239,7 +220,7 @@ async function getRequest(url) {
   return resp;
 };
 
-async function sendPostRequest(url, data) {
+export async function sendPostRequest(url, data) {
     const options = {
         method: "POST",
         headers: {

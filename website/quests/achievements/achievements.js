@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 // Load achievements from backend
-async function loadAchievements() {
+export async function loadAchievements() {
     try {
         const url = `http://localhost:3000/main/achievements`;
         
@@ -24,7 +24,7 @@ async function loadAchievements() {
 }
 
 // Display achievements in the UI
-function displayAchievements(achievements, stats) {
+export function displayAchievements(achievements, stats) {
     const content = document.querySelector('main.content');
     
     // Create achievements grid with title and images
@@ -43,7 +43,7 @@ function displayAchievements(achievements, stats) {
 }
 
 // Create individual achievement card
-function createAchievementCard(achievement) {
+export function createAchievementCard(achievement) {
     const opacity = achievement.achieved ? '1' : '0.3';
     const filter = achievement.achieved ? '' : 'grayscale(100%)';
     
@@ -61,7 +61,7 @@ function createAchievementCard(achievement) {
 }
 
 // Display error message
-function displayErrorMessage() {
+export function displayErrorMessage() {
     const content = document.querySelector('main.content');
     content.innerHTML = `
         <div class="text-center mt-5">
@@ -73,7 +73,7 @@ function displayErrorMessage() {
 }
 
 // Setup logout functionality
-function setupLogout() {
+export function setupLogout() {
     const logoutButtons = document.getElementsByClassName('logout');
     for (let btn of logoutButtons) {
         btn.addEventListener('click', () => {
@@ -84,7 +84,7 @@ function setupLogout() {
 }
 
 // HTTP request helper function
-async function getRequest(url) {
+export async function getRequest(url) {
     const options = {
         method: "GET",
         headers: {

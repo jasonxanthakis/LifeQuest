@@ -34,7 +34,7 @@ const monsters = [
 ];
 
 // Load the winner
-function loadWinnerImage(result) {
+export function loadWinnerImage(result) {
     const winnerName = document.querySelector(".battle-container .character .name");
     const winnerImg = document.querySelector(".battle-container .character img");
     
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Ask the database to run a battle simulation
-async function simulateBattle() {
+export async function simulateBattle() {
     const API_URL = 'http://localhost:3000';
 
     let url = API_URL + `/dungeon/battle`;
@@ -105,7 +105,7 @@ async function simulateBattle() {
     }
 }
 
-async function sendPatchRequest(url, data) {
+export async function sendPatchRequest(url, data) {
     const options = {
         method: "PATCH",
         headers: {
