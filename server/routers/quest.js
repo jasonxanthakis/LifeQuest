@@ -1,8 +1,9 @@
 const {Router} = require("express");
 const authenticator = require('../middleware/authenticator.js');
 
-const QuestController = require("../controllers/quest")
-const AchievementsController = require("../controllers/achievements")
+const QuestController = require("../controllers/quest.js");
+const AchievementsController = require("../controllers/achievements.js");
+const MetricsController = require("../controllers/metrics.js")
 const router = Router();
 
 router.get("/quests", authenticator, QuestController.getQuests);
@@ -13,5 +14,8 @@ router.delete("/quests/:quest", authenticator, QuestController.destroyQuest);
 
 // Achievements endpoint
 router.get("/achievements", authenticator, AchievementsController.getUserAchievements);
+
+// Metrics endpoint
+router.get("/metrics", authenticator, MetricsController.getGraphs);
 
 module.exports = router;
