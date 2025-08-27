@@ -16,7 +16,7 @@ export function createDropdown(stage) {
         </button>
         <ul id="questDropdownMenu" class="dropdown-menu" aria-labelledby="questDropdown">
             <!-- Items will be inserted here dynamically -->
-            <li><a class="dropdown-item" href="#" data-quest-id="all">All Quests</a></li>
+            <li data-quest="0"><a class="dropdown-item" href="#" data-quest-id="0">All Quests</a></li>
         </ul>
     </div>`
     stage.innerHTML = dropdownHTML;
@@ -31,6 +31,8 @@ export async function loadQuestDropdown(userId) {
 
     // Remove old quest items except "All Quests"
     menu.querySelectorAll('li[data-quest]').forEach(li => li.remove());
+    
+    menu.innerHTML = `<li data-quest="0"><a class="dropdown-item" href="#" data-quest-id="0">All Quests</a></li>`
 
     quests.forEach(q => {
         const li = document.createElement('li');
@@ -80,8 +82,6 @@ function createDropdownEventListener() {
         if (e.target.matches('.dropdown-item')) {
             const questId = e.target.getAttribute('data-quest-id');
             current_quest = e.target.text;
-
-            if (questId == 'all') questId = 0;
 
             await loadMetrics(questId);
         }
