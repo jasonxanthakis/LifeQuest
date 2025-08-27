@@ -1,12 +1,15 @@
-const Quest = require("../models/Quest.js");
+const Quest = require("../models/Quest");
+const Hero = require('../models/Hero')
 
 const getQuests = async (req, res) => {
-    const username = req.user;
 
     try {
+        const username = req.user;
         const userId = await Quest.getUserIdByUsername(username);
         const quests =  await Quest.getByUserId(userId)
-        res.status(200).json(quests)
+        const hero = await Hero.getByUserId(userId)
+
+        res.status(200).json({quests, hero})
     } catch (err) {
         res.status(500).json({error: err.message})
     };
@@ -98,9 +101,7 @@ const setQuestComplete = async (req, res) => {
     const userId = await Quest.getUserIdByUsername(username);
     const { completed } = req.body;
 
-    // Need to work out how this is connecting to the front end:
-    // Need to check that toggle has been switched to complete
-
+    console.log("Patch body:", req.body);
     try {
 
         if (typeof completed != 'boolean') {
@@ -110,11 +111,24 @@ const setQuestComplete = async (req, res) => {
         const completedQuest = await Quest.getByUserAndQuest(userId, questId);
         await completedQuest.setCompleted(completed);
 
-        res.status(200).json(completedQuest)
-        } catch (err) {
-            res.status(400).json({error: err.message})
-        }
+        // calculate new total_points - sum of all quest points for this user
+        const allQuests = await Quest.getByUserId(userId);
+        const totalPoints = allQuests
+            .filter(q => q.completed)
+            .reduce((sum, q) => sum + q.points, 0)
+
+        const updatedHero = await Hero.updateTotalPoints(userId, totalPoints);
+
+        // return quest and Hero in response
+
+        return res.status(200).json({
+            completedQuest,
+            hero: updatedHero
+        });
+    } catch (err) {
+        res.status(400).json({error: err.message})
     }
+}
 
 
 const destroyQuest = async (req, res) => {
