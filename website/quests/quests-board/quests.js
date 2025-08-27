@@ -82,14 +82,13 @@ function addQuestCard( questId, title, category, description, points=3, complete
     card.classList.toggle('text-white', toggle.checked);
     card.classList.toggle('done', toggle.checked);
 
-    //updateTotalPoints();
-
     // connecting the toggle to the backend
     let url = `http://localhost:3000/main/quests/${questId}/complete`;
     
     try {
       const response = await sendPatchRequest(url, { completed: toggle.checked });
       const data = await response.json();
+      console.log("PATCH response:", data);
       
       // connecting total points from the backend
       if (response.ok) {

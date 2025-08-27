@@ -174,7 +174,7 @@ class Hero {
 
     // Update hero points when a quest is completed
     static async updateTotalPoints(userId, newTotal) {
-        const res = db.query('UPDATE hero SET total_points = $1 WHERE user_id = $2 RETURNING *;',
+        const res = await db.query('UPDATE hero SET total_points = $1 WHERE user_id = $2 RETURNING *;',
             [newTotal, userId]
         );
 

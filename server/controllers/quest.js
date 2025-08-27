@@ -101,6 +101,7 @@ const setQuestComplete = async (req, res) => {
     const userId = await Quest.getUserIdByUsername(username);
     const { completed } = req.body;
 
+    console.log("Patch body:", req.body);
     try {
 
         if (typeof completed != 'boolean') {
