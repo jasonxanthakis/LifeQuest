@@ -9,7 +9,7 @@ for (let btn of logout) {
 }
 
 export async function createSummaryCards(stage, questId) {
-    let url = `http://localhost:3000/main/metrics/data/${questId}`;
+    let url = `https://lifequest-api.onrender.com/main/metrics/data/${questId}`;
 
     const response = await getRequest(url);
     const result = await response.json();
@@ -64,7 +64,7 @@ export function createDropdown(stage) {
 }
 
 export async function loadQuestDropdown() {
-    const response = await getRequest('http://localhost:3000/main/metrics/quests');
+    const response = await getRequest('https://lifequest-api.onrender.com/main/metrics/quests');
     const result = await response.json();
     const quests = result.quests;
 
@@ -87,7 +87,7 @@ export async function loadQuestDropdown() {
 
 export async function loadMetrics(questID = 0) {
     try {
-        const API_URL = 'http://localhost:3000';
+        const API_URL = 'https://lifequest-api.onrender.com';
 
         let url = API_URL + `/main/metrics/${questID}`;
 

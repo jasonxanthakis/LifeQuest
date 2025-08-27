@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Load achievements from backend
 export async function loadAchievements() {
     try {
-        const url = `http://localhost:3000/main/achievements`;
+        const url = `https://lifequest-api.onrender.com/main/achievements`;
         
         const response = await getRequest(url);
         const data = await response.json();
