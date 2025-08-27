@@ -17,8 +17,6 @@ const getGraphs = async (req, res) => {
         const url = `${FASTAPI_URL}/charts/calendar-all.svg?${qs.toString()}`;
 
         const response = await fetch(url);
-        console.log(response.status);
-        console.log(response);
 
         if (!response.ok) {
             const errorText = await response.text();

@@ -137,7 +137,11 @@ def plot_multiquest_heatmap(df: pd.DataFrame, user_id: int) -> str:
     buf = io.StringIO()
     fig.savefig(buf, format="svg")
     plt.close(fig)
-    return buf.getvalue()
+    svg = buf.getvalue()
+
+    svg = svg.replace('<svg ', '<svg class="calendar_heatmap" ')
+
+    return svg
 
 def plot_single_quest_heatmap(df: pd.DataFrame, user_id: int, quest_id: int) -> str:
     """

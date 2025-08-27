@@ -716,3 +716,39 @@ body {
 .achievement-locked .achievement-icon {
     filter: grayscale(100%) opacity(0.5);
 }
+
+/*----------Metrics-----------*/
+
+/* Metrics stage */
+.metrics-stage {
+    background: rgba(119, 118, 118, 0.58);
+    padding: 3rem;
+    border-radius: 20px;
+    max-width: 850px;
+    width: 100%;
+    height: auto;
+    border: 5px solid rgba(74, 26, 92, 0.6);
+    box-shadow: 3px 3px 25px rgba(142, 68, 173, 0.6);
+    margin: 0 auto;
+}
+
+.calendar_heatmap {
+    height: auto;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .metrics-stage {
+        padding: 3rem 1rem;
+    }
+    .calendar_heatmap {
+        width: 70vw;
+    }
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+    .calendar_heatmap {
+        max-width: 700px;
+    }
+}

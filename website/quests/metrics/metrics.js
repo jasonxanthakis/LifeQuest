@@ -21,8 +21,8 @@ async function loadMetrics() {
         const svgText = await response.text();
 
         // Clear existing content
-        const mainContent = document.querySelector('.battle-stage');
-        mainContent.innerHTML = '';
+        const mainContent = document.querySelector('.metrics-stage');
+        mainContent.innerHTML = '<h2 class="text-white mb-3">Metrics</h2>';
 
         // Insert the SVG into the page
         const svgContainer = document.createElement('div');
