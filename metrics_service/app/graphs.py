@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from app.db import connect
 
+# ------------------------------
+# Extract Data from Database
+# ------------------------------
+
 # # Load user_quest_streaks
 # def load_user_quest_streaks_data():
 #     with connect.get_connection() as conn:
@@ -26,6 +30,39 @@ from app.db import connect
 #         df_last6 = df[df['end_date'] >= six_months_ago]
 
 #         return df_last6
+
+def get_best_and_current_streak(user_id: int) -> dict:
+    """
+    Load best streak ever (and the corresponding quest) and the current streak for all quests.
+    Returns a tuple with best streak, best streak quest and current streak.
+    """
+    pass
+
+def get_best_and_current_streak_by_quest(user_id: int, quest_id: int) -> dict:
+    """
+    Load best streak and current streak for given quest and given user.
+    Returns a tuple with best streak, current streak and last date of completion.
+    """
+    result = None
+
+    with connect.get_connection() as conn:
+        query = """
+        SELECT best_streak, current_streak, last_completed_date
+        FROM quest_completion_summary
+        WHERE user_id = %s AND quest_id = %s
+        """
+        with conn.cursor() as cur1:
+            cur1.execute(query=query, params=(user_id, quest_id), prepare=False)
+            result = cur1.fetchone()
+    
+    if result == None:
+        return {}
+    
+    return {
+        "best_streak": result[0],
+        "current_streak": result[1],
+        "last_completed_date": result[2].isoformat() if result[2] else None
+    }
 
 def load_all_user_quest_completions(user_id: int, months: int = 6) -> pd.DataFrame:
     """
@@ -79,6 +116,10 @@ def load_user_quest_completions(user_id: int, quest_id: int, months: int = 6) ->
         df = df[df["completion_date"] >= cutoff]
 
     return df
+
+# ------------------------------
+# Plot Graphs
+# ------------------------------
 
 def plot_multiquest_heatmap(df: pd.DataFrame, user_id: int) -> str:
     """
@@ -211,8 +252,13 @@ def plot_single_quest_heatmap(df: pd.DataFrame, user_id: int, quest_id: int) -> 
     buf = io.StringIO()
     fig.savefig(buf, format="svg")
     plt.close(fig)
-    return buf.getvalue()
+    svg = buf.getvalue()
 
+    svg = svg.replace('<svg ', '<svg class="calendar_heatmap" ')
+
+    return svg
+
+"""
 # ------------------------------
 # Monthly Progression Line Chart
 # ------------------------------
@@ -228,7 +274,6 @@ def monthly_progression_line_chart(df_last6):
     plt.savefig("monthly_progression_line.png")
     plt.close()
 
-"""
 # ------------------------------
 # Active Users per Month Bar Chart
 # ------------------------------

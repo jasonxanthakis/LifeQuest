@@ -10,13 +10,28 @@ const getGraphs = async (req, res) => {
         const username = req.user;
         const userId = await Quest.getUserIdByUsername(username);
 
-        const qs = new URLSearchParams({
-            ...(userId && { userId: userId }),
-        });
+        const questId = req.params.quest;
 
-        const url = `${FASTAPI_URL}/charts/calendar-all.svg?${qs.toString()}`;
+        let response;
 
-        const response = await fetch(url);
+        if (questId == 0) {
+            const qs = new URLSearchParams({
+                ...(userId && { userId: userId }),
+            });
+
+            const url = `${FASTAPI_URL}/charts/calendar-all.svg?${qs.toString()}`;
+
+            response = await fetch(url);
+        } else {
+            const qs = new URLSearchParams({
+                ...(userId && { userId: userId }),
+                ...(questId && { questId: questId }),
+            });
+
+            const url = `${FASTAPI_URL}/charts/calendar-one.svg?${qs.toString()}`;
+
+            response = await fetch(url);
+        }
 
         if (!response.ok) {
             const errorText = await response.text();
