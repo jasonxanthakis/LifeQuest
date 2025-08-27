@@ -37,7 +37,11 @@ def get_best_and_current_streak(user_id: int) -> dict:
     Load best streak ever (and the corresponding quest) and the current streak for all quests.
     Returns a tuple with best streak, best streak quest and current streak.
     """
-    pass
+    return {
+        "best_streak": 0,
+        "current_streak": 0,
+        "last_completion": 'NA'
+    }
 
 def get_best_and_current_streak_by_quest(user_id: int, quest_id: int) -> dict:
     """
@@ -59,10 +63,18 @@ def get_best_and_current_streak_by_quest(user_id: int, quest_id: int) -> dict:
     if result == None:
         return {}
     
+    days = 0
+    saved_date = result[2] if result[2] else None
+    if saved_date != None:
+        today = datetime.today().date()
+        delta = today - saved_date
+        days = delta.days
+    days = str(days) + " day ago" if days == 1 else str(days) + " days ago"
+    
     return {
         "best_streak": result[0],
         "current_streak": result[1],
-        "last_completed_date": result[2].isoformat() if result[2] else None
+        "last_completion": days
     }
 
 def load_all_user_quest_completions(user_id: int, months: int = 6) -> pd.DataFrame:

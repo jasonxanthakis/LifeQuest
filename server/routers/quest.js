@@ -18,5 +18,6 @@ router.get("/achievements", authenticator, AchievementsController.getUserAchieve
 // Metrics endpoint
 router.get("/metrics/quests", authenticator, QuestController.getQuests);
 router.get("/metrics/:quest", authenticator, MetricsController.getGraphs);
+router.get("/metrics/data/:quest", authenticator, MetricsController.getSummaryStats);
 
 module.exports = router;
