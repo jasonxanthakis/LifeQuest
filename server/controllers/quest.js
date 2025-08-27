@@ -1,12 +1,15 @@
-const Quest = require("../models/quest");
+const Quest = require("../models/Quest");
+const Hero = require('../models/Hero')
 
 const getQuests = async (req, res) => {
-    const username = req.user;
 
     try {
+        const username = req.user;
         const userId = await Quest.getUserIdByUsername(username);
         const quests =  await Quest.getByUserId(userId)
-        res.status(200).json(quests)
+        const hero = await Hero.getByUserId(userId)
+
+        res.status(200).json({quests, hero})
     } catch (err) {
         res.status(500).json({error: err.message})
     };
@@ -49,7 +52,7 @@ const createQuest = async (req, res) => {
             description,
             category,
             points_value: 3,
-            complete: 0
+            completed: 0
         });
 
         return res.status(201).json(newQuest);
@@ -86,29 +89,46 @@ const modifyQuest = async (req, res) => {
             category
         });
 
-        return res.status(200).json(quest);
+        return res.status(200).json(modifiedQuest);
     } catch (err) {
         return res.status(400).json({error: err.message});
     };
 };
 
-const completeQuest = async (req, res) => {
+const setQuestComplete = async (req, res) => {
     const username = req.user;
     const questId = req.params.quest
-
     const userId = await Quest.getUserIdByUsername(username);
+    const { completed } = req.body;
 
-    // Need to work out how this is connecting to the front end:
-    // Need to check that toggle has been switched to complete
-
+    console.log("Patch body:", req.body);
     try {
-        const completedQuest = await Quest.getByUserAndQuest(userId, questId);
-        await completedQuest.quest_completed()
-        res.status(200).json(completedQuest)
-        } catch (err) {
-            res.status(400).json({error: err.message})
+
+        if (typeof completed != 'boolean') {
+        return res.status(400).json({error: 'completed must be a boolean'});
         }
+
+        const completedQuest = await Quest.getByUserAndQuest(userId, questId);
+        await completedQuest.setCompleted(completed);
+
+        // calculate new total_points - sum of all quest points for this user
+        const allQuests = await Quest.getByUserId(userId);
+        const totalPoints = allQuests
+            .filter(q => q.completed)
+            .reduce((sum, q) => sum + q.points, 0)
+
+        const updatedHero = await Hero.updateTotalPoints(userId, totalPoints);
+
+        // return quest and Hero in response
+
+        return res.status(200).json({
+            completedQuest,
+            hero: updatedHero
+        });
+    } catch (err) {
+        res.status(400).json({error: err.message})
     }
+}
 
 
 const destroyQuest = async (req, res) => {
@@ -128,5 +148,5 @@ const destroyQuest = async (req, res) => {
 
 
 module.exports = {
-    createQuest, getQuests, modifyQuest, completeQuest, destroyQuest
+    createQuest, getQuests, modifyQuest, setQuestComplete, destroyQuest
 }

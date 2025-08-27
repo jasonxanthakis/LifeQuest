@@ -215,10 +215,22 @@ body {
   box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.25) !important;
 }
 
+.page-title {
+    font-family: "Rubik Distressed", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.5rem;
+    color: #1a1913;
+    text-shadow: 0 0 13px rgba(14, 77, 5, 0.7);
+    margin-bottom: 1rem;
+}
+
+
+
 /*-----------Navbar------------*/
 
 .mainbar {
-    background-color: #6b5e81;
+    background-color: #c3b9d2;
 }
 
 /* Sidebar */
@@ -289,12 +301,12 @@ body {
 }
 
 .stat {
-    background: rgba(0, 255, 255, 0.15);
+    background: rgba(102, 51, 153, 0.3);
     padding: 0.4rem 0.8rem;
     border-radius: 6px;
     font-weight: bold;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
-    color: #00fff0;
+    color: #e6ccff;
     min-width: 60px;
     text-align: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -302,7 +314,7 @@ body {
 
 .stat:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+    box-shadow: 0 0 12px rgba(102, 51, 153, 0.8);
 }
 
 /* Fight button styling */
@@ -703,4 +715,52 @@ body {
 
 .achievement-locked .achievement-icon {
     filter: grayscale(100%) opacity(0.5);
+}
+
+/*----------Metrics-----------*/
+
+/* Metrics stage */
+.metrics-stage {
+    background: rgba(119, 118, 118, 0.58);
+    padding: 3rem;
+    border-radius: 20px;
+    max-width: 850px;
+    width: 100%;
+    height: auto;
+    border: 5px solid rgba(74, 26, 92, 0.6);
+    box-shadow: 3px 3px 25px rgba(142, 68, 173, 0.6);
+    margin: 0 auto;
+}
+
+.calendar_heatmap {
+    height: auto;
+}
+
+#summary-grid .card {
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+}
+#summary-grid .card-title {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+#summary-grid .card-text {
+  font-size: 1.25rem;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .metrics-stage {
+        padding: 3rem 1rem;
+    }
+    .calendar_heatmap {
+        width: 70vw;
+    }
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+    .calendar_heatmap {
+        max-width: 700px;
+    }
 }

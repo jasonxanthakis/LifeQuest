@@ -11,6 +11,9 @@
 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
+        <link href="https://fonts.googleapis.com/css2?family=Rubik+Distressed&display=swap" rel="stylesheet">
+
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
@@ -81,11 +84,12 @@
                         <!-- Points Display -->
                         <div class="d-flex justify-content-start mb-3">
                             <div id="totalPointsDisplay" class="p-2 bg-light border rounded">
-                                Total Points: <span id="pointsValue">100</span>
+                                Total Points: <span id="pointsValue">0</span>
                             </div>
                         </div>
 
-                        <h2>Your Inventory</h2>
+                       <h2 class="page-title">Your Inventory</h2>
+
                         
                         <!-- Inventory Items -->
                         <div id="inventoryList" class="row">
@@ -94,8 +98,10 @@
                         
                         <!-- Empty inventory message -->
                         <div id="emptyInventory" class="text-center mt-5" style="display: none;">
-                            <h4 class="text-muted">Your inventory is empty</h4>
-                            <p class="text-muted">Visit the <a href="../shop/shop.html">shop</a> to purchase items!</p>
+                            <div class="battle-stage" style="max-width: 500px; margin: 0 auto;">
+                                <h2 class="text-white mb-3">Your inventory is empty</h2>
+                                <p class="text-muted">Visit the <a href="../shop/shop.html" style="color: #007bff; text-decoration: underline;">shop</a> to purchase items!</p>
+                            </div>
                         </div>
                     
                     </main>

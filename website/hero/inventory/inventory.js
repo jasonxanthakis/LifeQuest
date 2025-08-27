@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 // Load inventory from backend instead of localStorage
-async function loadInventoryData() {
+export async function loadInventoryData() {
     try {
         const url = `http://localhost:3000/hero/user/inventory`
         
@@ -15,17 +15,23 @@ async function loadInventoryData() {
             loadInventory(data.items);
         } else {
             console.error('Failed to load inventory:', data.error);
+            // Show empty message if API fails
+            loadInventory([]);
+            loadPoints(0);
         }
     } catch (error) {
         console.error('Failed to load inventory:', error);
+        // Show empty message if request fails
+        loadInventory([]);
+        loadPoints(0);
     }
 }
 
-function loadPoints(points) {
+export function loadPoints(points) {
     document.getElementById('pointsValue').textContent = points;
 }
 
-function loadInventory(items) {
+export function loadInventory(items) {
     const inventoryList = document.getElementById('inventoryList');
     const emptyMessage = document.getElementById('emptyInventory');
     
@@ -57,7 +63,7 @@ function loadInventory(items) {
     updateEquipButtons(items);
 }
 
-function createInventoryCard(item) {
+export function createInventoryCard(item) {
     const col = document.createElement('div');
     col.className = 'col-md-4 col-lg-3 mb-4';
     
@@ -82,7 +88,7 @@ function createInventoryCard(item) {
     return col;
 }
 
-async function handleEquip(event) {
+export async function handleEquip(event) {
     const button = event.target;
     const itemId = button.getAttribute('data-item-id');
     const itemName = button.getAttribute('data-item-name');
@@ -126,7 +132,7 @@ async function handleEquip(event) {
     }
 }
 
-function updateEquipButtons(items) {
+export function updateEquipButtons(items) {
     const equipButtons = document.querySelectorAll('.btn-equip');
     
     for (let button of equipButtons) {
@@ -142,7 +148,7 @@ function updateEquipButtons(items) {
     };
 }
 
-function showEquipMessage(itemName, isEquipped) {
+export function showEquipMessage(itemName, isEquipped) {
     const action = isEquipped ? 'equipped' : 'unequipped';
     const message = document.createElement('div');
     message.className = 'alert alert-info alert-dismissible fade show position-fixed';
@@ -176,7 +182,7 @@ for (let btn of logout) {
     });
 }
 
-async function getRequest(url) {
+export async function getRequest(url) {
   const options = {
     method: "GET",
     headers: {
@@ -190,7 +196,7 @@ async function getRequest(url) {
   return resp;
 };
 
-async function sendPatchRequest(url, data) {
+export async function sendPatchRequest(url, data) {
     const options = {
         method: "PATCH",
         headers: {
