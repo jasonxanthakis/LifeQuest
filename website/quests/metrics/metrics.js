@@ -19,7 +19,6 @@ async function loadMetrics() {
         }
 
         const svgText = await response.text();
-        console.log(svgText);
 
         // Clear existing content
         const mainContent = document.querySelector('.battle-stage');

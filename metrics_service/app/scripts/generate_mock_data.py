@@ -24,6 +24,7 @@ QUESTS_PER_USER = 5
 DAYS_HISTORY = 100
 
 users_data = []
+hero_data = []
 quests_data = []
 quest_completions_data = []
 quest_summary_data = []
@@ -43,7 +44,7 @@ quest_id_counter = 1
 for user_id in range(NUM_USERS):
     full_name = fake.name()
     username = fake.user_name()[:30]
-    password_hash = fake.password(length=60)
+    password_hash = "$2b$12$KHKXDq4xysddaTiWAEtHMu81mZ2xpjg5gqN7Vq3uBUEC.tbQVh9Ae"  #fake.password(length=60)
     email = fake.email()[:50]
     date_of_birth = fake.date_of_birth(minimum_age=18, maximum_age=60)
 
@@ -54,6 +55,15 @@ for user_id in range(NUM_USERS):
     # user_id = cur.fetchone()[0]
 
     users_data.append((full_name, username, password_hash, email, date_of_birth))
+
+    current_level = 1
+    total_points = 0
+    health = 50
+    damage = 5
+    defense = 5
+    next_enemy = '???'
+
+    hero_data.append((user_id_counter, current_level, username, total_points, health, damage, defense, next_enemy))
 
     # Generate Quests per User
     for quest_id in range((user_id-1)*QUESTS_PER_USER + 1, user_id*QUESTS_PER_USER + 1):
@@ -130,6 +140,16 @@ with conn.cursor() as cur1:
         """, row, prepare=False)
 
 print("Users table seeded...")
+
+# Heroes
+with conn.cursor() as cur5:
+    for row in hero_data:
+        cur5.execute("""
+            INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """, row, prepare=False)
+
+print("Hero table seeded...")
 
 # Quests
 with conn.cursor() as cur2:
