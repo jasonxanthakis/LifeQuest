@@ -3,7 +3,12 @@ from app.graphs import *
 
 app = FastAPI()
 
-@app.get("/charts/streak_summ")
+@app.get("/data/streak_summary_all")
+def best_and_current_streak(userId: str):
+    data = get_best_and_current_streak(int(userId))
+    return data
+
+@app.get("/data/streak_summary_one")
 def best_and_current_streak_per_quest(userId: str, questId: str):
     data = get_best_and_current_streak_by_quest(int(userId), int(questId))
     return data

@@ -8,8 +8,48 @@ for (let btn of logout) {
     });
 }
 
+export async function createSummaryCards(stage, questId) {
+    let url = `http://localhost:3000/main/metrics/data/${questId}`;
+
+    const response = await getRequest(url);
+    const result = await response.json();
+
+    // const container = document.getElementById('summaryDataContainer');
+    const container = document.createElement('div');
+    container.id = 'summaryDataContainer';
+    container.classList = 'container mt-4';
+
+    const row = document.createElement('div');
+    row.classList = 'row text-center';
+
+
+    Object.entries(result).forEach(([key, value]) => {
+        const col = document.createElement('div');
+        col.className = "col-md-4 mb-3";
+
+        // Format the title (snake_case -> Capitalized words)
+        const title = key.replace(/_/g, " ")
+                        .replace(/\b\w/g, l => l.toUpperCase());
+
+        col.innerHTML = `
+        <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title">${title}</h5>
+                <p class="card-text display-6">${value}</p>
+            </div>
+        </div>
+        `;
+
+        row.appendChild(col);
+    });
+
+    container.appendChild(row);
+    stage.appendChild(container);
+}
+
 export function createDropdown(stage) {
-    const dropdownHTML = `<h2 class="text-white mb-3">Metrics</h2>
+    const dropdownHTML = `
+    <h2 class="text-white mb-3">Metrics</h2>
     <div class="dropdown ms-3">
         <button class="btn btn-outline-light dropdown-toggle" type="button" id="questDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             ${current_quest}
@@ -18,11 +58,12 @@ export function createDropdown(stage) {
             <!-- Items will be inserted here dynamically -->
             <li data-quest="0"><a class="dropdown-item" href="#" data-quest-id="0">All Quests</a></li>
         </ul>
-    </div>`
+    </div>
+    `
     stage.innerHTML = dropdownHTML;
 }
 
-export async function loadQuestDropdown(userId) {
+export async function loadQuestDropdown() {
     const response = await getRequest('http://localhost:3000/main/metrics/quests');
     const result = await response.json();
     const quests = result.quests;
@@ -50,7 +91,7 @@ export async function loadMetrics(questID = 0) {
 
         let url = API_URL + `/main/metrics/${questID}`;
 
-        const response = await getRequest(url);
+        const response = await getRequestSvg(url);
 
         if (!response.ok) {
             throw new Error(`Failed to fetch metrics: ${response.status}`);
@@ -71,6 +112,9 @@ export async function loadMetrics(questID = 0) {
         svgContainer.classList.add('metrics-svg', 'text-center', 'mt-3');
         stage.appendChild(svgContainer);
 
+        // Add the 3 summary stat cards
+        await createSummaryCards(stage, questID);        
+
     } catch (err) {
         console.error(err);
         mainContent.innerHTML = `<p class="text-danger">Could not load metrics. Please try again later.</p>`;
@@ -89,6 +133,20 @@ function createDropdownEventListener() {
 }
 
 export async function getRequest(url) {
+    const options = {
+        method: "GET",
+        headers: {
+            "Authorization": localStorage.getItem("token"),
+            "Content-Type": "application/json"
+        }
+    }
+
+    const resp = await fetch(url, options);
+
+    return resp;
+};
+
+export async function getRequestSvg(url) {
     const options = {
         method: "GET",
         headers: {
