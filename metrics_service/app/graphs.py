@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import io
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from app.db import connect
@@ -124,7 +125,7 @@ def load_user_quest_completions(user_id: int, quest_id: int, months: int = 6) ->
 def plot_multiquest_heatmap(df: pd.DataFrame, user_id: int) -> str:
     """
     GitHub-style contribution grid for all quests of a user.
-    Each quest has its own color.
+    Uses shades of green depending on number of completions.
     Returns SVG string.
     """
     if df.empty:
@@ -136,61 +137,88 @@ def plot_multiquest_heatmap(df: pd.DataFrame, user_id: int) -> str:
         plt.close(fig)
         return buf.getvalue()
 
-    # Continuous date range
+    # Ensure datetime
+    df["completion_date"] = pd.to_datetime(df["completion_date"])
+
+    # Build continuous date range
     date_range = pd.date_range(df["completion_date"].min(), df["completion_date"].max())
     all_days = pd.DataFrame({"completion_date": date_range})
-    df = all_days.merge(df, on="completion_date", how="left")
 
-    # Extract week/year/weekday
-    df["week"] = df["completion_date"].dt.isocalendar().week
-    df["year"] = df["completion_date"].dt.year
-    df["weekday"] = df["completion_date"].dt.weekday
+    # Count total completions per day (across all quests)
+    daily = df.groupby("completion_date").size().reset_index(name="count")
+    df = all_days.merge(daily, on="completion_date", how="left").fillna(0)
 
-    # Assign a color per quest
-    quest_ids = df["quest_id"].dropna().unique()
-    palette = sns.color_palette("tab10", len(quest_ids))
-    quest_colors = {q: palette[i] for i, q in enumerate(quest_ids)}
+    # Helpers
+    df["weekday"] = df["completion_date"].dt.weekday  # 0=Mon
+    df["week_start"] = df["completion_date"] - pd.to_timedelta(
+        df["completion_date"].dt.weekday, unit="D"
+    )
 
+    # Set up figure
     fig, ax = plt.subplots(figsize=(12, 3))
 
-    # Plot each quest completion as a colored square
-    for _, row in df.dropna().iterrows():
-        x = f"{row['year']}-{row['week']}"
-        y = row["weekday"]
-        ax.scatter(
-            x, y, 
-            color=quest_colors[row["quest_id"]], 
-            s=100, marker="s", edgecolor="black"
-        )
+    # Map week_start to column index
+    week_starts = sorted(df["week_start"].unique())
+    week_to_col = {w: i for i, w in enumerate(week_starts)}
 
-    # Formatting
-    ax.set_title(f"Quest completions for User {user_id}", fontsize=12)
-    ax.set_yticks(range(7))
-    ax.set_yticklabels(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"])
-    ax.tick_params(axis="x", labelrotation=90)
+    # Normalize counts for colormap
+    max_count = df["count"].max()
+    norm = plt.Normalize(vmin=0, vmax=max_count if max_count > 0 else 1)
+    cmap = plt.cm.Greens
 
-    # # Legend
-    # patches = [mpatches.Patch(color=c, label=f"Quest {q}") for q, c in quest_colors.items()]
-    # ax.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc="upper left")
+    # Plot completions as colored squares
+    for _, row in df.iterrows():
+        col = week_to_col[row["week_start"]]
+        row_pos = row["weekday"]
+        color = cmap(norm(row["count"]))
+        ax.add_patch(plt.Rectangle(
+            (col, row_pos), 1, 1,
+            facecolor=color,
+            edgecolor="white"
+        ))
 
-    fig.tight_layout()
+    # Y axis labels
+    ax.set_yticks([i + 0.5 for i in range(7)])
+    ax.set_yticklabels(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], rotation=0)
 
+    # X axis month labels
+    month_starts = (
+        df.groupby(df["completion_date"].dt.to_period("M"))["week_start"]
+        .min()
+        .sort_values()
+        .drop_duplicates()
+    )
+    xticks = []
+    xlabels = []
+    for d in month_starts:
+        if d in week_to_col:
+            xticks.append(week_to_col[d] + 0.5)
+            xlabels.append(d.strftime("%b"))
+    ax.set_xticks(xticks)
+    ax.set_xticklabels(xlabels, rotation=0)
+
+    # Limits and style
+    ax.set_xlim(0, len(week_starts))
+    ax.set_ylim(0, 7)
+    ax.invert_yaxis()
+    ax.tick_params(axis="x", which="both", bottom=False, top=False)
+    ax.set_xlabel("")
+    ax.set_ylabel("")
+
+    # Return as SVG
     buf = io.StringIO()
     fig.savefig(buf, format="svg")
     plt.close(fig)
     svg = buf.getvalue()
-
     svg = svg.replace('<svg ', '<svg class="calendar_heatmap" ')
-
     return svg
 
 def plot_single_quest_heatmap(df: pd.DataFrame, user_id: int, quest_id: int) -> str:
     """
-    Given a DataFrame of completions with 'completion_date',
-    generate a GitHub-style activity heatmap.
+    GitHub-style activity heatmap for a single quest.
+    Shades of green indicate number of completions per day.
     Returns SVG string.
     """
-
     if df.empty:
         fig, ax = plt.subplots(figsize=(6, 3))
         ax.text(0.5, 0.5, "No completions available", ha="center", va="center")
@@ -200,62 +228,82 @@ def plot_single_quest_heatmap(df: pd.DataFrame, user_id: int, quest_id: int) -> 
         plt.close(fig)
         return buf.getvalue()
 
-    # Ensure completion_date is datetime
+    # Ensure datetime
     df["completion_date"] = pd.to_datetime(df["completion_date"])
 
-    # Add helper columns
-    df["week"] = df["completion_date"].dt.isocalendar().week
-    df["year"] = df["completion_date"].dt.year
-    df["weekday"] = df["completion_date"].dt.weekday  # 0=Mon, 6=Sun
-
-    # Aggregate: 1 if completed on that day
+    # Count completions per day
     daily = df.groupby("completion_date").size().reset_index(name="count")
 
-    # Build continuous date range (fill missing with 0)
-    date_range = pd.date_range(df["completion_date"].min(), df["completion_date"].max())
+    # Build continuous date range and merge
+    date_range = pd.date_range(daily["completion_date"].min(), daily["completion_date"].max())
     heatmap_df = pd.DataFrame({"completion_date": date_range})
     heatmap_df = heatmap_df.merge(daily, on="completion_date", how="left").fillna(0)
 
-    # Recompute helpers
-    heatmap_df["week"] = heatmap_df["completion_date"].dt.isocalendar().week
-    heatmap_df["year"] = heatmap_df["completion_date"].dt.year
-    heatmap_df["weekday"] = heatmap_df["completion_date"].dt.weekday
-
-    # Pivot into matrix (rows=weekday, cols=week)
-    pivot = heatmap_df.pivot_table(
-        index="weekday", columns=["year", "week"], values="count", fill_value=0
+    # Helpers
+    heatmap_df["weekday"] = heatmap_df["completion_date"].dt.weekday  # 0=Mon
+    heatmap_df["week_start"] = heatmap_df["completion_date"] - pd.to_timedelta(
+        heatmap_df["completion_date"].dt.weekday, unit="D"
     )
 
-    # Plot with seaborn heatmap
+    # Set up figure
     fig, ax = plt.subplots(figsize=(12, 3))
-    sns.heatmap(
-        pivot,
-        cmap="Greens",
-        linewidths=0.5,
-        linecolor="black",
-        cbar=False,
-        ax=ax,
-        square=True,
-    )
 
-    # Style tweaks
-    ax.set_title(f"Quest {quest_id} completions for User {user_id}", fontsize=12)
-    ax.set_ylabel("")
-    ax.set_xlabel("")
-    ax.set_yticks([0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5])
+    # Map week_start to column index
+    week_starts = sorted(heatmap_df["week_start"].unique())
+    week_to_col = {w: i for i, w in enumerate(week_starts)}
+
+    # Normalize counts for colormap
+    max_count = heatmap_df["count"].max()
+    norm = plt.Normalize(vmin=0, vmax=max_count if max_count > 0 else 1)
+    cmap = plt.cm.Greens
+
+    # Plot squares
+    for _, row in heatmap_df.iterrows():
+        col = week_to_col[row["week_start"]]
+        row_pos = row["weekday"]
+        color = cmap(norm(row["count"]))
+        ax.add_patch(plt.Rectangle(
+            (col, row_pos), 1, 1,
+            facecolor=color,
+            edgecolor="white"
+        ))
+
+    # Y axis labels
+    ax.set_yticks([i + 0.5 for i in range(7)])
     ax.set_yticklabels(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], rotation=0)
-    ax.tick_params(axis="x", which="both", bottom=False, top=False, labelbottom=False)
+
+    # X axis month labels
+    month_starts = (
+        heatmap_df.groupby(heatmap_df["completion_date"].dt.to_period("M"))["week_start"]
+        .min()
+        .sort_values()
+        .drop_duplicates()
+    )
+    xticks = []
+    xlabels = []
+    for d in month_starts:
+        if d in week_to_col:
+            xticks.append(week_to_col[d] + 0.5)
+            xlabels.append(d.strftime("%b"))
+    ax.set_xticks(xticks)
+    ax.set_xticklabels(xlabels, rotation=0)
+
+    # Limits and style
+    ax.set_xlim(0, len(week_starts))
+    ax.set_ylim(0, 7)
+    ax.invert_yaxis()
+    ax.tick_params(axis="x", which="both", bottom=False, top=False)
+    ax.set_xlabel("")
+    ax.set_ylabel("")
 
     fig.tight_layout()
 
-    # Return SVG string
+    # Return as SVG
     buf = io.StringIO()
     fig.savefig(buf, format="svg")
     plt.close(fig)
     svg = buf.getvalue()
-
     svg = svg.replace('<svg ', '<svg class="calendar_heatmap" ')
-
     return svg
 
 """
