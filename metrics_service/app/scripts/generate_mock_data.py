@@ -1,186 +1,146 @@
 import psycopg
 from faker import Faker
 import random
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 from pathlib import Path
 
-env_path = Path(__file__).parent / "../../.env"
-env_path = env_path.resolve()
-load_dotenv(dotenv_path=env_path)
-
 # ---------------------------
-# DB connection
+# Load environment variables
 # ---------------------------
+env_path = Path(__file__).parent / "../../../.env"
+load_dotenv(dotenv_path=env_path.resolve())
 
 DB_URL = os.getenv("DB_URL")
-conn = psycopg.connect(DB_URL, autocommit=True)
+if not DB_URL:
+    raise ValueError("DB_URL not found in environment variables")
 
+conn = psycopg.connect(DB_URL, autocommit=True)
 fake = Faker()
 
+# ---------------------------
+# Configuration
+# ---------------------------
 NUM_USERS = 10
 QUESTS_PER_USER = 5
-DAYS_HISTORY = 100
+DAYS_HISTORY = 120  # 4 months
 
+# ---------------------------
+# Data holders
+# ---------------------------
 users_data = []
 hero_data = []
 quests_data = []
 quest_completions_data = []
-quest_summary_data = []
+user_streaks_data = []
 
 user_id_counter = 1
 quest_id_counter = 1
 
 # ---------------------------
-# Get existing quests
+# Generate mock data
 # ---------------------------
-# cur.execute("SELECT id, quest_title FROM quests;")
-# quests = cur.fetchall()
-# quest_ids = [q[0] for q in quests]  # list of valid quest IDs
-
-
-# Generate fake users and streaks
-for user_id in range(NUM_USERS):
+for _ in range(NUM_USERS):
+    # User info
     full_name = fake.name()
     username = fake.user_name()[:30]
-    password_hash = "$2b$12$KHKXDq4xysddaTiWAEtHMu81mZ2xpjg5gqN7Vq3uBUEC.tbQVh9Ae"  #fake.password(length=60)
+    password_hash = "$2b$12$KHKXDq4xysddaTiWAEtHMu81mZ2xpjg5gqN7Vq3uBUEC.tbQVh9Ae"
     email = fake.email()[:50]
     date_of_birth = fake.date_of_birth(minimum_age=18, maximum_age=60)
 
-    # cur.execute("""
-    #     INSERT INTO users (full_name, username, password, email, date_of_birth)
-    #     VALUES (%s, %s, %s, %s, %s) RETURNING id
-    # """, (full_name, username, password_hash, email, date_of_birth))
-    # user_id = cur.fetchone()[0]
-
     users_data.append((full_name, username, password_hash, email, date_of_birth))
+    hero_data.append((user_id_counter, 1, username, 0, 50, 5, 5, '???'))
 
-    current_level = 1
-    total_points = 0
-    health = 50
-    damage = 5
-    defense = 5
-    next_enemy = '???'
-
-    hero_data.append((user_id_counter, current_level, username, total_points, health, damage, defense, next_enemy))
-
-    # Generate Quests per User
-    for quest_id in range((user_id-1)*QUESTS_PER_USER + 1, user_id*QUESTS_PER_USER + 1):
+    # Generate quests
+    quest_ids_for_user = []
+    for _ in range(QUESTS_PER_USER):
         quest_title = fake.sentence(nb_words=4)[:50]
         description = fake.sentence(nb_words=10)[:100]
         category = random.choice(["Health", "Productivity", "Learning", "Fitness"])
         points_value = random.randint(5, 50)
         completed = False
 
-        # cur.execute("""
-        #     INSERT INTO quests
-        #     (user_id, quest_title, description, category, points_value, completed)
-        #     VALUES (%s, %s, %s, %s, %s, %s)
-        # """, (user_id, quest_title, description, category, points_value, completed))
-
         quests_data.append((user_id_counter, quest_title, description, category, points_value, completed))
-
-        # cur.execute("""
-        #     INSERT INTO user_quest_streaks
-        #     (user_id, quest_id, active_streak, start_date, end_date, current_streak, best_streak)
-        #     VALUES (%s, %s, %s, %s, %s, %s, %s)
-        # """, (user_id, quest_id, active_streak, start_date, end_date, current_streak, best_streak))
-
-        # Generate Quest Completions and Summary
-        last_completed_date = None
-        best_streak = 0
-        current_streak = 0
-        streak_counter = 0
-        start_date = datetime.today() - timedelta(days=DAYS_HISTORY)
-
-        for day_offset in range(DAYS_HISTORY):
-            completion_date = start_date + timedelta(days=day_offset)
-            # Randomly decide if quest was completed on this day
-            status = random.random() < 0.7  # 70% chance completed
-            points_earned = points_value if status else 0
-            
-            if status:
-                streak_counter += 1
-                last_completed_date = completion_date.date()
-            else:
-                streak_counter = 0
-            
-            best_streak = max(best_streak, streak_counter)
-            current_streak = streak_counter
-
-            if status:
-                # cur.execute("""
-                #     INSERT INTO quest_completions 
-                #     (quest_id, user_id, completion_date, status, points_earned)
-                #     VALUES (%s, %s, %s, %s, %s)
-                # """, (quest_id, user_id, completion_date, status, points_earned))
-
-                quest_completions_data.append((quest_id_counter, user_id_counter, completion_date.date(), status, points_earned))
-
-        # cur.execute("""
-        #     INSERT INTO quest_completion_summary 
-        #     (quest_id, user_id, last_completed_date, best_streak, current_streak)
-        #     VALUES (%s, %s, %s, %s, %s)
-        # """, (quest_id, user_id, last_completed_date, best_streak, current_streak))
-
-        quest_summary_data.append((quest_id_counter, user_id_counter, last_completed_date, best_streak, current_streak))
+        quest_ids_for_user.append(quest_id_counter)
         quest_id_counter += 1
+
+    # Generate daily completions and streaks
+    streak_counter = 0
+    start_date = datetime.today() - timedelta(days=DAYS_HISTORY)
+    for day_offset in range(DAYS_HISTORY):
+        date = start_date + timedelta(days=day_offset)
+
+        # Mark user as active every day
+        streak_counter += 1
+        for qid in quest_ids_for_user:
+            # Increase chance of completion per day to reduce zeros
+            activity_prob = random.uniform(0.7, 1.0)  # 70%-100% chance
+            status = random.random() < activity_prob
+            points_earned = random.randint(5, 50) if status else 0
+
+            quest_completions_data.append(
+                (qid, user_id_counter, date.date(), status, points_earned)
+            )
+
+            # Daily streak snapshot
+            user_streaks_data.append((
+                user_id_counter,
+                qid,
+                True,  # active streak
+                date.date(),
+                date.date(),
+                streak_counter,
+                streak_counter  # for simplicity best_streak = streak_counter
+            ))
 
     user_id_counter += 1
 
-print("Connecting to database...")
-
-# Users
-with conn.cursor() as cur1:
+# ---------------------------
+# Insert data into DB
+# ---------------------------
+with conn.cursor() as cur:
+    # Users
     for row in users_data:
-        cur1.execute("""
+        cur.execute("""
             INSERT INTO users (full_name, username, password, email, date_of_birth)
             VALUES (%s, %s, %s, %s, %s)
         """, row, prepare=False)
+    print("Users table seeded...")
 
-print("Users table seeded...")
-
-# Heroes
-with conn.cursor() as cur5:
+    # Heroes
     for row in hero_data:
-        cur5.execute("""
+        cur.execute("""
             INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """, row, prepare=False)
+    print("Hero table seeded...")
 
-print("Hero table seeded...")
-
-# Quests
-with conn.cursor() as cur2:
+    # Quests
     for row in quests_data:
-        cur2.execute("""
+        cur.execute("""
             INSERT INTO quests (user_id, quest_title, description, category, points_value, completed)
             VALUES (%s, %s, %s, %s, %s, %s)
         """, row, prepare=False)
+    print("Quests table seeded...")
 
-print("Quests table seeded...")
-
-# Quest Completions
-with conn.cursor() as cur3:
+    # Quest Completions
     for row in quest_completions_data:
-        cur3.execute("""
+        cur.execute("""
             INSERT INTO quest_completions (quest_id, user_id, completion_date, status, points_earned)
             VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (quest_id, user_id, completion_date) DO NOTHING
         """, row, prepare=False)
+    print("Quest completions table seeded...")
 
-print("Quests completions table seeded...")
-
-# Quest Summary
-with conn.cursor() as cur4:
-    for row in quest_summary_data:
-        cur4.execute("""
-            INSERT INTO quest_completion_summary (quest_id, user_id, last_completed_date, best_streak, current_streak)
-            VALUES (%s, %s, %s, %s, %s)
+    # User streaks
+    for row in user_streaks_data:
+        cur.execute("""
+            INSERT INTO user_quest_streaks (user_id, quest_id, active_streak, start_date, end_date, current_streak, best_streak)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (user_id, quest_id, end_date) DO NOTHING
         """, row, prepare=False)
-
-print("Quests completions summary table seeded...")
+    print("User streaks table seeded...")
 
 conn.close()
-
-print(f"Inserted {NUM_USERS} users with {QUESTS_PER_USER} quests each and historical completions!")
+print(f"Inserted {NUM_USERS} users with {QUESTS_PER_USER} quests each and {DAYS_HISTORY} days of activity!")

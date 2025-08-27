@@ -1,17 +1,20 @@
+-- ========================================
+-- LIFEQUEST DATABASE SCHEMA (FULL RESET)
+-- ========================================
+
 -- ---------------------------
 -- Drop existing tables
 -- ---------------------------
-DROP TABLE IF EXISTS user_quests;
-DROP TABLE IF EXISTS battle;
-DROP TABLE IF EXISTS hero_items;
-DROP TABLE IF EXISTS enemy;
-DROP TABLE IF EXISTS hero;
-DROP TABLE IF EXISTS quest_completions;
-DROP TABLE IF EXISTS quest_completion_summary;
-DROP TABLE IF EXISTS user_quest_streaks;
-DROP TABLE IF EXISTS items;
-DROP TABLE IF EXISTS quests;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS hero_items CASCADE;
+DROP TABLE IF EXISTS battle CASCADE;
+DROP TABLE IF EXISTS hero CASCADE;
+DROP TABLE IF EXISTS quest_completion_summary CASCADE;
+DROP TABLE IF EXISTS quest_completions CASCADE;
+DROP TABLE IF EXISTS user_quest_streaks CASCADE;
+DROP TABLE IF EXISTS items CASCADE;
+DROP TABLE IF EXISTS quests CASCADE;
+DROP TABLE IF EXISTS enemy CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 
 -- ---------------------------
 -- Users table
@@ -26,48 +29,18 @@ CREATE TABLE users (
 );
 
 -- ---------------------------
--- User Quests table
--- ---------------------------
-
---CREATE TABLE user_quests (
---    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
---    user_id INT NOT NULL REFERENCES users(id),
---    quest_title VARCHAR(50) NOT NULL UNIQUE,
---    description VARCHAR(100) NOT NULL,
---    category VARCHAR(30) NOT NULL,
---    points_value INT NOT NULL,
---    complete BOOLEAN NOT NULL DEFAULT FALSE
---);
-
--- ---------------------------
 -- Quests table
 -- ---------------------------
 CREATE TABLE quests (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(id),
-    quest_title VARCHAR(50) NOT NULL UNIQUE,
+    quest_title VARCHAR(50) NOT NULL,
     description VARCHAR(100) NOT NULL,
     category VARCHAR(30) NOT NULL,
     points_value INT NOT NULL,
-    completed BOOLEAN NOT NULL DEFAULT FALSE
+    completed BOOLEAN NOT NULL DEFAULT FALSE,
+    CONSTRAINT uq_user_quest_title UNIQUE(user_id, quest_title)
 );
-
--- ---------------------------
--- Predefined quests
--- ---------------------------
---INSERT INTO quests (quest_title, description, category, points_value, complete)
---VALUES
---('Skip Smoking', 'Avoid smoking for a full day', 'Smoking', 20, FALSE),
---('Limit Cigarettes', 'Cut your daily cigarette intake in half today', 'Smoking', 15, FALSE),
---('Push-Up Challenge', 'Complete 3 sets of 15 push-ups throughout the day', 'Exercise', 10, FALSE),
---('Stretch Breaks', 'Take 5 minutes every hour to stretch', 'Exercise', 5, FALSE),
---('Track Triggers', 'Write down the times you crave a cigarette and avoid one', 'Smoking', 10, FALSE),
---('Exercise Instead', 'Replace TV time with 20 minutes of exercise', 'Exercise', 10, FALSE),
---('Nicotine-Free Evening', 'Stay smoke-free after 6 PM', 'Smoking', 15, FALSE),
---('Morning Jog', 'Go for at least a 20-minute jog in the morning', 'Exercise', 15, FALSE),
---('Reward Yourself', 'Go the whole day without smoking and treat yourself in a healthy way', 'Smoking', 20, FALSE),
---('Hydration Boost', 'Drink at least 8 glasses of water to stay energized for exercise', 'Exercise', 5, FALSE),
---('Early Bedtime', 'Go to bed 30 minutes earlier to improve recovery after exercise', 'Exercise', 10, FALSE);
 
 -- ---------------------------
 -- User quest streaks table
@@ -80,13 +53,13 @@ CREATE TABLE user_quest_streaks (
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     current_streak INT NOT NULL,
-    best_streak INT NOT NULL
+    best_streak INT NOT NULL,
+    CONSTRAINT uq_user_quest_streak UNIQUE (user_id, quest_id)
 );
 
 -- ---------------------------
--- User quest completions table
+-- Quest completions table
 -- ---------------------------
-
 CREATE TABLE quest_completions (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     quest_id INT NOT NULL REFERENCES quests(id),
@@ -98,9 +71,8 @@ CREATE TABLE quest_completions (
 );
 
 -- ---------------------------
--- User quest completion summary table
+-- Quest completion summary table
 -- ---------------------------
-
 CREATE TABLE quest_completion_summary (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     quest_id INT NOT NULL REFERENCES quests(id),
@@ -122,7 +94,7 @@ CREATE TABLE hero (
     total_points INT NOT NULL,
     health INT NOT NULL,
     damage INT NOT NULL,
-    defense INT NOT NULL,    
+    defense INT NOT NULL,
     next_enemy VARCHAR(30) NOT NULL
 );
 
@@ -139,9 +111,7 @@ CREATE TABLE enemy (
     power INT NOT NULL
 );
 
--- ---------------------------
 -- Predefined enemies
--- ---------------------------
 INSERT INTO enemy (enemy_name, enemy_level, enemy_health, enemy_damage, enemy_defense, power) VALUES
 ('Goblin', 1, 90, 12, 8, 30),
 ('Zombie', 2, 160, 19, 14, 50),
@@ -178,9 +148,7 @@ CREATE TABLE items (
     power INT NOT NULL
 );
 
--- ---------------------------
 -- Predefined items
--- ---------------------------
 INSERT INTO items (item_name, description, item_health, item_damage, item_defense, item_cost, power) VALUES
 ('Health Potion', 'Restores 50 HP instantly. Perfect for tough battles!', 50, 0, 0, 5, 5),
 ('Magic Sword', 'A powerful weapon that increases attack damage by 15.', 0, 15, 0, 10, 10),
@@ -198,4 +166,5 @@ CREATE TABLE hero_items (
     item_id INT NOT NULL REFERENCES items(item_id),
     is_equipped BOOLEAN DEFAULT FALSE
 );
+
 COMMIT;
