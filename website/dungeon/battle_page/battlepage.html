@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Battle</title>
+    <meta name="description" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../styles.css">
+    <script type="module" src="battlepage.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Moonrocks&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+    <!-- Mobile navbar -->
+    <nav class="navbar navbar-expand-lg mainbar d-lg-none">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="../assets/logo.png" alt="LifeQuest Logo" height="50" class="me-2">
+            </a>
+            <div class="d-flex ms-auto align-items-center">
+                <button class="navbar-toggler mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar" aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <button id="logoutbtn" type="button" class="btn nav-btn btn-outline-dark me-2 logout">
+                    <span class="material-symbols-outlined" style="display: flex;">Logout</span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="mobileNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="#">Quests</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Hero</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Dungeon</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Desktop layout -->
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-lg-2 d-none d-lg-flex flex-column sidebar p-3 align-items-center text-center min-vh-100">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img src="../../assets/logo.png" alt="LifeQuest Logo" height="50" class="me-2">
+                </a>
+                <ul class="nav flex-column">
+                    <li class="nav-item my-1"><a class="nav-link text-white" href="#">Quests</a></li>
+                    <li class="nav-item my-1"><a class="nav-link text-white" href="#">Hero</a></li>
+                    <li class="nav-item my-1"><a class="nav-link text-white active" href="#">Dungeon</a></li>
+                </ul>
+                <div class="mt-auto">
+                    <button id="logoutbtn" type="button" class="btn nav-btn btn-outline-none me-2 logout">
+                        <span class="text-white" style="display: flex;">Logout</span>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="col-12 col-lg-10 p-0 d-flex flex-column min-vh-100">
+                <!-- Top navbar -->
+                <nav class="navbar top-navbar sticky-top">
+                    <div class="container-fluid justify-content-center">
+                        <ul class="navbar-nav flex-row">
+                            <li class="nav-item"><a class="nav-link text-black px-3 active" href="#">Dungeon</a></li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <!-- Battle content -->
+                <div class="battle-container">
+                    <div class="battle-stage">
+                        <h1 class="battle-title">⚔️ Battle ⚔️</h1>
+                        <div class="vs-text my-5">YOUR HERO WAS VICTORIOUS</div>
+
+                        <!-- Player -->
+                        <div class="character">
+                            <div class="avatar">
+                                <img src="../../assets/knight.png" alt="The Winner">
+                            </div>
+                            <div class="name">-</div>
+                        </div>
+
+                        <div class="battle-result">
+                            <div class="win-text">-</div>
+                        </div>
+
+                        <button class="fight-btn" onclick="window.location.href='../dungeon.html'">Return to Dungeon</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

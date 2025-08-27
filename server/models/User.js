@@ -45,13 +45,14 @@ class User {
         const newId = response.rows[0].id;
         await db.query(
             'INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-            [newId, 1, username, 0, 120, 10, 10, "???"]
+            [newId, 1, username, 0, 50, 5, 5, "???"]
         );
 
         return await User.getOneById(newId);
     }
 
     async destroy() {
+        await db.query("DELETE FROM hero WHERE user_id = $1;", [this.id]);
         return db.query('DELETE FROM users WHERE id = $1;', [this.id])
     }
 

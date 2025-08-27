@@ -13,6 +13,15 @@ class Hero {
         this.next_enemy = next_enemy;
     }
 
+
+    // Get all by user_id
+
+    static async getByUserId(userId) {
+        const res = await db.query("SELECT * FROM hero WHERE user_id = $1;", [userId]);
+        if (res.rows.length === 0) throw new Error("Hero not found");
+        return res.rows[0];
+    }
+
     // Get hero by username
     static async getUserIdByUsername(username) {
         const response = await db.query("SELECT id FROM users WHERE username = $1;", [username]);
@@ -144,7 +153,7 @@ class Hero {
             SELECT hi.id as hero_items_id, hi.hero_id, hi.item_id, hi.is_equipped, 
                    i.item_name, i.description, i.item_cost 
             FROM hero_items hi 
-            JOIN items i ON hi.item_id = i.id 
+            JOIN items i ON hi.item_id = i.item_id 
             JOIN hero h ON hi.hero_id = h.id
             WHERE h.user_id = $1 AND hi.is_equipped = true
         `;
@@ -152,15 +161,25 @@ class Hero {
         return response.rows;
     }
 
-    // Create a new hero for a user
-    static async create(userId, heroName) {
-        const query = `
-            INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy) 
-            VALUES ($1, 1, $2, 0, 0, 0, 0, 'Goblin') 
-            RETURNING *
-        `;
-        const response = await db.query(query, [userId, heroName]);
-        return new Hero(response.rows[0]);
+    // // Create a new hero for a user
+    // static async create(userId, heroName) {
+    //     const query = `
+    //         INSERT INTO hero (user_id, current_level, hero_name, total_points, health, damage, defense, next_enemy) 
+    //         VALUES ($1, 1, $2, 0, 0, 0, 0, 'Goblin') 
+    //         RETURNING *
+    //     `;
+    //     const response = await db.query(query, [userId, heroName]);
+    //     return new Hero(response.rows[0]);
+    // }
+
+    // Update hero points when a quest is completed
+    static async updateTotalPoints(userId, newTotal) {
+        const res = await db.query('UPDATE hero SET total_points = $1 WHERE user_id = $2 RETURNING *;',
+            [newTotal, userId]
+        );
+
+        if (res.rows.length === 0) throw new Error("Points not be updated or Hero not found");
+        return res.rows[0];
     }
 }
 

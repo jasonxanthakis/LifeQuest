@@ -6,6 +6,8 @@ DROP TABLE IF EXISTS battle;
 DROP TABLE IF EXISTS hero_items;
 DROP TABLE IF EXISTS enemy;
 DROP TABLE IF EXISTS hero;
+DROP TABLE IF EXISTS quest_completions;
+DROP TABLE IF EXISTS quest_completion_summary;
 DROP TABLE IF EXISTS user_quest_streaks;
 DROP TABLE IF EXISTS items;
 DROP TABLE IF EXISTS quests;
@@ -47,7 +49,7 @@ CREATE TABLE quests (
     description VARCHAR(100) NOT NULL,
     category VARCHAR(30) NOT NULL,
     points_value INT NOT NULL,
-    complete BOOLEAN NOT NULL DEFAULT FALSE
+    completed BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 -- ---------------------------
@@ -79,6 +81,34 @@ CREATE TABLE user_quest_streaks (
     end_date DATE NOT NULL,
     current_streak INT NOT NULL,
     best_streak INT NOT NULL
+);
+
+-- ---------------------------
+-- User quest completions table
+-- ---------------------------
+
+CREATE TABLE quest_completions (
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    quest_id INT NOT NULL REFERENCES quests(id),
+    user_id INT NOT NULL REFERENCES users(id),
+    completion_date DATE NOT NULL,
+    status BOOLEAN NOT NULL DEFAULT TRUE,
+    points_earned INT NOT NULL DEFAULT 0,
+    CONSTRAINT uq_quest_completion UNIQUE (quest_id, user_id, completion_date)
+);
+
+-- ---------------------------
+-- User quest completion summary table
+-- ---------------------------
+
+CREATE TABLE quest_completion_summary (
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    quest_id INT NOT NULL REFERENCES quests(id),
+    user_id INT NOT NULL REFERENCES users(id),
+    last_completed_date DATE,
+    best_streak INT NOT NULL DEFAULT 0,
+    current_streak INT NOT NULL DEFAULT 0,
+    CONSTRAINT uq_quest_completion_summary UNIQUE (quest_id, user_id)
 );
 
 -- ---------------------------

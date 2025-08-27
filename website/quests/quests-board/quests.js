@@ -5,13 +5,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let url = 'https://lifequest-api.onrender.com/main/quests';
 
-  // Load existing quests
   let response = await getRequest(url)
-  let data = await response.json();
+  let { quests, hero } = await response.json();
 
-  if (data.length > 0) {
-    data.forEach(q => addQuestCard(q.id, q.title, q.description, q.category, q.points_value));
+  if (quests.length > 0) {
+  quests.forEach(q => addQuestCard(q.id, q.title, q.category, q.description, q.points, q.completed));
   }
+
+  document.getElementById('pointsValue').textContent = hero.total_points;
 
   document.getElementById("addQuestBtn").addEventListener("click", (e) => {
     e.preventDefault(); // stop the page from reloading
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const description = document.getElementById('questDescription').value.trim();
     const category = document.getElementById('questCategory').value;
 
-    if (!questTitle || !description || !category) return alert('Please fill in all fields');
+    if (!title || !description || !category) return alert('Please fill in all fields');
 
     url = 'https://lifequest-api.onrender.com/main/quests/';
 
@@ -30,9 +31,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         "Authorization": localStorage.getItem("token"),
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ title, description, category })
+      body: JSON.stringify({ title, category, description })
     }).then(r => r.json())
-      .then(q => addQuestCard(q.title, q.description, q.category, q.points))
+      .then(q => addQuestCard(q.id, q.title, q.category, q.description, q.points, q.completed))
       .catch(console.error);
 
     questForm.reset();
@@ -41,20 +42,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 
-function addQuestCard( questId, questTitle, description, category, points=3) {
+function addQuestCard( questId, title, category, description, points=3, completed=false) {
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-start">
         <div class="flex-grow-1">
-          <h5 class="card-title">${questTitle}</h5>
+          <h5 class="card-title">${title}</h5>
           <h6 class="card-subtitle mb-2 text-muted">${category}</h6>
           <p class="card-text">${description}</p>
+          <h6 class="card-points">${points} points</h6>
         </div>
         <div class="d-flex flex-column gap-2">
           <div class="form-check form-switch">
-            <input class="form-check-input done-toggle" type="checkbox" role="switch" id="toggle-${Date.now()}">
+            <input class="form-check-input done-toggle" type="checkbox" role="switch" id="toggle-${Date.now()}" ${completed ? "checked" : ""}>
             <label class="form-check-label" for="toggle-${Date.now()}">
               Done
             </label>
@@ -65,6 +67,10 @@ function addQuestCard( questId, questTitle, description, category, points=3) {
       </div>
     </div>
   `;
+
+  if (completed) {
+    card.classList.add('bg-success', 'text-white', 'done');
+  }
 
   // Append to quest list
   questList.appendChild(card);
@@ -81,18 +87,20 @@ function addQuestCard( questId, questTitle, description, category, points=3) {
     
     try {
       const response = await sendPatchRequest(url, { completed: toggle.checked });
-      const data = response.json();
+      const data = await response.json();
+      console.log("PATCH response:", data);
       
-      if (response.status == 200) {
-        console.log('Quest completion updated', data);
+      // connecting total points from the backend
+      if (response.ok) {
+      document.getElementById('pointsValue').textContent = data.hero.total_points;
       } else {
-        console.log(data.error);
-      }
+        console.error(data.error || 'Failed to updated completion');
+      } 
     } catch (err) {
       console.error(err);
-    }
+    };
+  })
 
-  });
 
   // Add edit functionality
   const editBtn = card.querySelector('.edit-btn');
@@ -138,14 +146,15 @@ function addQuestCard( questId, questTitle, description, category, points=3) {
           cardTitle.textContent = newTitle;
           cardSubtitle.textContent = newCategory;
           cardText.textContent = newDescription;
+
+          // Change button back to Edit
+          editBtn.textContent = 'Edit';
+          editBtn.className = 'btn btn-sm btn-outline-secondary edit-btn';
         }
         else {
           console.error('Error: ', response.error)
         }
         
-        // Change button back to Edit
-        editBtn.textContent = 'Edit';
-        editBtn.className = 'btn btn-sm btn-outline-secondary edit-btn';
       } else {
         alert('Please fill in all fields');
       }
@@ -167,7 +176,8 @@ function addQuestCard( questId, questTitle, description, category, points=3) {
       }
     }
   });
-};
+}
+
 
 const logout = document.getElementsByClassName('logout');
 for (let btn of logout) {
@@ -219,3 +229,5 @@ async function sendDeleteRequest(url) {
 
   return resp;
 }
+
+
