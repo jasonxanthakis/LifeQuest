@@ -5,3 +5,4 @@ node_modules/
 coverage/
 *_venv/
 __pycache__
+.pytest*
