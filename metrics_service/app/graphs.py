@@ -32,11 +32,45 @@ from app.db import connect
 
 #         return df_last6
 
+def check_new_user(user_id: int) -> bool:
+    """
+    Checks if a user is new (are the tables empty).
+    Returns a boolean.
+    """
+    with connect.get_connection() as conn:
+        query = """
+        SELECT quest_id, completion_date
+        FROM quest_completions
+        WHERE user_id = %s
+        ORDER BY completion_date
+        """
+        df = pd.read_sql(query, conn, params=[user_id])
+
+    if df.empty:
+        return True
+    
+    return False
+
 def get_best_and_current_streak(user_id: int) -> dict:
     """
     Load best streak ever (and the corresponding quest) and the current streak for all quests.
     Returns a tuple with best streak, best streak quest and current streak.
     """
+    result = None
+
+    with connect.get_connection() as conn:
+        query = """
+        SELECT best_streak, current_streak, last_completed_date
+        FROM quest_completion_summary
+        WHERE user_id = %s
+        """
+        with conn.cursor() as cur1:
+            cur1.execute(query=query, params=(user_id), prepare=False)
+            result = cur1.fetchone()
+
+    if result == None:
+        return {}
+
     return {
         "best_streak": 0,
         "current_streak": 0,
