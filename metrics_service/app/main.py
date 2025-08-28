@@ -10,8 +10,8 @@ def check_if_new_user(userId: str):
 
 @app.get("/data/streak_summary_all")
 def best_and_current_streak(userId: str):
-    # data = get_best_and_current_streak(user_id=int(userId))
-    return {}
+    data = get_best_and_current_streak(user_id=int(userId))
+    return data
 
 @app.get("/data/streak_summary_one")
 def best_and_current_streak_per_quest(userId: str, questId: str):

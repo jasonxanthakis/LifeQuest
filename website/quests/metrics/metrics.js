@@ -20,7 +20,7 @@ export async function createSummaryCards(stage, questId) {
     container.classList = 'container mt-4';
 
     const row = document.createElement('div');
-    row.classList = 'row text-center';
+    row.classList = 'row text-center justify-content-center';
 
 
     Object.entries(result).forEach(([key, value]) => {
