@@ -20,7 +20,7 @@ def multiquest_heatmap(userId: str):
     return Response(content=svg, media_type="image/svg+xml")
 
 @app.get("/charts/calendar-one.svg")
-def multiquest_heatmap(userId: str, questId: str):
+def single_quest_heatmap(userId: str, questId: str):
     df = load_user_quest_completions(user_id=int(userId), quest_id=int(questId))
     svg = plot_single_quest_heatmap(df=df, user_id=int(userId), quest_id=int(questId))
     return Response(content=svg, media_type="image/svg+xml")
