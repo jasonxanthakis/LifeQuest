@@ -6,7 +6,7 @@ RUN npm install --production
 # Set Up Supabase Postgre database
 COPY . /app
 ENV DB_URL="postgresql://postgres.uxbzxhstfrtcjynsrvuq:byte-quest@aws-1-eu-west-2.pooler.supabase.com:6543/postgres"
-RUN npm run setup-db
+#RUN npm run setup-db
 # Run the Server
 ENV PORT=3000
 ENV BCRYPT_SALT_ROUNDS=12
