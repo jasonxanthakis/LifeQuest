@@ -45,7 +45,7 @@ CREATE TABLE users (
 CREATE TABLE quests (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(id),
-    quest_title VARCHAR(50) NOT NULL UNIQUE,
+    quest_title VARCHAR(50) NOT NULL,
     description VARCHAR(100) NOT NULL,
     category VARCHAR(30) NOT NULL,
     points_value INT NOT NULL,
