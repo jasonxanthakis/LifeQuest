@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://lifequest-api.onrender.com';
 
 export async function handleSignup(fullnameInput, usernameInput, date_of_birth_Input, emailInput, passwordInput) {
   const fullname = fullnameInput.value.trim();

@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://lifequest-api.onrender.com';
 let current_quest = 'All Quests'
 
 const logout = document.getElementsByClassName('logout');
