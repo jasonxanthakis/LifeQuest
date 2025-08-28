@@ -92,7 +92,37 @@ const getSummaryStats = async (req, res) => {
     }
 };
 
+const checkNewUser = async (req, res) => {
+    try {
+        const username = req.user;
+        const userId = await Quest.getUserIdByUsername(username);
+
+        const qs = new URLSearchParams({
+            ...(userId && { userId: userId }),
+        });
+        
+        const url = `${FASTAPI_URL}/data/is_new_user?${qs.toString()}`;
+
+        const response = await fetch(url);
+        const result = await response.json();
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`FastAPI error: ${response.status} ${errorText}`);
+            return res.status(response.status).send(errorText);
+        }
+
+        res.set("Content-Type", "application/json");
+        res.send(result);
+
+    } catch (err) {
+        console.error("Error fetching data from FastAPI:", err);
+        res.status(500).send("Failed to fetch data");
+    }
+};
+
 module.exports = {
     getGraphs,
-    getSummaryStats
+    getSummaryStats,
+    checkNewUser
 };

@@ -7,10 +7,15 @@ document.addEventListener('DOMContentLoaded', async function() {
 export async function loadAchievements() {
     try {
         const url = `http://localhost:3000/main/achievements`;
-        
         const response = await getRequest(url);
         const data = await response.json();
-        
+
+        // Log achievements array for debugging
+        //console.log('Achievements from backend:', data.achievements);
+        //data.achievements.forEach(a => {
+        //    console.log(`Achievement: ${a.name}, Achieved: ${a.achieved}`);
+        //});
+
         if (response.ok) {
             displayAchievements(data.achievements, data.stats);
         } else {

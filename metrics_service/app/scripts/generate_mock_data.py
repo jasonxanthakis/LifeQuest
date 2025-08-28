@@ -69,8 +69,8 @@ for user_id in range(NUM_USERS):
     for quest_id in range((user_id-1)*QUESTS_PER_USER + 1, user_id*QUESTS_PER_USER + 1):
         quest_title = fake.sentence(nb_words=4)[:50]
         description = fake.sentence(nb_words=10)[:100]
-        category = random.choice(["Health", "Productivity", "Learning", "Fitness"])
-        points_value = random.randint(5, 50)
+        category = random.choice(["Smoking", "Exercise"])
+        points_value = 3
         completed = False
 
         # cur.execute("""

@@ -3,9 +3,14 @@ from app.graphs import *
 
 app = FastAPI()
 
+@app.get("/data/is_new_user")
+def check_if_new_user(userId: str):
+    is_new = check_new_user(user_id=int(userId))
+    return { "new": is_new, "test": "test" }
+
 @app.get("/data/streak_summary_all")
 def best_and_current_streak(userId: str):
-    data = get_best_and_current_streak(int(userId))
+    data = get_best_and_current_streak(user_id=int(userId))
     return data
 
 @app.get("/data/streak_summary_one")
@@ -20,7 +25,7 @@ def multiquest_heatmap(userId: str):
     return Response(content=svg, media_type="image/svg+xml")
 
 @app.get("/charts/calendar-one.svg")
-def multiquest_heatmap(userId: str, questId: str):
+def single_quest_heatmap(userId: str, questId: str):
     df = load_user_quest_completions(user_id=int(userId), quest_id=int(questId))
     svg = plot_single_quest_heatmap(df=df, user_id=int(userId), quest_id=int(questId))
     return Response(content=svg, media_type="image/svg+xml")
