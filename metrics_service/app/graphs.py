@@ -32,7 +32,7 @@ from app.db import connect
 
 #         return df_last6
 
-def check_new_user(user_id: int) -> bool:
+def check_new_user(user_id: str) -> bool:
     """
     Checks if a user is new (are the tables empty).
     Returns a boolean.
@@ -44,7 +44,7 @@ def check_new_user(user_id: int) -> bool:
         WHERE user_id = %s
         ORDER BY completion_date
         """
-        df = pd.read_sql(query, conn, params=[user_id])
+        df = pd.read_sql(query, conn, params=(user_id,))
 
     if df.empty:
         return True
@@ -62,12 +62,12 @@ def get_best_and_current_streak(user_id: int) -> dict:
         query = """
         SELECT best_streak, current_streak, last_completed_date
         FROM quest_completion_summary
-        WHERE user_id = %s
+        WHERE user_id = %s;
         """
         with conn.cursor() as cur1:
             cur1.execute(query=query, params=(user_id), prepare=False)
             result = cur1.fetchone()
-
+    
     if result == None:
         return {}
 
@@ -88,7 +88,7 @@ def get_best_and_current_streak_by_quest(user_id: int, quest_id: int) -> dict:
         query = """
         SELECT best_streak, current_streak, last_completed_date
         FROM quest_completion_summary
-        WHERE user_id = %s AND quest_id = %s
+        WHERE user_id = %s AND quest_id = %s;
         """
         with conn.cursor() as cur1:
             cur1.execute(query=query, params=(user_id, quest_id), prepare=False)

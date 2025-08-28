@@ -3,10 +3,15 @@ from app.graphs import *
 
 app = FastAPI()
 
+@app.get("/data/is_new_user")
+def check_if_new_user(userId: str):
+    is_new = check_new_user(user_id=int(userId))
+    return { "new": is_new, "test": "test" }
+
 @app.get("/data/streak_summary_all")
 def best_and_current_streak(userId: str):
-    data = get_best_and_current_streak(int(userId))
-    return data
+    # data = get_best_and_current_streak(user_id=int(userId))
+    return {}
 
 @app.get("/data/streak_summary_one")
 def best_and_current_streak_per_quest(userId: str, questId: str):

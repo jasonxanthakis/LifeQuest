@@ -87,11 +87,26 @@ export async function loadQuestDropdown() {
 
 export async function loadMetrics(questID = 0) {
     try {
+        const stage = document.querySelector('.metrics-stage');
+        
+        // Check if user is new
+        let response = await getRequest('http://localhost:3000/main/metrics/new_user')
+        const result = await response.json();
+
+        if (result.new) {
+            stage.innerHTML = `
+            <h2 class="text-white mb-3">No metrics yet</h2>
+            <p class="text-muted">Complete quests, gain points and fight battles then come back to see your stats!</p>
+            `
+            return ;
+        }
+
+        // Load metrics
         const API_URL = 'http://localhost:3000';
 
         let url = API_URL + `/main/metrics/${questID}`;
 
-        const response = await getRequestSvg(url);
+        response = await getRequestSvg(url);
 
         if (!response.ok) {
             throw new Error(`Failed to fetch metrics: ${response.status}`);
@@ -100,7 +115,6 @@ export async function loadMetrics(questID = 0) {
         const svgText = await response.text();
 
         // Clear existing content
-        const stage = document.querySelector('.metrics-stage');
         createDropdown(stage);
         await loadQuestDropdown();
         // stage.classList.add('carousel slide');
