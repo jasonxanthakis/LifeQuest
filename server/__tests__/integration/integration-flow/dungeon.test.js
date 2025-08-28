@@ -42,7 +42,7 @@ describe("Server-side: Dungeon flow", () => {
 
         expect(res.status).toBe(200);
         expect(res.body.level).toBe(1);
-        expect(res.body.hero).toStrictEqual({"att": 10, "def": 10, "hp": 120, "level": 1, "name": "user"});
+        expect(res.body.hero).toStrictEqual({"att": 5, "def": 5, "hp": 50, "level": 1, "name": "user"});
         expect(res.body.enemy).toStrictEqual({"att": 12, "def": 8, "hp": 90, "name": "Goblin"});
     });
 

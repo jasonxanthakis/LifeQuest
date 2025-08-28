@@ -57,7 +57,7 @@ describe("Dungeon controller integration with dungeon model and DB", () => {
         expect(res.json).toHaveBeenCalledWith(
             {
                 "enemy": {"att": 12, "def": 8, "hp": 90, "name": "Goblin"},
-                "hero": {"att": 10, "def": 10, "hp": 120, "level": 1, "name": "user"},
+                "hero": {"att": 5, "def": 5, "hp": 50, "level": 1, "name": "user"},
                 "level": 1
             }
         );
