@@ -10,7 +10,13 @@ export async function loadAchievements() {
         
         const response = await getRequest(url);
         const data = await response.json();
-        
+
+        // Log achievements array for debugging
+        //console.log('Achievements from backend:', data.achievements);
+        //data.achievements.forEach(a => {
+        //    console.log(`Achievement: ${a.name}, Achieved: ${a.achieved}`);
+        //});
+
         if (response.ok) {
             displayAchievements(data.achievements, data.stats);
         } else {

@@ -20,7 +20,7 @@ export async function createSummaryCards(stage, questId) {
     container.classList = 'container mt-4';
 
     const row = document.createElement('div');
-    row.classList = 'row text-center';
+    row.classList = 'row text-center justify-content-center';
 
 
     Object.entries(result).forEach(([key, value]) => {
@@ -32,10 +32,10 @@ export async function createSummaryCards(stage, questId) {
                         .replace(/\b\w/g, l => l.toUpperCase());
 
         col.innerHTML = `
-        <div class="card shadow-sm h-100">
+        <div class="card shadow-sm">
             <div class="card-body text-center">
                 <h5 class="card-title">${title}</h5>
-                <p class="card-text display-6">${value}</p>
+                <p class="card-text">${value}</p>
             </div>
         </div>
         `;
@@ -87,11 +87,26 @@ export async function loadQuestDropdown() {
 
 export async function loadMetrics(questID = 0) {
     try {
+        const stage = document.querySelector('.metrics-stage');
+        
+        // Check if user is new
+        let response = await getRequest('https://lifequest-api.onrender.com/main/metrics/new_user')
+        const result = await response.json();
+
+        if (result.new) {
+            stage.innerHTML = `
+            <h2 class="text-white mb-3">No metrics yet</h2>
+            <p class="text-muted">Complete quests, gain points and fight battles then come back to see your stats!</p>
+            `
+            return ;
+        }
+
+        // Load metrics
         const API_URL = 'https://lifequest-api.onrender.com';
 
         let url = API_URL + `/main/metrics/${questID}`;
 
-        const response = await getRequestSvg(url);
+        response = await getRequestSvg(url);
 
         if (!response.ok) {
             throw new Error(`Failed to fetch metrics: ${response.status}`);
@@ -100,7 +115,6 @@ export async function loadMetrics(questID = 0) {
         const svgText = await response.text();
 
         // Clear existing content
-        const stage = document.querySelector('.metrics-stage');
         createDropdown(stage);
         await loadQuestDropdown();
         // stage.classList.add('carousel slide');

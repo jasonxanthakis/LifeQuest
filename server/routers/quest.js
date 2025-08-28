@@ -16,6 +16,7 @@ router.delete("/quests/:quest", authenticator, QuestController.destroyQuest);
 router.get("/achievements", authenticator, AchievementsController.getUserAchievements);
 
 // Metrics endpoint
+router.get("/metrics/new_user", authenticator, MetricsController.checkNewUser);
 router.get("/metrics/quests", authenticator, QuestController.getQuests);
 router.get("/metrics/:quest", authenticator, MetricsController.getGraphs);
 router.get("/metrics/data/:quest", authenticator, MetricsController.getSummaryStats);

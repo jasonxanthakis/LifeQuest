@@ -1,7 +1,7 @@
     // __tests__/server-controller-unit/quest.test.js
     const { expect, it, describe, beforeEach, afterAll } = require("@jest/globals");
     const questController = require('../../controllers/quest.js');
-    const Quest = require('../../models/quest.js');
+    const Quest = require('../../models/Quest.js');
 
     // Mock Express response
     const mockJson = jest.fn();
