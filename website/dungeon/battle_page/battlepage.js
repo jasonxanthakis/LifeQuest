@@ -1,3 +1,5 @@
+const API_URL = 'http://localhost:3000';
+
 // Array of images
 const images = [
     "basilisk.jpeg",
@@ -75,8 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Ask the database to run a battle simulation
 async function simulateBattle() {
-    const API_URL = 'https://lifequest-api.onrender.com';
-
     let url = API_URL + `/dungeon/battle`;
 
     const response = await sendPatchRequest(url, {});

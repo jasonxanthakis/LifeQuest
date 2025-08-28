@@ -1,6 +1,6 @@
-export async function handleLogin(usernameInput, passwordInput) {
-  const API_URL = 'https://lifequest-api.onrender.com';
+const API_URL = 'http://localhost:3000';
 
+export async function handleLogin(usernameInput, passwordInput) {
   const username = usernameInput.value.trim(); 
   const password = passwordInput.value.trim();
 

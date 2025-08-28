@@ -1,3 +1,5 @@
+const API_URL = 'http://localhost:3000';
+
 // Array of images
 const images = [
   "basilisk.jpeg",
@@ -111,8 +113,6 @@ for (let btn of logout) {
 }
 
 async function loadDungeon() {
-  const API_URL = 'https://lifequest-api.onrender.com';
-
   let url = API_URL + `/dungeon`;
 
   const response = await getRequest(url);

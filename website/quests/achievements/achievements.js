@@ -1,3 +1,5 @@
+const API_URL = 'http://localhost:3000';
+
 document.addEventListener('DOMContentLoaded', async function() {
     await loadAchievements();
     setupLogout();
@@ -6,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Load achievements from backend
 export async function loadAchievements() {
     try {
-        const url = `https://lifequest-api.onrender.com/main/achievements`;
+        const url = API_URL + `/main/achievements`;
         
         const response = await getRequest(url);
         const data = await response.json();

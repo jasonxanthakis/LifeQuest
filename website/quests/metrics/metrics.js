@@ -1,3 +1,4 @@
+const API_URL = 'http://localhost:3000';
 let current_quest = 'All Quests'
 
 const logout = document.getElementsByClassName('logout');
@@ -9,7 +10,7 @@ for (let btn of logout) {
 }
 
 export async function createSummaryCards(stage, questId) {
-    let url = `https://lifequest-api.onrender.com/main/metrics/data/${questId}`;
+    let url = API_URL + `/main/metrics/data/${questId}`;
 
     const response = await getRequest(url);
     const result = await response.json();
@@ -64,7 +65,7 @@ export function createDropdown(stage) {
 }
 
 export async function loadQuestDropdown() {
-    const response = await getRequest('https://lifequest-api.onrender.com/main/metrics/quests');
+    const response = await getRequest(API_URL + '/main/metrics/quests');
     const result = await response.json();
     const quests = result.quests;
 
@@ -90,7 +91,7 @@ export async function loadMetrics(questID = 0) {
         const stage = document.querySelector('.metrics-stage');
         
         // Check if user is new
-        let response = await getRequest('https://lifequest-api.onrender.com/main/metrics/new_user')
+        let response = await getRequest(API_URL + '/main/metrics/new_user')
         const result = await response.json();
 
         if (result.new) {
@@ -102,8 +103,6 @@ export async function loadMetrics(questID = 0) {
         }
 
         // Load metrics
-        const API_URL = 'https://lifequest-api.onrender.com';
-
         let url = API_URL + `/main/metrics/${questID}`;
 
         response = await getRequestSvg(url);

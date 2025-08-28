@@ -1,9 +1,11 @@
+const API_URL = 'http://localhost:3000';
+
 document.addEventListener('DOMContentLoaded', async () => {
   const questForm = document.getElementById('questForm');
   const questList = document.getElementById('questList');
   const questModal = new bootstrap.Modal(document.getElementById('addQuestModal'));
 
-  let url = 'https://lifequest-api.onrender.com/main/quests';
+  let url = API_URL + '/main/quests';
 
   let response = await getRequest(url)
   let { quests, hero } = await response.json();
@@ -23,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!title || !description || !category) return alert('Please fill in all fields');
 
-    url = 'https://lifequest-api.onrender.com/main/quests/';
+    url = API_URL + '/main/quests/';
 
     fetch(url, {
       method: 'POST',
@@ -83,7 +85,7 @@ function addQuestCard( questId, title, category, description, points=3, complete
     card.classList.toggle('done', toggle.checked);
 
     // connecting the toggle to the backend
-    let url = `https://lifequest-api.onrender.com/main/quests/${questId}/complete`;
+    let url = API_URL + `/main/quests/${questId}/complete`;
     
     try {
       const response = await sendPatchRequest(url, { completed: toggle.checked });
@@ -134,7 +136,7 @@ function addQuestCard( questId, title, category, description, points=3, complete
       const newDescription = card.querySelector('.edit-description').value.trim();
       
       if (newTitle && newCategory && newDescription) {
-        let url = `https://lifequest-api.onrender.com/main/quests/${questId}/`;
+        let url = API_URL + `/main/quests/${questId}/`;
 
         const response = await sendPatchRequest(url, { title: newTitle, description: newDescription, category: newCategory });
         
@@ -165,7 +167,7 @@ function addQuestCard( questId, title, category, description, points=3, complete
   const deleteBtn = card.querySelector('.delete-btn');
   deleteBtn.addEventListener('click', async () => {
     if (confirm('Are you sure you want to delete this quest?')) {
-      let url = `https://lifequest-api.onrender.com/main/quests/${questId}/`;
+      let url = API_URL + `/main/quests/${questId}/`;
 
       const response = await sendDeleteRequest(url);
 

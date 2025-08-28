@@ -1,6 +1,6 @@
-export async function handleSignup(fullnameInput, usernameInput, date_of_birth_Input, emailInput, passwordInput) {
-  const API_URL = 'https://lifequest-api.onrender.com';
+const API_URL = 'http://localhost:3000';
 
+export async function handleSignup(fullnameInput, usernameInput, date_of_birth_Input, emailInput, passwordInput) {
   const fullname = fullnameInput.value.trim();
   const username = usernameInput.value.trim();
   const date_of_birth = date_of_birth_Input.value;
