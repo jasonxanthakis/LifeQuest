@@ -32,15 +32,32 @@ from app.db import connect
 
 #         return df_last6
 
-def get_best_and_current_streak(user_id: int) -> dict:
+def get_best_streak(user_id: int) -> dict:
     """
     Load best streak ever (and the corresponding quest) and the current streak for all quests.
     Returns a tuple with best streak, best streak quest and current streak.
     """
+
+    with connect.get_connection() as conn:
+        query = """
+        SELECT qcs.best_streak, q.quest_title
+        FROM quest_completion_summary qcs
+        JOIN quests q ON qcs.quest_id = q.id
+        WHERE qcs.user_id = %s
+        ORDER BY qcs.best_streak DESC
+        LIMIT 1
+        """
+
+        with conn.cursor() as cur1:
+            cur1.execute(query=query, params=(user_id,), prepare=False)
+            result = cur1.fetchone()
+
+    if result is None:
+        return {}
+
     return {
-        "best_streak": 0,
-        "current_streak": 0,
-        "last_completion": 'NA'
+        'best_streak' : result[0],
+        'quest_title' : result[1]
     }
 
 def get_best_and_current_streak_by_quest(user_id: int, quest_id: int) -> dict:
