@@ -736,16 +736,17 @@ body {
     height: auto;
 }
 
-#summary-grid .card {
+#summaryDataContainer .card {
   border-radius: 0.75rem;
   padding: 0.75rem;
+  height: 175px;
 }
-#summary-grid .card-title {
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
+#summaryDataContainer .card-title {
+  font-size: 1.45rem;
+  margin-bottom: 0.5rem;
 }
-#summary-grid .card-text {
-  font-size: 1.25rem;
+#summaryDataContainer .card-text {
+  font-size: 2rem;
 }
 
 /* Mobile */

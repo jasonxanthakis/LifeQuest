@@ -32,10 +32,10 @@ export async function createSummaryCards(stage, questId) {
                         .replace(/\b\w/g, l => l.toUpperCase());
 
         col.innerHTML = `
-        <div class="card shadow-sm h-100">
+        <div class="card shadow-sm">
             <div class="card-body text-center">
                 <h5 class="card-title">${title}</h5>
-                <p class="card-text display-6">${value}</p>
+                <p class="card-text">${value}</p>
             </div>
         </div>
         `;
