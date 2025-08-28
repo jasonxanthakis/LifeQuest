@@ -1,6 +1,22 @@
 {
+  "name": "lifequest",
+  "private": true,
   "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.3.0",
     "jsdom": "^26.1.0",
     "vitest": "^3.2.4"
+  },
+  "scripts": {
+    "dev": "npm --prefix server run dev",
+    "start": "npm --prefix server start",
+    "test": "npm --prefix server test",
+    "setup-db": "npm --prefix server run setup-db",
+    "live": "npm --prefix server run live",
+    "e2e": "npx playwright test",
+    "serve-frontend": "live-server website --port=5173 --quiet"
+  },
+  "dependencies": {
+    "live-server": "^1.2.2"
   }
 }
