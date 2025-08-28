@@ -82,21 +82,21 @@ class Achievements {
     // Get user achievements based on their quest completion streaks
     static async getUserAchievements(userId) {
         try {
-            // Get user's best streaks from quest completion data
+            // Get user's best streaks from quest_completion_summary
             const streakQuery = `
-                SELECT MAX(GREATEST(current_streak, best_streak)) as best_streak
-                FROM user_quest_streaks 
+                SELECT MAX(current_streak) as current_streak, MAX(best_streak) as best_streak
+                FROM quest_completion_summary
                 WHERE user_id = $1
             `;
             const streakResult = await db.query(streakQuery, [userId]);
             
             let maxStreak = 0;
-            if (streakResult.rows.length > 0 && streakResult.rows[0].best_streak) {
-                maxStreak = streakResult.rows[0].best_streak;
+            if (streakResult.rows.length > 0) {
+                const { current_streak, best_streak } = streakResult.rows[0];
+                maxStreak = Math.max(current_streak || 0, best_streak || 0);
             }
-
-            // If no streak data exists at all, default to 0 (no fallback to quests table)
-            // This means achievements are based purely on streak performance
+            // Force for testing
+            //maxStreak = 30;
 
             // Get all achievement milestones
             const milestones = this.getAchievementMilestones();
