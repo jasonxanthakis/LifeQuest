@@ -95,7 +95,9 @@ class Quest {
     }
 
     async destroy() {
-        return db.query('DELETE FROM quests WHERE id = $1;', [this.id]);
+        await db.query('DELETE FROM quest_completion_summary WHERE quest_id = $1;', [this.id]);
+        await db.query('DELETE FROM quest_completions WHERE quest_id = $1;', [this.id]);
+        return await db.query('DELETE FROM quests WHERE id = $1;', [this.id]);
     }
 }
 
