@@ -1,9 +1,30 @@
+# LifeQuest Web App
+
+This website acts as a front-end to the LifeQuest web application. It's a web app designed for desktop, laptop and mobile devices. It was created using HTML, CSS & JavaScript and contains BootStrap elements. It is currently hosted on [Render](https://lifequest-bagl.onrender.com) as a static website.
+
+## Prerequisites
+- Node.js (for tests)
+
+## How to Run Locally
+1. Clone this repository to your local machine
+2. Change directory to the website folder using the `cd ./website` command
+3. Run the command `npm install` to install all node module packages needed for development and testing (optional)
+4. Open the website locally by opening the `index.html` file in your browser
+    - To open the website in development mode, use the command `npm run live` to run live server (must complete step 3 first)
+
+## Testing
+1. Follow steps 1-3 in the above section
+2. Run the command `npm test` to run the jest tests
+3. Run the command `npm run vitest` to run the vitest tests
+
+Note: the front-end unit tests use a combination of two test frameworks, jest and vitest
+
 ## LifeQuest Style Guide
 
 ### Background System
 - Primary Background: url('assets/dungeon-background.jpg')
 
-![background-image](website/assets/dungeon-background.jpg)
+![background-image](./assets/dungeon-background.jpg)
 
 Background Properties:
 - background-size: cover
