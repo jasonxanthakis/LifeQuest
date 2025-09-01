@@ -2,7 +2,7 @@
 
 This website acts as a front-end to the LifeQuest web application. It's a web app designed for desktop, laptop and mobile devices. It was created using HTML, CSS & JavaScript and contains BootStrap elements. It is currently hosted on [Render](https://lifequest-bagl.onrender.com) as a static website.
 
-## Prerequisites
+### Prerequisites
 - Node.js (for tests)
 
 ## How to Run Locally

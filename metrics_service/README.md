@@ -2,7 +2,7 @@
 
 This is the data microservice API of the LifeQuest application, responsible for pushing data and data visualisations (in the form of SVGs) to the frontend. It is built using Python and FastAPI and uses matplotlib and seaborn to generate plots and send them to the front-end in SVG format. It also contains a script used to generate mock users (with Faker) that have been 'using' the app for 100 days, for the sake of testing and demonstrating the functionlity of the metrics page. It is currently hosted on [Render](https://lifequest-metrics.onrender.com).
 
-## Prerequisites
+### Prerequisites
 - Python 3
 - Docker (for containerisation)
 
@@ -23,3 +23,10 @@ This is the data microservice API of the LifeQuest application, responsible for 
 1. Follow steps 1-4 in the above section
 2. Use the command `pytest` to run all unit and integration tests
     - Note: use the command `pytest --cov` to run the tests with a coverage report
+
+## Other Scripts
+
+### Generate Fictitious Users
+1. Follow steps 1-4 in the above section
+2. Use the command `python ./app/scripts/generate_mock_data.py`
+    - Note: this will generate a set of 10 fictitious users, each with 100 days of experience completing quests in the app
